@@ -1,7 +1,6 @@
 # milton-hjem
-<<<<<<< HEAD
 Semestercase på WebDev 2. semester 2026. Vue-applikation til Milton Huse, lavet til kommunikation mellem bygherrer og byggeleder, under konstruktion af typehus.
-=======
+
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -61,4 +60,3 @@ But it's still recommended to test the production build with `test:e2e` before d
 npm run build
 npm run test:e2e
 ```
->>>>>>> 0ab331a (Started vue-project)
