@@ -1,31 +1,40 @@
 import js from "@eslint/js";
 import globals from "globals";
+import pluginVue from "eslint-plugin-vue";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  { 
-    files: ["**/*.{js,mjs,cjs}"], 
-    plugins: { js }, 
-    extends: ["js/recommended"], 
-    languageOptions: 
-    { 
-      globals: globals.browser 
+  {
+    files: ["src/**/*.{js,vue}"], // Only cover the src folder
+    plugins: { js, vue: pluginVue },
+    extends: ["js/recommended", "plugin:vue/vue3-recommended"],
+    languageOptions: {
+      globals: globals.browser,
+      sourceType: "module", // Vite uses ES modules
+      parserOptions: {
+        ecmaVersion: "latest",
+      },
     },
     rules: {
-      'comma-dangle': ["error", "never"], // traling comma after objects or variables
-      'eqeqeq': ["error", "always"], // checks data type and content
-      'indent': ["error", 2], // requires 2  spaces for indentation.
-      'no-eval': ["error"], // don’t use eval()
-      'no-unused-vars': ["error"], // No unused variables.
-      'no-var': ["error"], // no use of variable declaration using “var”
-      'prefer-const': ["error"], // use const over let if possible
-    //   'quotes': ["error", "single"], // single quotes
-      'semi': ["error", "always"], // Always semi-colon at the end of line.
-      'brace-style': ["error", "1tbs"], // Use 1tbs (One true brace style).
-      'no-shadow': ["error", { "builtinGlobals": true }], // Don't write block-scoped variables, with the same name as a global-scoped variable.
-      'arrow-body-style': ["error", "always"], // Explicitly write the curly brackets and return statement in an arrow function.
-    }, 
+      'comma-dangle': ["warn", "never"], // Warn on trailing commas after objects or variables
+      'eqeqeq': ["error", "always"], // Checks data type and content
+      'indent': ["error", 2], // Requires 2 spaces for indentation
+      'no-eval': ["error"], // Don't use eval()
+      'no-unused-vars': ["error"], // No unused variables
+      'no-var': ["error"], // No use of variable declaration using "var"
+      'prefer-const': ["error"], // Use const over let if possible
+      'semi': ["error", "always"], // Always semicolon at the end of line
+      'brace-style': ["error", "1tbs"], // Use 1tbs (One True Brace Style)
+      'no-shadow': ["error", { "builtinGlobals": true }], // Don't write block-scoped variables with the same name as a global-scoped variable
+      'arrow-body-style': ["error", "always"], // Explicitly write the curly brackets and return statement in an arrow function
+      'consistent-return': "warn", // Enforce consistent return statements in functions. Either always return a value or never return a value
+      'max-params': ["warn", 3], // Warn when a function has more than 3 parameters
+      'no-async-promise-executor': "error", // Disallow async functions as Promise executors
+
+      // Vue specific
+      'vue/component-name-in-template-casing': ["error", "PascalCase"], // Enforce PascalCase for component names in templates
+      'vue/script-setup-uses-vars': "error", // Prevent false positives for no-unused-vars with <script setup>
+      'vue/no-v-html': "warn", // Warn on use of v-html to prevent XSS vulnerabilities
+    },
   },
-  { 
-    files: ["**/*.js"], languageOptions: { sourceType: "commonjs" } },
 ]);
