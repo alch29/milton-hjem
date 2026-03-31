@@ -1,0 +1,42 @@
+// Colors
+$color-primary:        #004652;
+$color-primary-light:  #8FB5BF;
+$color-primary-logo:   #005E6E;
+$color-text:           #2E2E2E;
+$color-text-light:     #777777;
+$color-background:     #EAE8E7;
+$color-white:          #FFFFFF;
+$color-cta:            #F9DD8F;
+
+// Typography — Mobile
+$h1-mobile-size:   28px;
+$h1-mobile-lh:     33px;
+$h2-mobile-size:   24px;
+$h2-mobile-lh:     28px;
+$h3-mobile-size:   16px;
+$h3-mobile-lh:     20px;
+$body-mobile-size: 14px;
+$body-mobile-lh:   18px;
+$bread-mobile-size: 12px;
+$bread-mobile-lh:   15px;
+
+// Typography — Desktop
+$h1-desktop-size:   36px;
+$h1-desktop-lh:     44px;
+$h2-desktop-size:   30px;
+$h2-desktop-lh:     37px;
+$h3-desktop-size:   28px;
+$h3-desktop-lh:     35px;
+$body-desktop-size: 24px;
+$body-desktop-lh:   30px;
+$bread-desktop-size: 20px;
+$bread-desktop-lh:   23px;
+
+// Font family
+$font-family-base: 'Work Sans', sans-serif;
+
+// Font weight
+$font-weight-regular: 400;
+
+// Breakpoint
+$breakpoint-desktop: 768px;

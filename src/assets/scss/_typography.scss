@@ -1,0 +1,57 @@
+@use 'variables' as *;
+
+h1 {
+  font-size: $h1-mobile-size;
+  line-height: $h1-mobile-lh;
+  font-weight: $font-weight-regular;
+
+  @media (min-width: $breakpoint-desktop) {
+    font-size: $h1-desktop-size;
+    line-height: $h1-desktop-lh;
+  }
+}
+
+h2 {
+  font-size: $h2-mobile-size;
+  line-height: $h2-mobile-lh;
+  font-weight: $font-weight-regular;
+
+  @media (min-width: $breakpoint-desktop) {
+    font-size: $h2-desktop-size;
+    line-height: $h2-desktop-lh;
+  }
+}
+
+h3 {
+  font-size: $h3-mobile-size;
+  line-height: $h3-mobile-lh;
+  font-weight: $font-weight-regular;
+
+  @media (min-width: $breakpoint-desktop) {
+    font-size: $h3-desktop-size;
+    line-height: $h3-desktop-lh;
+  }
+}
+
+body, p {
+  font-size: $body-mobile-size;
+  line-height: $body-mobile-lh;
+  font-weight: $font-weight-regular;
+  color: $color-text;
+
+  @media (min-width: $breakpoint-desktop) {
+    font-size: $body-desktop-size;
+    line-height: $body-desktop-lh;
+  }
+}
+
+.breadcrumbs {
+  font-size: $bread-mobile-size;
+  line-height: $bread-mobile-lh;
+  font-weight: $font-weight-regular;
+
+  @media (min-width: $breakpoint-desktop) {
+    font-size: $bread-desktop-size;
+    line-height: $bread-desktop-lh;
+  }
+}
