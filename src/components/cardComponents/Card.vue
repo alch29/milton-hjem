@@ -21,16 +21,13 @@
   .card {
     border: solid 0.5px $color-text;
     color: $color-text;
+    padding: 16px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    &__standard {
-      padding: 16px;
-      width: 100%;
-    }
-
-    &__category {
+    &--category {
       flex-direction: column;
       padding: 28px;
       width: fit-content;
