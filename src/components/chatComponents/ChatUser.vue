@@ -47,16 +47,16 @@ function onSearch() {
       </div>
     </div>
 
-    <div v-if="showSearch" class="chat-user__search">
-      <div class="chat-user__search-wrapper">
-        <img src="@/assets/icons/Search.svg" alt="Søg" class="chat-user__search-icon" />
+    <div v-if="showSearch" class="chat-user-wrapper__search">
+      <div class="chat-user-wrapper__search-wrapper">
+        <img src="@/assets/icons/Search.svg" alt="Søg" class="chat-user-wrapper__search-icon" />
         <input
           v-model="searchQuery"
           type="text"
           @input="onSearch"
           autofocus
         />
-        <button class="chat-user__search-clear" v-if="searchQuery" @click="searchQuery = ''; onSearch()">
+        <button class="chat-user-wrapper__search-clear" v-if="searchQuery" @click="searchQuery = ''; onSearch()">
           <img src="@/assets/icons/Cross.svg" alt="Ryd" />
         </button>
       </div>
@@ -77,8 +77,6 @@ function onSearch() {
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background-color: $color-primary-light;
-  width: 100%;
   height: 128px;
   box-sizing: border-box;
 
@@ -135,20 +133,15 @@ function onSearch() {
     padding: 6px;
     border-radius: 50%;
 
-    &:hover {
-      background-color: $color-primary-light;
-    }
-
-    &--active {
-      background-color: $color-primary-light;
-    }
-
     img {
       width: 22px;
       height: 22px;
     }
   }
 
+}
+
+.chat-user-wrapper {
   &__search {
     padding: 8px 16px 12px;
   }
