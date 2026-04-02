@@ -35,7 +35,7 @@ defineProps({
     justify-content: flex-end;
 
     .chat-message__bubble {
-      background-color: $color-cta;
+      background-color: $color-white;
       border-radius: 18px 18px 4px 18px;
     }
   }
@@ -44,7 +44,7 @@ defineProps({
     justify-content: flex-start;
 
     .chat-message__bubble {
-      background-color: $color-white;
+      background-color: $color-cta;
       border-radius: 18px 18px 18px 4px;
     }
   }

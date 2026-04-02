@@ -6,7 +6,7 @@ import ChatMessage from '@/components/chatComponents/ChatMessage.vue'
 
 const messages = ref([
   { id: 1, text: 'Hej! Hvordan går det', timestamp: '14:00', isSent: false },
-  { id: 2, text: 'Det går godt, hvad med', timestamp: '14:01', isSent: true },
+  { id: 2, text: 'Det går godt, hvad med jer', timestamp: '14:01', isSent: true },
   { id: 2, text: 'Dillerman', timestamp: '14:01', isSent: false },
 ])
 
@@ -21,7 +21,7 @@ watch(messages, async () => {
 
 <template>
   <div class="chat-view">
-    <ChatUser name="John Doe" avatar="https://randomuser.me/api/portraits/men/1.jpg" @call="() => console.log('Call')" />
+    <ChatUser name="Liv og Malthe" avatar="src\assets\images\LivogMalthe.jpg" @call="() => console.log('Call')" />
 
     <div class="chat-view__messages" ref="messagesContainer">
       <ChatMessage
@@ -46,7 +46,7 @@ watch(messages, async () => {
   &__messages {
     flex: 1;
     overflow-y: auto;
-    padding: 12px 0;
+    padding: 12px 0 72px;
     display: flex;
     flex-direction: column;
   }

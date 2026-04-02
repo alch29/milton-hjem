@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import ChatUserInfoPartial from '@/components/chatComponents/ChatUserInfoPartial.vue'
 
 defineProps({
   name: {
@@ -16,6 +17,7 @@ const emit = defineEmits(['call', 'search'])
 
 const showSearch = ref(false)
 const searchQuery = ref('')
+const showInfo = ref(false)
 
 function toggleSearch() {
   showSearch.value = !showSearch.value
@@ -25,17 +27,19 @@ function toggleSearch() {
 function onSearch() {
   emit('search', searchQuery.value)
 }
+
+
 </script>
 
 <template>
   <div class="chat-user-wrapper">
     <div class="chat-user">
-      <div class="chat-user__avatar">
+      <div class="chat-user__avatar" @click="showInfo = true">
         <img v-if="avatar" :src="avatar" :alt="name" />
         <img v-else src="@/assets/icons/User.svg" alt="Placeholder" class="chat-user__avatar--placeholder" />
       </div>
 
-      <span class="chat-user__name">{{ name }}</span>
+      <span class="chat-user__name" @click="showInfo = true">{{ name }}</span>
 
       <div class="chat-user__actions">
         <button class="chat-user__btn" @click="emit('call')">
@@ -62,6 +66,17 @@ function onSearch() {
       </div>
     </div>
   </div>
+
+  <ChatUserInfoPartial
+  v-if="showInfo"
+  :name="name"
+  :avatar="avatar"
+  phone="+45 12 34 56 78"
+  email="john@example.com"
+  address="Eksempelgade 1, 8000 Aarhus"
+  @close="showInfo = false"
+/>
+
 </template>
 
 <style lang="scss" scoped>
@@ -90,6 +105,7 @@ function onSearch() {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     img {
       width: 100%;
@@ -114,6 +130,7 @@ function onSearch() {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   &__actions {
