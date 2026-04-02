@@ -23,11 +23,11 @@
 .card-contact-info {
   border: solid 0.5px $color-text;
   background: $color-white;
-  color: $color-text;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  font-size: $h3-mobile-size;
 
   &__content {
     display: flex;

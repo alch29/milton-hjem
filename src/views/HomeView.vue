@@ -2,6 +2,7 @@
 import Card from '@/components/cardComponents/Card.vue';
 import CardContactInfo from '@/components/cardComponents/CardContactInfo.vue';
 import CardImageCategory from '@/components/cardComponents/CardImageCategory.vue';
+import CardNotifications from '@/components/cardComponents/CardNotifications.vue';
 
 </script>
 
@@ -26,4 +27,7 @@ import CardImageCategory from '@/components/cardComponents/CardImageCategory.vue
     <template #image><img src="@/assets/images/gulvvarme.jpg"></template>
     <template #image-count>2</template>
   </CardImageCategory>
+  <CardNotifications>
+    
+  </CardNotifications>
 </template>

@@ -27,11 +27,11 @@
 
 .card-image-category {
   border: solid 0.5px $color-text;
-  color: $color-text;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: $h3-mobile-size;
 
   &__content {
     padding: 20px;

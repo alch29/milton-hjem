@@ -20,12 +20,12 @@
 
   .card {
     border: solid 0.5px $color-text;
-    color: $color-text;
     padding: 16px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: $h3-mobile-size;
 
     &--category {
       flex-direction: column;
