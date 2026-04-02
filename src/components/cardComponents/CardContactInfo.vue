@@ -4,11 +4,11 @@
 <template>
   <div class="card-contact-info">
     <div class="card-contact-info__content">
-      <slot class="card-contact-info__image" name="image" />
-      <div>
-        <slot name="user-name" />
-        <slot name="user-role" />
+      <div class="card-contact-info__image">
+          <slot name="image" />
       </div>
+      <slot name="user-name" />
+      <slot name="user-role" />
     </div>
     <div class="card-contact-info__meta">
       <slot name="contact-info" />
@@ -27,14 +27,25 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 16px;
 
   &__content {
-    flex-direction: row;
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
   &__image {
-    border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+
+    :deep(img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }
-
 </style>

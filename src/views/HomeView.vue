@@ -15,7 +15,7 @@ import CardContactInfo from '@/components/cardComponents/CardContactInfo.vue';
     <template #meta>dato</template>
   </Card>
   <CardContactInfo>
-    <template #image><img src="@/assets/images/LivogMalte.jpg"></template>
+    <template #image><img src="@/assets/images/LivogMalthe.jpg"></template>
     <template #user-name>Navn og efternavn</template>
     <template #contact-info>Telefon nummer og adresse</template>
   </CardContactInfo>
