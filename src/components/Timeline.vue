@@ -1,3 +1,5 @@
+<!-- Aleks wants this -->
+
 <script setup>
 import { RouterLink } from 'vue-router'
 import Card from '@/components/cardComponents/Card.vue'

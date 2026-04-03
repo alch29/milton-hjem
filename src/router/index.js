@@ -26,8 +26,8 @@ const router = createRouter({
       component: () => import('../views/DocumentsView.vue'),
     },
     {
-      path: '/documents/overview',
-      name: 'document-overview',
+      path: '/documents/:category',
+      name: 'document-category',
       component: () => import('../views/DocumentOverviewView.vue'),
     },
     {
@@ -36,8 +36,8 @@ const router = createRouter({
       component: () => import('../views/ImagesView.vue'),
     },
     {
-      path: '/images/categories',
-      name: 'image-categories',
+      path: '/images/:category',
+      name: 'image-category',
       component: () => import('../views/ImageCategoriesView.vue'),
     },
     {

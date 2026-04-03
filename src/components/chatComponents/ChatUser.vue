@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import ChatUserInfoPartial from '@/components/chatComponents/ChatUserInfoPartial.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 defineProps({
   name: {
@@ -16,7 +17,6 @@ defineProps({
 const emit = defineEmits(['call', 'search'])
 
 const showSearch = ref(false)
-const searchQuery = ref('')
 const showInfo = ref(false)
 
 function toggleSearch() {
@@ -24,8 +24,8 @@ function toggleSearch() {
   if (!showSearch.value) searchQuery.value = ''
 }
 
-function onSearch() {
-  emit('search', searchQuery.value)
+function onSearch(query) {
+  emit('search', query)
 }
 
 
@@ -52,18 +52,7 @@ function onSearch() {
     </div>
 
     <div v-if="showSearch" class="chat-user-wrapper__search">
-      <div class="chat-user-wrapper__search-wrapper">
-        <img src="@/assets/icons/Search.svg" alt="Søg" class="chat-user-wrapper__search-icon" />
-        <input
-          v-model="searchQuery"
-          type="text"
-          @input="onSearch"
-          autofocus
-        />
-        <button class="chat-user-wrapper__search-clear" v-if="searchQuery" @click="searchQuery = ''; onSearch()">
-          <img src="@/assets/icons/Cross.svg" alt="Ryd" />
-        </button>
-      </div>
+      <SearchBar @search="onSearch" />
     </div>
   </div>
 
@@ -161,48 +150,6 @@ function onSearch() {
 .chat-user-wrapper {
   &__search {
     padding: 8px 16px 12px;
-  }
-
-  &__search-wrapper {
-    display: flex;
-    align-items: center;
-    background-color: $color-white;
-    border-radius: 20px;
-    padding: 0 12px;
-
-    input {
-      flex: 1;
-      padding: 10px 0;
-      border: none;
-      background: transparent;
-      font-family: $font-family-base;
-      font-size: $body-mobile-size;
-      line-height: $body-mobile-lh;
-      color: $color-text;
-      outline: none;
-    }
-  }
-
-  &__search-icon {
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    flex-shrink: 0;
-  }
-
-  &__search-clear {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-
-    img {
-      width: 16px;
-      height: 16px;
-    }
   }
 }
 </style>
