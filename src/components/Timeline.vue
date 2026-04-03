@@ -1,47 +1,31 @@
 <script setup>
-import { computed } from 'vue';
-import Card from '@/components/cardComponents/Card.vue';
+import { RouterLink } from 'vue-router'
+import Card from '@/components/cardComponents/Card.vue'
+import { useTimelineStore } from '@/stores/timeline'
 
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-
-const timeline = [
-  { id: 1, title: 'Opstart', date: new Date('2026-01-10'), type: 'default' },
-  { id: 2, title: 'Fundament støbt', date: new Date('2026-02-20'), type: 'default' },
-  { id: 3, title: 'Møde med arkitekt', date: new Date('2026-04-05'), type: 'meeting' },
-  { id: 4, title: 'Rejsegilde', date: new Date('2026-06-15'), type: 'default' },
-  { id: 4, title: 'Rejsegilde', date: new Date('2026-06-15'), type: 'default' },
-  { id: 5, title: 'Møde med entreprenør', date: new Date('2026-09-01'), type: 'meeting' },
-  { id: 6, title: 'Indflytning', date: new Date('2027-03-01'), type: 'completed' },
-]
-
-const formatDate = (date) =>
-  date.toLocaleDateString('da-DK', { day: 'numeric', month: 'short', year: 'numeric' });
-
-const nextIndex = computed(() =>
-  timeline.findIndex(item => item.date >= today)
-);
-
-const getVariant = (item, index) => {
-  if (item.type === 'completed') return 'card--completed'
-  if (index === nextIndex.value) return 'card--highlighted'
-  if (item.date < today) return 'card--greyed-out'
-  if (item.type === 'meeting') return 'card--meeting'
-  return ''
-};
+const store = useTimelineStore();
 </script>
 
 <template>
   <div class="timeline">
-    <div
-      v-for="(item, index) in timeline"
-      :key="item.id"
-      :class="['timeline__item', getVariant(item, index)]"
-    >
-      <Card :class="['card--standard', getVariant(item, index)]">
-        <template #content>{{ item.title }}</template>
-        <template #meta>{{ formatDate(item.date) }}</template>
-      </Card>
+    <div class="timeline__header">
+      <h3>Tidslinje for huset</h3>
+      <div class="timeline__icons">
+        <RouterLink class="timeline__icon"><img src="@/assets/icons/Calender.svg"></RouterLink>
+        <RouterLink class="timeline__icon"><img src="@/assets/icons/Timeline.svg"></RouterLink>
+      </div>
+    </div>
+    <div class="timeline__content">
+      <div
+        v-for="(item, index) in store.items"
+        :key="item.id"
+        :class="['timeline__item', store.getVariant(item, index)]"
+      >
+        <Card :class="['card--standard', store.getVariant(item, index)]">
+          <template #content>{{ item.title }}</template>
+          <template #meta>{{ store.formatDate(item.date) }}</template>
+        </Card>
+      </div>
     </div>
   </div>
 </template>
@@ -49,28 +33,43 @@ const getVariant = (item, index) => {
 <style lang="scss" scoped>
 @use '@/assets/scss/variables' as *;
 @use '@/assets/scss/typography' as *;
+  
 .timeline {
-  position: relative;
-  padding-left: 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 
-  // Den lodrette linje
-  &::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 24px;
-    bottom: 24px;
-    width: 1px;
-    background: $color-text;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__header h3 {
+    font-size: $h3-mobile-lh;
+  }
+
+  &__content {
+    position: relative;
+    padding-left: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 24px;
+      bottom: 24px;
+      width: 1px;
+      background: $color-text;
+    }
   }
 
   &__item {
     position: relative;
 
-    // Lille cirkel som standard
     &::before {
       content: '';
       position: absolute;
@@ -85,7 +84,6 @@ const getVariant = (item, index) => {
       z-index: 1;
     }
 
-    // Store cirkler på vigtige kort
     &.card--highlighted::before,
     &.card--meeting::before,
     &.card--completed::before {
@@ -93,6 +91,30 @@ const getVariant = (item, index) => {
       height: 14px;
       left: -30.5px;
       background: $color-background;
+    }
+
+    &.card--greyed-out::before {
+      border-color: $color-text-light;
+    }
+  }
+
+  &__icons {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__icon {
+    width: 34px;
+    height: 34px;
+    padding: 4px;
+    transition: ease 0.2s;
+
+    &:hover {
+      background-color: $color-primary;
+
+      img {
+        filter: brightness(0) invert(1);
+      }
     }
   }
 }
