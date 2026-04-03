@@ -6,5 +6,4 @@ import Calendar from '@/components/Calender.vue';
 
 <template>
   <Timeline></Timeline>
-  <Calendar></Calendar>
 </template>

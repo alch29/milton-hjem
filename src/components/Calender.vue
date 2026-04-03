@@ -61,7 +61,6 @@ const nextMonth = () => {
           :key="day"
           class="calendar__day-date"
           :class="[
-            { 'calendar__day-date--today': day === today.getDate() && currentMonth.value === today.getMonth() && currentYear.value === today.getFullYear() },
             getEventVariant(day)
           ]"
         >
@@ -80,6 +79,7 @@ const nextMonth = () => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  font-size: $h3-mobile-size;
 
   &__header {
     display: flex;
@@ -163,11 +163,21 @@ const nextMonth = () => {
     &.card--meeting::before { 
       background: $color-cta; 
     }
+
+    &.card--greyed-out,
+    &.card--greyed-out::before {
+      border-color: $color-text-light;
+      color: $color-text-light;
+    }
     
-    &.card--completed::before { 
-      border-color: $color-primary;
-      background: $color-primary;
+    &.card--completed {
       color: $color-white;
+
+      &::before { 
+        border-color: $color-primary;
+        background: $color-primary;
+        color: $color-white;
+      }
     }
   }
 }
