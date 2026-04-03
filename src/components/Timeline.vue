@@ -1,11 +1,13 @@
 <!-- Aleks wants this -->
 
 <script setup>
-import { RouterLink } from 'vue-router'
-import Card from '@/components/cardComponents/Card.vue'
-import { useTimelineStore } from '@/stores/timeline'
+import { ref } from 'vue';
+import Card from '@/components/cardComponents/Card.vue';
+import Calendar from '@/components/Calender.vue';
+import { useTimelineStore } from '@/stores/timeline';
 
 const store = useTimelineStore();
+const showCalendar = ref(false);
 </script>
 
 <template>
@@ -13,11 +15,18 @@ const store = useTimelineStore();
     <div class="timeline__header">
       <h3>Tidslinje for huset</h3>
       <div class="timeline__icons">
-        <RouterLink class="timeline__icon"><img src="@/assets/icons/Calender.svg"></RouterLink>
-        <RouterLink class="timeline__icon"><img src="@/assets/icons/Timeline.svg"></RouterLink>
+        <button class="timeline__icon" @click="showCalendar = true" :class="{ 'timeline__icon--active': showCalendar }">
+          <img src="@/assets/icons/Calender.svg">
+        </button>
+        <button class="timeline__icon" @click="showCalendar = false" :class="{ 'timeline__icon--active': !showCalendar }">
+          <img src="@/assets/icons/Timeline.svg">
+        </button>
       </div>
     </div>
-    <div class="timeline__content">
+
+    <Calendar v-if="showCalendar" />
+
+    <div v-else class="timeline__content">
       <div
         v-for="(item, index) in store.items"
         :key="item.id"
@@ -94,10 +103,6 @@ const store = useTimelineStore();
       left: -30.5px;
       background: $color-background;
     }
-
-    &.card--greyed-out::before {
-      border-color: $color-text-light;
-    }
   }
 
   &__icons {
@@ -109,9 +114,13 @@ const store = useTimelineStore();
     width: 34px;
     height: 34px;
     padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
     transition: ease 0.2s;
 
-    &:hover {
+    &:hover,
+    &--active {
       background-color: $color-primary;
 
       img {
