@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import Sort from '@/components/Sort.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 const documents = ref([
   { id: 1, name: 'Huslejekontrakt.pdf', uploadedAt: '2024-01-15' },
@@ -11,9 +12,11 @@ const documents = ref([
 ])
 
 const sortOrder = ref(null)
+const searchQuery = ref('')
 
 const sortedDocuments = computed(() => {
-  const docs = [...documents.value]
+  let docs = [...documents.value]
+  if (searchQuery.value) docs = docs.filter(doc => doc.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
   if (sortOrder.value === 'newest') return docs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))
   if (sortOrder.value === 'oldest') return docs.sort((a, b) => new Date(a.uploadedAt) - new Date(b.uploadedAt))
   if (sortOrder.value === 'alphabetical') return docs.sort((a, b) => a.name.localeCompare(b.name))
@@ -29,7 +32,8 @@ function handleSort(value) {
 <template>
   <div class="documents-overview-view">
     <Sort @sort="handleSort" />
-
+    <SearchBar @search="query => searchQuery = query" />
+      
     <ul class="documents-overview-view__list">
       <li
         v-for="doc in sortedDocuments"

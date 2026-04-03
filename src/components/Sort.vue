@@ -55,6 +55,8 @@ function select(option) {
 .sort {
   position: relative;
   width: 40%;
+  padding: 4px;
+  margin: 4px 0;
 
   &__trigger {
     display: flex;

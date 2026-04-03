@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import Sort from '@/components/Sort.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 const images = ref([
   { id: 1, name: 'Billede1.jpg', uploadedAt: '2024-01-15' },
@@ -11,9 +12,11 @@ const images = ref([
 ])
 
 const sortOrder = ref(null)
+const searchQuery = ref('')
 
 const sortedImages = computed(() => {
-  const imgs = [...images.value]
+  let imgs = [...images.value]
+  if (searchQuery.value) imgs = imgs.filter(img => img.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
   if (sortOrder.value === 'newest') return imgs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))
   if (sortOrder.value === 'oldest') return imgs.sort((a, b) => new Date(a.uploadedAt) - new Date(b.uploadedAt))
   if (sortOrder.value === 'alphabetical') return imgs.sort((a, b) => a.name.localeCompare(b.name))
@@ -25,7 +28,8 @@ const sortedImages = computed(() => {
 <template>
   <div class="images-categories-view">
     <Sort @sort="value => sortOrder = value" />
-
+    <SearchBar @search="query => searchQuery = query" />
+      
     <ul class="images-view__list">
       <li
         v-for="img in sortedImages"
