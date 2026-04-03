@@ -1,7 +1,7 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import Card from '@/components/cardComponents/Card.vue'
-import { useTimelineStore } from '@/stores/timeline'
+import { RouterLink } from 'vue-router';
+import Card from '@/components/cardComponents/Card.vue';
+import { useTimelineStore } from '@/stores/timeline';
 
 const store = useTimelineStore();
 </script>
