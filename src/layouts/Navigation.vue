@@ -61,10 +61,10 @@ const links = [
   }
 
   &__icon {
-    width: 22px;
-    height: 22px;
-    margin-bottom: 4px;
-    // make theb icons white by default, and change color when active
+    width: 28px;
+    height: 28px;
+    margin: 6px 0px;
+    // make theb icons white by default
     filter: brightness(0) invert(1);
   }
 
