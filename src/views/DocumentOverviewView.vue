@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import Sort from '@/components/Sort.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import Card from '@/components/cardComponents/Card.vue'
 
 const documents = ref([
   { id: 1, name: 'Huslejekontrakt.pdf', uploadedAt: '2024-01-15' },
@@ -34,19 +35,19 @@ function handleSort(value) {
     <Sort @sort="handleSort" />
     <SearchBar @search="query => searchQuery = query" />
       
-    <ul class="documents-overview-view__list">
-      <li
-        v-for="doc in sortedDocuments"
-        :key="doc.id"
-        class="documents-overview-view__item"
-      >
-        <img src="@/assets/icons/Document.svg" alt="Dokument" />
-        <div class="documents-overview-view__info">
+    <div class="documents-overview-view__list">
+      <Card v-for="doc in sortedDocuments" :key="doc.id">
+        <template #icon>
+          <img src="@/assets/icons/Document.svg" alt="Dokument" class="documents-overview-view__icon" />
+        </template>
+        <template #content>
           <span class="documents-overview-view__name">{{ doc.name }}</span>
+        </template>
+        <template #meta>
           <span class="documents-overview-view__date">{{ doc.uploadedAt }}</span>
-        </div>
-      </li>
-    </ul>
+        </template>
+      </Card>
+    </div>
   </div>
 </template>
 
@@ -55,6 +56,13 @@ function handleSort(value) {
 
 .documents-overview-view {
   padding: 16px;
+
+  :deep(.card__content) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
 
   &__list {
     list-style: none;
@@ -65,27 +73,10 @@ function handleSort(value) {
     gap: 12px;
   }
 
-  &__item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    background-color: $color-white;
-    border: 1px solid $color-primary-light;
-
-    img {
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-    }
-  }
-
-  &__info {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex: 1;
+  &__icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
   }
 
   &__name {
@@ -94,6 +85,7 @@ function handleSort(value) {
     line-height: $body-mobile-lh;
     font-weight: $font-weight-regular;
     color: $color-text;
+    align-self: center;
   }
 
   &__date {
