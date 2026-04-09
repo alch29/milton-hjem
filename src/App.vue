@@ -21,6 +21,7 @@ const route = useRoute()
   width: $mobile-width;
   min-height: 100vh;
   margin: 0 auto;
+  padding-bottom: $nav-height;
 
   @media (min-width: $breakpoint-desktop) {
     width: 1440px;
