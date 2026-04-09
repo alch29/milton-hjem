@@ -51,7 +51,6 @@ const categories = ['Gulv', 'Materialer', 'Elektricitet', 'Vægge', 'Udendørs',
   height: 100vh;
   width: $mobile-width;
   background: rgba(46, 46, 46, 0.6);
-  border-top: solid 0.5px $color-text;
   z-index: 100;
   margin: 0 auto;
 
