@@ -36,6 +36,7 @@ const links = [
   background-color: $color-primary;
   border-top: 1px solid $color-primary-light;
   box-sizing: border-box;
+  z-index: 10;
 
   @media (min-width: $breakpoint-desktop) {
     width: $breakpoint-desktop;
