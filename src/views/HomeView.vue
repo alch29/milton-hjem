@@ -7,4 +7,5 @@ import ProgressBar from '@/components/ProgressBar.vue';
 
 <template>
   <ProgressBar></ProgressBar>
+  <Timeline></Timeline>
 </template>
