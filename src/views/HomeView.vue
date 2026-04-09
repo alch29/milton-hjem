@@ -1,12 +1,11 @@
 <script setup>
 import Timeline from '@/components/Timeline.vue';
 import Button from '@/components/Button.vue';
+import ProgressBar from '@/components/ProgressBar.vue';
 
 </script>
 
 <template>
+  <ProgressBar></ProgressBar>
   <Timeline></Timeline>
-  <Button variant="cta-primary">Gå videre</Button>
-  <Button variant="cta-secondary">Køkken</Button>  
-  <Button variant="category">Køkken</Button>
 </template>
