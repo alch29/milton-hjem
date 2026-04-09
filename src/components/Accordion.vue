@@ -14,8 +14,6 @@ defineProps({
 
 const isOpen = ref(false)
 </script>
-
-<!-- Wait with this, as this is a client feature -->
 <template>
   <div class="accordion" :class="{ 'accordion--open': isOpen }" @click="isOpen = !isOpen">
     <div class="accordion__header">

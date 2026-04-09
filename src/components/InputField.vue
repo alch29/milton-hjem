@@ -45,7 +45,7 @@ defineEmits(['update:modelValue'])
   padding: 0 16px;
   margin: 4px 0;
   background-color: $color-white;
-  width: 75%;
+  width: 100%;
 
   &:focus-within {
     border-color: $color-primary;
