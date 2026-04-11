@@ -70,6 +70,11 @@ const router = createRouter({
       name: 'consultant-projects',
       component: () => import('../views/consultantViews/ConsultantProjectsView.vue'),
     },
+    {
+      path: '/timeline',
+      name: 'timeline',
+      component: () => import('../views/TimelineView.vue')
+    },
   ],
 });
 

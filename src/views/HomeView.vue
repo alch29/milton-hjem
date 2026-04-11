@@ -1,14 +1,53 @@
 <script setup>
-import Timeline from '@/components/Timeline.vue';
-import Button from '@/components/Button.vue';
+import TimelinePreview from '@/components/TimelinePreview.vue';
+import Card from '@/components/cardComponents/Card.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
-import UploadMeida from '@/components/UploadMedia.vue';
-import ImageCarousel from '@/components/ImageCarousel.vue';
 
 </script>
 
 <template>
-  <ProgressBar></ProgressBar>
-  <Timeline></Timeline>
-  <ImageCarousel></ImageCarousel>
+  <main class="home-view">
+    <RouterLink :to="{ name: 'consultant-projects' }" class="home-view__breadcrumb">
+      <img src="../assets/icons/Arrow.svg">PROJEKTER
+    </RouterLink>
+    <div class="home-view__meta">
+      <h1>Hej {{  }}!</h1>
+      <h3>{{  }}</h3>
+    </div>
+    <ProgressBar></ProgressBar>
+    <Card>
+      <template #content>
+        <h3 class="home-view__card-heading">Primær kontaktperson</h3>
+      </template>
+    </Card>
+    <TimelinePreview />
+  </main>
 </template>
+
+<style lang="scss" scoped>
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/typography' as *;
+
+.home-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+
+  &__card-heading {
+    font-size: $h3-mobile-lh;
+  }
+
+  &__breadcrumb {
+    text-decoration: none;
+    color: $color-text;
+    font-size: $bread-mobile-size;
+
+    & img {
+      width: 10px;
+      transform: scale(-1);
+      margin-right: 8px;
+    }
+  }
+}
+</style>

@@ -54,10 +54,10 @@ const showCalendar = ref(false);
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
 
-  &__header h3 {
-    font-size: $h3-mobile-lh;
+    & h3 {
+      font-size: $h3-mobile-lh;
+    }
   }
 
   &__content {
