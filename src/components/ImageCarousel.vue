@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import Button from './Button.vue';
 
 //kun til test
 const images = [
@@ -27,10 +28,11 @@ const next = () => {
           class="image-carousel__image"
           v-for="(image, index) in images"
           :key="index"
-          :style="{ '--bg-image': `url(${image})` }"
+          :style="{ '--background-image': `url(${image})` }"
           v-show="activeIndex === index"
         >
           <div class="image-carousel__close">
+            <img class="image-carousel__close" src="../assets/icons/Cross.svg">
           </div>
           <div class="image-carousel__nav">
             <div class="image-carousel__prev" @click="prev">
@@ -44,6 +46,13 @@ const next = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div class="image-carousel__meta">
+
+      </div>
+      <div class="image-carousel__buttons">
+        <Button variant="cta-secondary">Download<img src="../assets/icons/Download.svg"></Button>
+        <Button variant="cta-secondary">Vidersend til byggerådgiver<img class="image-carousel__buttons--sent" src="../assets/icons/Sent.svg"></Button>
       </div>
     </div>
   </div>
@@ -67,7 +76,6 @@ const next = () => {
 
   &__container {
     margin: 24px;
-    // padding: 24px;
     background: $color-primary-light;
     border-radius: 10px;
     display: flex;
@@ -75,24 +83,30 @@ const next = () => {
     gap: 24px;
   }
 
-  &__images {
-
-  }
-
   &__image {
     width: 100%;
     height: 300px;
-    background-image: var(--bg-image);
+    background-image: var(--background-image);
     background-size: cover;
     background-position: center;
     border-radius: 10px 10px 0 0;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__close {
+    cursor: pointer;
+    width: 24px;
+    align-self: flex-end;
   }
 
   &__nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    justify-self:center
   }
 
   &__prev {
@@ -104,6 +118,17 @@ const next = () => {
   &__next {
     width: 20px;
     cursor: pointer;
+  }
+
+  &__buttons {
+    padding: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    &--sent {
+      transform: rotate(90deg);
+    }
   }
 }
 </style>

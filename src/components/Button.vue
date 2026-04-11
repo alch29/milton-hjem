@@ -32,6 +32,9 @@ const isChosen = ref(false);
   cursor: pointer;
   width: fit-content;
   border-radius: 100px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
   
   &--cta-primary {
     background: $color-primary;
@@ -40,10 +43,18 @@ const isChosen = ref(false);
     color: $color-white;
     transition: ease 0.2s;
 
+    :deep(img) {
+      width: 16px;
+    }
+
     &:hover {
       border-color: $color-text;
       background: transparent;
       color: $color-text;
+
+      :deep(img) {
+        filter: brightness(0) invert(1);
+      }
     }
   }
 
@@ -51,11 +62,19 @@ const isChosen = ref(false);
     border: solid 1px $color-text;
     padding: 12px 36px;
     transition: ease 0.2s;
+    
+    :deep(img) {
+      width: 16px;
+    }
 
     &:hover {
       border-color: $color-primary;
       background: $color-primary;
       color: $color-white;
+
+      :deep(img) {
+        filter: brightness(0) invert(1);
+      }
     }
   }
 
@@ -71,5 +90,4 @@ const isChosen = ref(false);
     color: $color-white;
   }
 }
-
 </style>
