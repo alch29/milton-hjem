@@ -6,7 +6,7 @@
     <h3 class="card-notifications__title">Notifikationer</h3>
     <div class="card-notifications__notification">
       <p class="card-notifications__notification-title">title</p>
-      <p class="card-notifications__notification-content">content</p>
+      <p class="card-notifications__notification-content breadcrumbs">content</p>
     </div>
   </div>
 </template>
@@ -21,7 +21,6 @@
   padding: 20px;
 
   &__title {
-  font-size: $h3-mobile-lh; 
   border-bottom: solid 1px $color-text;
   padding-bottom: 10px;
   }
@@ -36,12 +35,7 @@
   }
 
   &__notification-title {
-    font-size: $body-mobile-size; 
     text-transform: uppercase; 
-  }
-
-  &__notification-content {
-    font-size: $bread-mobile-size;
   }
 }
 </style>

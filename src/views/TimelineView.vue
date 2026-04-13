@@ -4,7 +4,7 @@ import Timeline from '@/components/Timeline.vue';
 
 <template>
     <main class="timeline-view">
-        <RouterLink :to="{ name: 'home' }" class="timeline-view__breadcrumb">
+        <RouterLink :to="{ name: 'home' }" class="timeline-view__breadcrumb breadcrumbs">
             <img src="../assets/icons/Arrow.svg">FORSIDE
         </RouterLink>
         <Timeline />
@@ -24,7 +24,6 @@ import Timeline from '@/components/Timeline.vue';
   &__breadcrumb {
     text-decoration: none;
     color: $color-text;
-    font-size: $bread-mobile-size;
 
     & img {
       width: 10px;

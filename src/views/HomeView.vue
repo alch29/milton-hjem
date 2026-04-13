@@ -2,12 +2,11 @@
 import TimelinePreview from '@/components/TimelinePreview.vue';
 import Card from '@/components/cardComponents/Card.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
-
 </script>
 
 <template>
   <main class="home-view">
-    <RouterLink :to="{ name: 'consultant-projects' }" class="home-view__breadcrumb">
+    <RouterLink :to="{ name: 'consultant-projects' }" class="home-view__breadcrumb breadcrumbs">
       <img src="../assets/icons/Arrow.svg">PROJEKTER
     </RouterLink>
     <div class="home-view__meta">
@@ -17,7 +16,7 @@ import ProgressBar from '@/components/ProgressBar.vue';
     <ProgressBar></ProgressBar>
     <Card>
       <template #content>
-        <h3 class="home-view__card-heading">Primær kontaktperson</h3>
+        <h3>Primær kontaktperson</h3>
       </template>
     </Card>
     <TimelinePreview />
@@ -34,14 +33,9 @@ import ProgressBar from '@/components/ProgressBar.vue';
   gap: 24px;
   padding: 24px;
 
-  &__card-heading {
-    font-size: $h3-mobile-lh;
-  }
-
   &__breadcrumb {
     text-decoration: none;
     color: $color-text;
-    font-size: $bread-mobile-size;
 
     & img {
       width: 10px;

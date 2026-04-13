@@ -16,15 +16,15 @@ const categories = ['Gulv', 'Materialer', 'Elektricitet', 'Vægge', 'Udendørs',
         <p>Upload medie</p>
       </div>
       <div class="upload-media__input">
-        <p class="upload-media__text">Tilføj titel:</p>
+        <h3 class="upload-media__text">Tilføj titel:</h3>
         <InputField></InputField>
       </div>
       <div class="upload-media__input">
-        <p class="upload-media__text">Tilføj beskrivelse:</p>
+        <h3 class="upload-media__text">Tilføj beskrivelse:</h3>
         <InputField></InputField>
       </div>
       <div class="upload-media__categories">
-        <p class="upload-media__text">Tilføj kategori:</p>
+        <h3 class="upload-media__text">Tilføj kategori:</h3>
         <div class="upload-media__category-buttons">
           <div v-for="category in categories">
             <Button variant="category">{{ category }}</Button>
@@ -84,7 +84,6 @@ const categories = ['Gulv', 'Materialer', 'Elektricitet', 'Vægge', 'Udendørs',
   }
 
   &__text {
-    font-size: 16px;
     margin-bottom: 10px;
   }
 

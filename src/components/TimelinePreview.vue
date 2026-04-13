@@ -34,32 +34,32 @@ const store = useTimelineStore()
 @use '@/assets/scss/typography' as *;
 
 .timeline-preview {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
     &__content {
-        position: relative;
-        padding-left: 32px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
+      position: relative;
+      padding-left: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
 
-        &::before {
-        content: '';
+      &::before {
+      content: '';
         position: absolute;
         left: 8px;
         top: 24px;
         bottom: 24px;
         width: 1px;
         background: $color-text;
-        }
+      }
     }
 
     &__item {
-        position: relative;
+      position: relative;
 
-        &::before {
+      &::before {
         content: '';
         position: absolute;
         left: -27.5px;
@@ -71,36 +71,32 @@ const store = useTimelineStore()
         border: 1px solid $color-text;
         background: $color-background;
         z-index: 1;
-        }
+      }
 
-        &.card--highlighted::before,
-        &.card--meeting::before,
-        &.card--completed::before {
+      &.card--highlighted::before,
+      &.card--meeting::before,
+      &.card--completed::before {
         width: 14px;
         height: 14px;
         left: -30.5px;
         background: $color-background;
-        }
+      }
     }
 
     &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        & h3 {
-            font-size: $h3-mobile-lh;
-        }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     
     &__icon {
-        width: 34px;
-        height: 34px;
-        padding: 4px;
-        border: none;
-        background: none;
-        cursor: pointer;
-        transition: ease 0.2s;
+      width: 34px;
+      height: 34px;
+      padding: 4px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: ease 0.2s;
     }
 }
 </style>
