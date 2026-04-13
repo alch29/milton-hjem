@@ -93,7 +93,6 @@ const store = useTimelineStore()
         }
     }
     
-
     &__icon {
         width: 34px;
         height: 34px;
