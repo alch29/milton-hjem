@@ -1,38 +1,60 @@
 <script setup>
-import Button from '@/components/Button.vue';
-import InputField from './InputField.vue';
+import { ref } from 'vue'
+import Button from '@/components/Button.vue'
+import InputField from './InputField.vue'
+import { useDocumentStore } from '@/stores/document'
 
-const categories = ['Gulv', 'Materialer', 'Elektricitet', 'Vægge', 'Udendørs', 'Væg'];
+const documentStore = useDocumentStore()
+
+const categories = ['Gulv', 'Materialer', 'Elektricitet', 'Vægge', 'Udendørs', 'Væg']
+
+const selectedFile = ref(null)
+const selectedCategory = ref(null)
+const title = ref('')
+
+function onFileChange(event) {
+  selectedFile.value = event.target.files[0]
+}
+
+function selectCategory(category) {
+  selectedCategory.value = category
+}
+
+async function handleUpload() {
+  if (!selectedFile.value || !selectedCategory.value) return
+  await documentStore.uploadDocument(selectedFile.value, selectedCategory.value)
+}
 </script>
 
 <template>
   <div class="upload-media">
     <div class="upload-media__container">
-      <div class="upload-media__field">
+      <div class="upload-media__field" @click="$refs.fileInput.click()">
         <div class="upload-media__icons">
           <img src="../assets/icons/Photo.svg">
           <img src="../assets/icons/Document.svg">
         </div>
-        <p>Upload medie</p>
+        <p>{{ selectedFile ? selectedFile.name : 'Upload medie' }}</p>
+        <input ref="fileInput" type="file" style="display: none" @change="onFileChange" />
       </div>
       <div class="upload-media__input">
         <h3 class="upload-media__text">Tilføj titel:</h3>
-        <InputField></InputField>
-      </div>
-      <div class="upload-media__input">
-        <h3 class="upload-media__text">Tilføj beskrivelse:</h3>
-        <InputField></InputField>
+        <InputField v-model="title" icon="Document" placeholder="Titel" />
       </div>
       <div class="upload-media__categories">
         <h3 class="upload-media__text">Tilføj kategori:</h3>
         <div class="upload-media__category-buttons">
-          <div v-for="category in categories">
-            <Button variant="category">{{ category }}</Button>
+          <div v-for="category in categories" :key="category">
+            <Button
+              variant="category"
+              :class="{ 'active': selectedCategory === category }"
+              @click="selectCategory(category)"
+            >{{ category }}</Button>
           </div>
         </div>
       </div>
       <div class="upload-media__button">
-        <Button>Upload</Button>
+        <Button @click="handleUpload" :disabled="!selectedFile || !selectedCategory">Upload</Button>
       </div>
     </div>
   </div>

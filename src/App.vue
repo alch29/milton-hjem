@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router'
 import Header from '@/layouts/Header.vue'
 import Navigation from '@/layouts/Navigation.vue'
+import { seedFirestore } from '@/seeds/seedFirestore'
 
 const route = useRoute()
 </script>
