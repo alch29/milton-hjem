@@ -1,6 +1,25 @@
 <script setup>
+import { ref } from 'vue';
 import InputField from '@/components/InputField.vue';
 import Button from '@/components/Button.vue';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { useRouter } from 'vue-router';
+
+const email = ref('');
+const password = ref('');
+const errorMessage = ref('');
+const router = useRouter();
+
+async function login() {
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value);
+    router.push('/home');
+  } catch (error) {
+    errorMessage.value = 'Forkert email eller password';
+    console.error(error);
+  };
+};
 
 </script>
 
@@ -11,13 +30,13 @@ import Button from '@/components/Button.vue';
     </div>
     <h1>Log ind</h1>
     <p>Velkommen til MiltonHjem</p>
-    <InputField icon="User" placeholder="Brugernavn" v-model="username" />
+    <InputField icon="User" placeholder="Brugernavn" v-model="email" />
     <InputField icon="Access" placeholder="Adgangskode" type="password" v-model="password" />
     <div class="login-view__checkbox">
       <input type="checkbox" name="rememberMe">
       <label for="rememberMe">Husk mig</label>
     </div>
-    <Button>Log ind</Button>
+    <Button @click="login">Log ind</Button>
     <RouterLink class="login-view__link">Glemt adgangskode?</RouterLink>
     <div class="login-view__sign-up">
       <p>Ikke oprettet endnu?</p>

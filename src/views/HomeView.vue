@@ -2,6 +2,11 @@
 import TimelinePreview from '@/components/TimelinePreview.vue';
 import Card from '@/components/cardComponents/Card.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
+import { onMounted } from 'vue';
+import { useUserStore } from '../stores/user';
+
+const store = useUserStore();
+onMounted(() => store.fetchUser());
 </script>
 
 <template>
@@ -10,7 +15,7 @@ import ProgressBar from '@/components/ProgressBar.vue';
       <img src="../assets/icons/Arrow.svg">PROJEKTER
     </RouterLink>
     <div class="home-view__meta">
-      <h1>Hej {{  }}!</h1>
+      <h1>Hej {{ store.user?.firstName }}!</h1>
       <h3>{{  }}</h3>
     </div>
     <ProgressBar></ProgressBar>
