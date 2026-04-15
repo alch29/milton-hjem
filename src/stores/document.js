@@ -2,8 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { collection, getDocs, addDoc, deleteDoc, doc, query, where } from 'firebase/firestore'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
-// import { storage } from '@/config/firebase'
-import { db } from '@/config/firebase'
+import { db, storage } from '@/config/firebase'
 
 export const useDocumentStore = defineStore('documents', () => {
 
@@ -22,7 +21,7 @@ export const useDocumentStore = defineStore('documents', () => {
         title: file.name,
         uploadDate: new Date(),
         url: url,
-        category: category
+        category: category.toLowerCase()
       })
     } catch (error) {
       error.value = 'Kunne ikke uploade dokument'
@@ -37,7 +36,7 @@ export const useDocumentStore = defineStore('documents', () => {
       documents.value = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
     } catch (error) {
       error.value = 'Kunne ikke hente dokumenter'
-    }
+    } 
   }
 
   // Getters

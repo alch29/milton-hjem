@@ -1,27 +1,28 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import Sort from '@/components/Sort.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import Card from '@/components/cardComponents/Card.vue'
+import { useDocumentStore } from '@/stores/document'
 
-const documents = ref([
-  { id: 1, name: 'Huslejekontrakt.pdf', uploadedAt: '2024-01-15' },
-  { id: 2, name: 'Forsikringsdokument.pdf', uploadedAt: '2024-03-02' },
-  { id: 3, name: 'Vedligeholdelsesplan.docx', uploadedAt: '2023-11-20' },
-  { id: 4, name: 'Budgetrapport.xlsx', uploadedAt: '2024-05-10' },
-  { id: 5, name: 'Årsregnskab.pdf', uploadedAt: '2023-08-30' },
-])
+const route = useRoute()
+const documentStore = useDocumentStore()
 
 const sortOrder = ref(null)
 const searchQuery = ref('')
 
+onMounted(() => {
+  documentStore.fetchDocuments(route.params.category)
+})
+
 const sortedDocuments = computed(() => {
-  let docs = [...documents.value]
-  if (searchQuery.value) docs = docs.filter(doc => doc.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
-  if (sortOrder.value === 'newest') return docs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))
-  if (sortOrder.value === 'oldest') return docs.sort((a, b) => new Date(a.uploadedAt) - new Date(b.uploadedAt))
-  if (sortOrder.value === 'alphabetical') return docs.sort((a, b) => a.name.localeCompare(b.name))
-  if (sortOrder.value === 'alphabetical-reverse') return docs.sort((a, b) => b.name.localeCompare(a.name))
+  let docs = [...documentStore.documents]
+  if (searchQuery.value) docs = docs.filter(doc => doc.title.toLowerCase().includes(searchQuery.value.toLowerCase()))
+  if (sortOrder.value === 'newest') return docs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+  if (sortOrder.value === 'oldest') return docs.sort((a, b) => new Date(a.uploadDate) - new Date(b.uploadDate))
+  if (sortOrder.value === 'alphabetical') return docs.sort((a, b) => a.title.localeCompare(b.title))
+  if (sortOrder.value === 'alphabetical-reverse') return docs.sort((a, b) => b.title.localeCompare(a.title))
   return docs
 })
 
@@ -41,10 +42,10 @@ function handleSort(value) {
           <img src="@/assets/icons/Document.svg" alt="Dokument" class="documents-overview-view__icon" />
         </template>
         <template #content>
-          <span class="documents-overview-view__name">{{ doc.name }}</span>
+          <span class="documents-overview-view__name">{{ doc.title }}</span>
         </template>
         <template #meta>
-          <span class="documents-overview-view__date">{{ doc.uploadedAt }}</span>
+          <span class="documents-overview-view__date">{{ new Date(doc.uploadDate?.seconds * 1000).toLocaleDateString('da-DK') }}</span>
         </template>
       </Card>
     </div>
