@@ -1,24 +1,16 @@
 <script setup>
-import { ref } from 'vue';
-
 const props = defineProps({
   variant: {
     type: String,
     default: 'cta-primary'
   }
 });
-
-const isChosen = ref(false);
 </script>
 
 <template>
-  <div 
-    class="button" 
-    :class="[
-      `button--${variant}`,
-      { 'button--category-chosen': variant === 'category' && isChosen }
-    ]"
-    @click="variant === 'category' && (isChosen = !isChosen)"
+  <div
+    class="button"
+    :class="`button--${variant}`"
     >
     <slot />
   </div>

@@ -1,9 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Button from '@/components/Button.vue'
 import InputField from './InputField.vue'
 import { useDocumentStore } from '@/stores/document'
 import { useImageStore } from '@/stores/image'
+
+const props = defineProps({
+  type: {
+    type: String,
+    required: true
+  }
+})
+
+const emit = defineEmits(['close'])
 
 const documentStore = useDocumentStore()
 const imageStore = useImageStore()
@@ -11,7 +20,8 @@ const imageStore = useImageStore()
 const documentCategories = ['Kontrakter', 'Godkendelser', 'Plantegninger', 'Materialer', 'Fejl & Mangler', 'Andet']
 const imageCategories = ['Gulv', 'Tag', 'Elektricitet', 'Vægge', 'Udendørs', 'Materialer']
 
-const activeTab = ref('documents')
+const categories = computed(() => props.type === 'documents' ? documentCategories : imageCategories)
+
 const selectedFile = ref(null)
 const selectedCategory = ref(null)
 const title = ref('')
@@ -24,16 +34,9 @@ function selectCategory(category) {
   selectedCategory.value = category
 }
 
-function switchTab(tab) {
-  activeTab.value = tab
-  selectedFile.value = null
-  selectedCategory.value = null
-  title.value = ''
-}
-
 async function handleUpload() {
   if (!selectedFile.value || !selectedCategory.value) return
-  if (activeTab.value === 'documents') {
+  if (props.type === 'documents') {
     await documentStore.uploadDocument(selectedFile.value, selectedCategory.value)
   } else {
     await imageStore.uploadImage(selectedFile.value, selectedCategory.value)
@@ -41,27 +44,13 @@ async function handleUpload() {
   selectedFile.value = null
   selectedCategory.value = null
   title.value = ''
+  emit('close')
 }
-
-const categories = () => activeTab.value === 'documents' ? documentCategories : imageCategories
 </script>
 
 <template>
-  <div class="upload-media">
+  <div class="upload-media" @click.self="emit('close')">
     <div class="upload-media__container">
-      <div class="upload-media__tabs">
-        <button
-          class="upload-media__tab"
-          :class="{ 'upload-media__tab--active': activeTab === 'documents' }"
-          @click="switchTab('documents')"
-        >Dokumenter</button>
-        <button
-          class="upload-media__tab"
-          :class="{ 'upload-media__tab--active': activeTab === 'images' }"
-          @click="switchTab('images')"
-        >Billeder</button>
-      </div>
-
       <div class="upload-media__field" @click="$refs.fileInput.click()">
         <div class="upload-media__icons">
           <img src="../assets/icons/Photo.svg">
@@ -79,10 +68,10 @@ const categories = () => activeTab.value === 'documents' ? documentCategories : 
       <div class="upload-media__categories">
         <h3 class="upload-media__text">Tilføj kategori:</h3>
         <div class="upload-media__category-buttons">
-          <div v-for="category in categories()" :key="category">
+          <div v-for="category in categories" :key="category">
             <Button
               variant="category"
-              :class="{ 'active': selectedCategory === category }"
+              :class="{ 'button--category-chosen': selectedCategory === category }"
               @click="selectCategory(category)"
             >{{ category }}</Button>
           </div>
@@ -122,28 +111,6 @@ const categories = () => activeTab.value === 'documents' ? documentCategories : 
     gap: 24px;
   }
 
-  &__tabs {
-    display: flex;
-    gap: 8px;
-  }
-
-  &__tab {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid $color-text;
-    background: transparent;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: $font-family-base;
-    font-size: $body-mobile-size;
-    color: $color-text;
-
-    &--active {
-      background-color: $color-text;
-      color: $color-white;
-    }
-  }
-
   &__field {
     display: flex;
     flex-direction: column;
@@ -152,6 +119,7 @@ const categories = () => activeTab.value === 'documents' ? documentCategories : 
     border: dashed 1px $color-text;
     padding: 48px;
     gap: 24px;
+    cursor: pointer;
   }
 
   &__icons {
