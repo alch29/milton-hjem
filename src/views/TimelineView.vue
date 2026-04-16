@@ -1,11 +1,12 @@
 <script setup>
 import Timeline from '@/components/Timeline.vue';
+import Breadcrumb from '@/components/Breadcrumb.vue';
 </script>
 
 <template>
     <main class="timeline-view">
-        <RouterLink :to="{ name: 'home' }" class="timeline-view__breadcrumb breadcrumbs">
-            <img src="../assets/icons/Arrow.svg">FORSIDE
+        <RouterLink :to="{ name: 'home' }" class="timeline-view__breadcrumb">
+          <Breadcrumb variant="secondary">PROJEKTER</Breadcrumb>
         </RouterLink>
         <Timeline />
     </main>
