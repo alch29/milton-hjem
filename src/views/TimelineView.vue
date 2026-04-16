@@ -6,7 +6,7 @@ import Breadcrumb from '@/components/Breadcrumb.vue';
 <template>
     <main class="timeline-view">
         <RouterLink :to="{ name: 'home' }" class="timeline-view__breadcrumb">
-          <Breadcrumb variant="secondary">PROJEKTER</Breadcrumb>
+          <Breadcrumb>FORSIDE</Breadcrumb>
         </RouterLink>
         <Timeline />
     </main>

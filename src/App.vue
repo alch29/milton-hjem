@@ -8,9 +8,9 @@ const route = useRoute()
 
 <template>
   <div class="app">
-    <Header v-if="route.name !== 'login'" />
+    <Header v-if="route.name !== 'login' && route.name !== 'consultant-projects'" />
     <RouterView />
-    <Navigation v-if="route.name !== 'login'" />
+    <Navigation v-if="route.name !== 'login' && route.name !== 'consultant-projects'" />
   </div>
 </template>
 

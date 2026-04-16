@@ -1,25 +1,44 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { getAuth } from 'firebase/auth';
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref(null);
+  const currentUser = ref(null);
+  const selectedUser = ref(null);
+  const users = ref([]);
 
-    async function fetchUser() {
-        const auth = getAuth();
-        const uid = auth.currentUser?.uid;
-        if (!uid) return
-      
-        const snapshot = await getDoc(doc(db, 'users', uid));
-        if (snapshot.exists()) {
-          user.value = { id: snapshot.id, ...snapshot.data() }
-        };
-      };
+  async function fetchCurrentUser() {
+    const auth = getAuth();
+    const uid = auth.currentUser?.uid;
+    if (!uid) return
 
-    return { 
-        user, 
-        fetchUser,
+    const snapshot = await getDoc(doc(db, 'users', uid));
+    if (snapshot.exists()) {
+      currentUser.value = { id: snapshot.id, ...snapshot.data() }
     };
+  };
+
+  async function fetchSelectedUser(userId) {
+    const snapshot = await getDoc(doc(db, 'users', userId));
+    if (snapshot.exists()) {
+      selectedUser.value = { id: snapshot.id, ...snapshot.data() }
+    };
+  };
+
+  async function fetchAllClients() {
+    const q = query(collection(db, 'users'), where('isConsultant', '==', false));
+    const snapshot = await getDocs(q);
+    users.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  };
+
+  return {
+    currentUser,
+    selectedUser,
+    users,
+    fetchCurrentUser,
+    fetchSelectedUser,
+    fetchAllClients
+  }
 });
