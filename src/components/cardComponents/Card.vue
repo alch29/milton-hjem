@@ -1,15 +1,21 @@
 <script setup>
-  
+
 </script>
 
 <template>
   <div class="card">
-    <div class="card__content">
-      <slot name="icon" />
+    <div v-if="$slots.body" class="card__body">
+      <slot name="body" />
+    </div>
+    <div v-if="$slots.content" class="card__content">
+      <slot name="icon-left" />
       <slot name="content" />
     </div>
     <div class="card__meta">
       <slot name="meta" />
+    </div>
+    <div v-if="$slots['icon-right']">
+      <slot name="icon-right" />
     </div>
   </div>
 </template>
@@ -20,12 +26,22 @@
 
   .card {
     border: solid 0.5px $color-text;
-    padding: 16px;
+    padding: 20px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: $h3-mobile-size;
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    :deep(img) {
+      width: 20px;
+    }
 
     &--category {
       flex-direction: column;

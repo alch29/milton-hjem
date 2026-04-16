@@ -15,10 +15,18 @@ const showCalendar = ref(false);
     <div class="timeline__header">
       <h3>Tidslinje for huset</h3>
       <div class="timeline__icons">
-        <button class="timeline__icon" @click="showCalendar = true" :class="{ 'timeline__icon--active': showCalendar }">
+        <button 
+          class="timeline__icon" 
+          @click="showCalendar = true" 
+          :class="{ 'timeline__icon--active': showCalendar }"
+        >
           <img src="@/assets/icons/Calender.svg">
         </button>
-        <button class="timeline__icon" @click="showCalendar = false" :class="{ 'timeline__icon--active': !showCalendar }">
+        <button 
+          class="timeline__icon" 
+          @click="showCalendar = false" 
+          :class="{ 'timeline__icon--active': !showCalendar }"
+        >
           <img src="@/assets/icons/Timeline.svg">
         </button>
       </div>

@@ -7,22 +7,26 @@ import { onMounted } from 'vue';
 import { useUserStore } from '../stores/user';
 
 const store = useUserStore();
-onMounted(() => store.fetchUser());
+onMounted(() => store.fetchCurrentUser());
+onMounted(() => store.fetchSelectedUser());
 </script>
 
 <template>
   <main class="home-view">
     <RouterLink :to="{ name: 'consultant-projects' }" class="home-view__breadcrumb">
-      <Breadcrumb variant="secondary">PROJEKTER</Breadcrumb>
+      <Breadcrumb>PROJEKTER</Breadcrumb>
     </RouterLink>
     <div class="home-view__meta">
-      <h1>Hej {{ store.user?.firstName }}!</h1>
-      <h3>{{  }}</h3>
+      <h1>Hej {{ store.currentUser?.firstName }}!</h1>
+      <h3>{{ store.selectedUser?.address }}, {{ store.selectedUser?.postalCode }}</h3>
     </div>
     <ProgressBar></ProgressBar>
-    <Card>
-      <template #content>
+    <Card class="card--column">
+      <template #body>
         <h3>Primær kontaktperson</h3>
+        <p>{{ store.selectedUser?.firstName }} {{ store.selectedUser?.lastName }}</p>
+        <p>{{ store.selectedUser?.phoneNumber }}</p>
+        <p>{{ store.selectedUser?.email }}</p>
       </template>
     </Card>
     <TimelinePreview />
