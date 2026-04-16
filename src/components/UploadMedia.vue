@@ -37,9 +37,9 @@ function selectCategory(category) {
 async function handleUpload() {
   if (!selectedFile.value || !selectedCategory.value) return
   if (props.type === 'documents') {
-    await documentStore.uploadDocument(selectedFile.value, selectedCategory.value)
+    await documentStore.uploadDocument(selectedFile.value, selectedCategory.value, title.value.trim())
   } else {
-    await imageStore.uploadImage(selectedFile.value, selectedCategory.value)
+    await imageStore.uploadImage(selectedFile.value, selectedCategory.value, title.value.trim())
   }
   selectedFile.value = null
   selectedCategory.value = null

@@ -11,14 +11,14 @@ export const useImageStore = defineStore('images', () => {
   const error = ref(null)
 
   // Actions
-  async function uploadImage(file, category) {
+  async function uploadImage(file, category, title) {
     error.value = null
     try {
       const fileRef = storageRef(storage, `images/${category}/${file.name}`)
       await uploadBytes(fileRef, file)
       const url = await getDownloadURL(fileRef)
       await addDoc(collection(db, 'images'), {
-        title: file.name,
+        title: title || file.name,
         uploadDate: new Date(),
         url: url,
         category: category.toLowerCase()

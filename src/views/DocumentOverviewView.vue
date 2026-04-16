@@ -29,6 +29,10 @@ const sortedDocuments = computed(() => {
 function handleSort(value) {
   sortOrder.value = value
 }
+
+function openDocument(url) {
+  window.open(url, '_blank')
+}
 </script>
 
 <template>
@@ -37,7 +41,7 @@ function handleSort(value) {
     <SearchBar @search="query => searchQuery = query" />
       
     <div class="documents-overview-view__list">
-      <Card v-for="doc in sortedDocuments" :key="doc.id">
+      <Card v-for="doc in sortedDocuments" :key="doc.id" @click="openDocument(doc.url)">
         <template #icon>
           <img src="@/assets/icons/Document.svg" alt="Dokument" class="documents-overview-view__icon" />
         </template>
@@ -72,6 +76,10 @@ function handleSort(value) {
     display: flex;
     flex-direction: column;
     gap: 12px;
+
+    :deep(.card) {
+      cursor: pointer;
+    }
   }
 
   &__icon {
