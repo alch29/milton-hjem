@@ -7,8 +7,10 @@
       <div class="card-contact-info__image">
           <slot name="image" />
       </div>
-      <slot name="user-name" />
-      <slot name="user-role" />
+      <div>
+        <slot name="user-name" />
+        <slot name="user-role" />
+      </div>
     </div>
     <div class="card-contact-info__meta">
       <slot name="contact-info" />
@@ -33,6 +35,11 @@
     display: flex;
     align-items: center;
     gap: 16px;
+
+    :deep(p) {
+      font-size: $bread-mobile-size;
+      color: $color-text-light;
+    }
   }
 
   &__image {
