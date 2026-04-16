@@ -21,7 +21,7 @@ onMounted(() => store.fetchSelectedUser());
       <h3>{{ store.selectedUser?.address }}, {{ store.selectedUser?.postalCode }}</h3>
     </div>
     <ProgressBar></ProgressBar>
-    <Card class="card--column">
+    <Card>
       <template #body>
         <h3>Primær kontaktperson</h3>
         <p>{{ store.selectedUser?.firstName }} {{ store.selectedUser?.lastName }}</p>

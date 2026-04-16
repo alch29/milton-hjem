@@ -8,8 +8,8 @@
       <slot name="body" />
     </div>
     <div v-if="$slots.content" class="card__content">
-      <slot name="icon-left" />
-      <slot name="content" />
+        <slot name="icon-left" />
+        <slot name="content" />
     </div>
     <div class="card__meta">
       <slot name="meta" />
@@ -32,6 +32,12 @@
     justify-content: space-between;
     align-items: center;
     font-size: $h3-mobile-size;
+
+    &__content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     &__body {
       display: flex;

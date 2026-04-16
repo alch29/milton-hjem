@@ -75,8 +75,8 @@ const showCalendar = ref(false);
       content: '';
       position: absolute;
       left: 8px;
-      top: 24px;
-      bottom: 24px;
+      top: 30px;
+      bottom: 30px;
       width: 1px;
       background: $color-text;
     }
