@@ -49,6 +49,7 @@ body, p {
   font-size: $bread-mobile-size;
   line-height: $bread-mobile-lh;
   font-weight: $font-weight-regular;
+  text-transform: uppercase;
 
   @media (min-width: $breakpoint-desktop) {
     font-size: $bread-desktop-size;

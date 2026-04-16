@@ -23,10 +23,10 @@ onMounted(() => store.fetchSelectedUser());
     <ProgressBar></ProgressBar>
     <Card>
       <template #body>
-        <h3>Primær kontaktperson</h3>
-        <p>{{ store.selectedUser?.firstName }} {{ store.selectedUser?.lastName }}</p>
-        <p>{{ store.selectedUser?.phoneNumber }}</p>
-        <p>{{ store.selectedUser?.email }}</p>
+        <h2>Primær kontaktperson</h2>
+        <h3>{{ store.selectedUser?.firstName }} {{ store.selectedUser?.lastName }}</h3>
+        <h3>{{ store.selectedUser?.phoneNumber }}</h3>
+        <h3>{{ store.selectedUser?.email }}</h3>
       </template>
     </Card>
     <TimelinePreview />
