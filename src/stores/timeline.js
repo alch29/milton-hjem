@@ -51,5 +51,3 @@ export const useTimelineStore = defineStore('timeline', () => {
     getVariant,
   };
 });
-
-//Dette er testdata til tidslinjen
