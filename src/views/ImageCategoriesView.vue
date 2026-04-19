@@ -34,7 +34,7 @@ const sortedImages = computed(() => {
       
     <div class="images-categories-view__list">
       <Card v-for="img in sortedImages" :key="img.id">
-        <template #icon>
+        <template #icon-left>
           <img src="@/assets/icons/Photo.svg" alt="Billede" class="images-categories-view__icon" />
         </template>
         <template #content>
@@ -60,6 +60,13 @@ const sortedImages = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 12px;
+
+    :deep(.card__content) {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+    }
   }
 
   &__icon {

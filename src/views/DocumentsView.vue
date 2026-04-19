@@ -28,7 +28,7 @@ function goToCategory(category) {
         class="documents-view__card"
         @click="goToCategory(cat.value)"
       >
-        <template #icon>
+        <template #icon-left>
           <img src="@/assets/icons/Folder.svg" alt="" class="documents-view__icon" />
         </template>
         <template #content>
@@ -58,7 +58,11 @@ function goToCategory(category) {
     &:hover {
       background-color: $color-background;
     }
-    
+
+    :deep(img) {
+      width: 80px;
+      height: 80px;
+    }
   }
 
   :deep(.card) {

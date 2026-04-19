@@ -42,7 +42,7 @@ function openDocument(url) {
       
     <div class="documents-overview-view__list">
       <Card v-for="doc in sortedDocuments" :key="doc.id" @click="openDocument(doc.url)">
-        <template #icon>
+        <template #icon-left>
           <img src="@/assets/icons/Document.svg" alt="Dokument" class="documents-overview-view__icon" />
         </template>
         <template #content>

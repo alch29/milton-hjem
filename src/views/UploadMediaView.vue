@@ -11,7 +11,7 @@ const activeType = ref(null)
     <h1 class="upload-media-view__title">Upload medie</h1>
     <div class="upload-media-view__grid">
       <Card class="upload-media-view__card" @click="activeType = 'images'">
-        <template #icon>
+        <template #icon-left>
           <img src="@/assets/icons/Photo.svg" alt="" class="upload-media-view__icon" />
         </template>
         <template #content>
@@ -19,7 +19,7 @@ const activeType = ref(null)
         </template>
       </Card>      
       <Card class="upload-media-view__card" @click="activeType = 'documents'">
-        <template #icon>
+        <template #icon-left>
           <img src="@/assets/icons/Document.svg" alt="" class="upload-media-view__icon" />
         </template>
         <template #content>
