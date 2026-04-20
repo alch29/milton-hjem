@@ -1,9 +1,16 @@
 <script setup>
-import { useRoute } from 'vue-router'
-import Header from '@/layouts/Header.vue'
-import Navigation from '@/layouts/Navigation.vue'
+import { useRoute } from 'vue-router';
+import Header from '@/layouts/Header.vue';
+import Navigation from '@/layouts/Navigation.vue';
+import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/user';
 
-const route = useRoute()
+const route = useRoute();
+const store = useUserStore();
+onMounted(async () => {
+  await store.fetchCurrentUser();
+  await store.fetchConsultant();
+});
 </script>
 
 <template>

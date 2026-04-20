@@ -5,16 +5,24 @@ import Button from '@/components/Button.vue';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/user';
 
 const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
 const router = useRouter();
+const store = useUserStore();
 
 async function login() {
   try {
     await signInWithEmailAndPassword(auth, email.value, password.value);
-    router.push('/home');
+    await store.fetchCurrentUser();
+
+    if (store.currentUser?.isConsultant) {
+      router.push({ name: 'consultant-projects' });
+    } else {
+      router.push({ name: 'home' });
+    };
   } catch (error) {
     errorMessage.value = 'Forkert email eller password';
     console.error(error);

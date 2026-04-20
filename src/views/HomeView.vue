@@ -7,25 +7,27 @@ import { onMounted } from 'vue';
 import { useUserStore } from '../stores/user';
 
 const store = useUserStore();
-onMounted(() => store.fetchCurrentUser());
-onMounted(() => store.fetchSelectedUser());
+onMounted(async () => {
+  await store.fetchCurrentUser()
+  await store.fetchConsultant()
+});
 </script>
 
 <template>
   <main class="home-view">
-    <RouterLink :to="{ name: 'consultant-projects' }" class="home-view__breadcrumb">
+    <RouterLink 
+      :to="{ name: 'consultant-projects' }" 
+      v-if="store.currentUser?.isConsultant"
+      class="home-view__breadcrumb"
+    >
       <Breadcrumb>PROJEKTER</Breadcrumb>
     </RouterLink>
     <div class="home-view__meta">
       <h1>Hej {{ store.currentUser?.firstName }}!</h1>
-      <h3
-        v-if="store.currentUser?.isConsultant"
-      >
+      <h3 v-if="store.currentUser?.isConsultant">
         {{ store.selectedUser?.address }}, {{ store.selectedUser?.postalCode }}
       </h3>
-      <h3
-        v-if="!store.currentUser?.isConsultant"
-      >
+      <h3 v-if="!store.currentUser?.isConsultant">
         {{ store.currentUser?.address }}, {{ store.currentUser?.postalCode }}
       </h3>
     </div>
@@ -33,9 +35,24 @@ onMounted(() => store.fetchSelectedUser());
     <Card>
       <template #body>
         <h2>Primær kontaktperson</h2>
-        <h3>{{ store.selectedUser?.firstName }} {{ store.selectedUser?.lastName }}</h3>
-        <h3>{{ store.selectedUser?.phoneNumber }}</h3>
-        <h3>{{ store.selectedUser?.email }}</h3>
+        <h3 v-if="store.currentUser?.isConsultant">
+          {{ store.selectedUser?.firstName }} {{ store.selectedUser?.lastName }}
+        </h3>
+        <h3 v-if="store.currentUser?.isConsultant">
+          {{ store.selectedUser?.phoneNumber }}
+        </h3>
+        <h3 v-if="store.currentUser?.isConsultant">
+          {{ store.selectedUser?.email }}
+        </h3>
+        <h3 v-if="!store.currentUser?.isConsultant">
+          {{ store.consultant?.firstName }} {{ store.consultant?.lastName }} – Byggerådgiver
+        </h3>
+        <h3 v-if="!store.currentUser?.isConsultant">
+          {{ store.consultant?.phoneNumber }}
+        </h3>
+        <h3 v-if="!store.currentUser?.isConsultant">
+          {{ store.consultant?.email }}
+        </h3>
       </template>
     </Card>
     <TimelinePreview />
@@ -54,6 +71,12 @@ onMounted(() => store.fetchSelectedUser());
 
   &__breadcrumb {
     text-decoration: none;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 }
 </style>

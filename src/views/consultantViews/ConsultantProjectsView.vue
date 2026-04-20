@@ -6,7 +6,7 @@ import SearchBar from '@/components/SearchBar.vue';
 
 const store = useUserStore();
 onMounted(() => store.fetchAllClients());
-onMounted(() => store.fetchSelectedUser());
+
 </script>
 
 <template>

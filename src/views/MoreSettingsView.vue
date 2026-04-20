@@ -2,11 +2,9 @@
 import CardContactInfo from '@/components/cardComponents/CardContactInfo.vue';
 import Breadcrumb from '@/components/Breadcrumb.vue';
 import Card from '@/components/cardComponents/Card.vue';
-import { onMounted } from 'vue';
 import { useUserStore } from '../stores/user';
 
 const store = useUserStore();
-onMounted(() => store.fetchCurrentUser());
 </script>
 
 <template>

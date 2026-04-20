@@ -1,11 +1,9 @@
 <script setup>
 import Breadcrumb from '@/components/Breadcrumb.vue';
 import CardContactInfo from '@/components/cardComponents/CardContactInfo.vue';
-import { onMounted } from 'vue';
 import { useUserStore } from '../stores/user';
 
 const store = useUserStore();
-onMounted(() => store.fetchSelectedUser());
 </script>
 
 <template>
@@ -14,7 +12,7 @@ onMounted(() => store.fetchSelectedUser());
       <Breadcrumb>Mere</Breadcrumb>
     </RouterLink>
     <h1>Kontakt</h1>
-    <CardContactInfo>
+    <CardContactInfo v-if="store.currentUser?.isConsultant">
       <template #image>
         <img src="../assets/images/LivogMalthe.jpg">
       </template>
@@ -26,6 +24,21 @@ onMounted(() => store.fetchSelectedUser());
         <p>{{ store.selectedUser?.email }}</p>
         <p>{{ store.selectedUser?.address }}</p>
         <p>{{ store.selectedUser?.postalCode }}</p>
+      </template>
+    </CardContactInfo>
+    <CardContactInfo v-if="!store.currentUser?.isConsultant">
+      <template #image>
+        <img src="../assets/images/LivogMalthe.jpg">
+      </template>
+      <template #user-name>
+        <h3>{{ store.consultant?.firstName }} {{ store.consultant?.lastName }}</h3>
+      </template>
+      <template #user-role>
+        <p>Byggerådgiver</p>
+      </template>
+      <template #contact-info>
+        <p>{{ store.consultant?.phoneNumber }}</p>
+        <p>{{ store.consultant?.email }}</p>
       </template>
     </CardContactInfo>
     <CardContactInfo>

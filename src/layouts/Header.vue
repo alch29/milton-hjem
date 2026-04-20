@@ -5,7 +5,6 @@ import { onMounted } from 'vue';
 
 const route = useRoute();
 const store = useUserStore();
-onMounted(() => store.fetchCurrentUser());
 </script>
 
 <template>
