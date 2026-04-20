@@ -18,7 +18,16 @@ onMounted(() => store.fetchSelectedUser());
     </RouterLink>
     <div class="home-view__meta">
       <h1>Hej {{ store.currentUser?.firstName }}!</h1>
-      <h3>{{ store.selectedUser?.address }}, {{ store.selectedUser?.postalCode }}</h3>
+      <h3
+        v-if="store.currentUser?.isConsultant"
+      >
+        {{ store.selectedUser?.address }}, {{ store.selectedUser?.postalCode }}
+      </h3>
+      <h3
+        v-if="!store.currentUser?.isConsultant"
+      >
+        {{ store.currentUser?.address }}, {{ store.currentUser?.postalCode }}
+      </h3>
     </div>
     <ProgressBar></ProgressBar>
     <Card>
