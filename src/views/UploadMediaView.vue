@@ -66,11 +66,11 @@ const activeType = ref(null)
       justify-content: center;
       gap: 10px;
     }
-  }
 
-  &__icon {
-    width: 80px;
-    height: 80px;
+    :deep(img) {
+      width: 80px;
+      height: 80px;
+    }
   }
 
   &__label {

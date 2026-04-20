@@ -3,7 +3,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Sort from '@/components/Sort.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import Card from '@/components/cardComponents/Card.vue'
+import CardImageCategory from '@/components/cardComponents/CardImageCategory.vue'
+import ImageCarousel from '@/components/ImageCarousel.vue'
 import { useImageStore } from '@/stores/image'
 
 const route = useRoute()
@@ -11,6 +12,9 @@ const imageStore = useImageStore()
 
 const sortOrder = ref(null)
 const searchQuery = ref('')
+const carouselStartIndex = ref(0)
+const showCarousel = ref(false)
+const activeBatch = ref([])
 
 onMounted(() => {
   imageStore.fetchImages(route.params.category)
@@ -25,27 +29,57 @@ const sortedImages = computed(() => {
   if (sortOrder.value === 'alphabetical-reverse') return imgs.sort((a, b) => b.title.localeCompare(a.title))
   return imgs
 })
+
+const batches = computed(() => {
+  const groups = {}
+  for (const img of sortedImages.value) {
+    const key = img.batchId || 'legacy'
+    if (!groups[key]) groups[key] = []
+    groups[key].push(img)
+  }
+  return Object.values(groups)
+})
+
+function openCarousel(batch) {
+  activeBatch.value = batch
+  carouselStartIndex.value = 0
+  showCarousel.value = true
+}
 </script>
 
 <template>
   <div class="images-categories-view">
     <Sort @sort="value => sortOrder = value" />
     <SearchBar @search="query => searchQuery = query" />
-      
+
     <div class="images-categories-view__list">
-      <Card v-for="img in sortedImages" :key="img.id">
-        <template #icon-left>
-          <img src="@/assets/icons/Photo.svg" alt="Billede" class="images-categories-view__icon" />
-        </template>
-        <template #content>
-          <span class="images-categories-view__name">{{ img.title }}</span>
+      <CardImageCategory
+        v-for="(batch, i) in batches"
+        :key="i"
+        class="images-categories-view__card"
+        @click="openCarousel(batch)"
+      >
+        <template #title>
+          <span class="images-categories-view__name">{{ batch[0].title }}</span>
         </template>
         <template #meta>
-          <span class="images-categories-view__date">{{ new Date(img.uploadDate?.seconds * 1000).toLocaleDateString('da-DK') }}</span>
+          <span class="images-categories-view__date">{{ new Date(batch[0].uploadDate?.seconds * 1000).toLocaleDateString('da-DK') }}</span>
         </template>
-      </Card>
+        <template #image-count>
+          <span>{{ batch.length }}</span>
+        </template>
+        <template #image>
+          <img :src="batch[0].url" :alt="batch[0].title" />
+        </template>
+      </CardImageCategory>
     </div>
 
+    <ImageCarousel
+      v-if="showCarousel"
+      :images="activeBatch"
+      :startIndex="carouselStartIndex"
+      @close="showCarousel = false"
+    />
   </div>
 </template>
 
@@ -60,19 +94,10 @@ const sortedImages = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 12px;
-
-    :deep(.card__content) {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 12px;
-    }
   }
 
-  &__icon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
+  &__card {
+    cursor: pointer;
   }
 
   &__name {

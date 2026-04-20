@@ -2,21 +2,27 @@
 import { ref } from 'vue';
 import Button from './Button.vue';
 
-//kun til test
-const images = [
-  new URL('../assets/images/Fodlister1.jpg', import.meta.url).href,
-  new URL('../assets/images/Fodlister2.jpg', import.meta.url).href,
-  new URL('../assets/images/Fodlister3.jpg', import.meta.url).href
-]
+const props = defineProps({
+  images: {
+    type: Array,
+    required: true
+  },
+  startIndex: {
+    type: Number,
+    default: 0
+  }
+})
 
-const activeIndex = ref(0);
+const emit = defineEmits(['close'])
+
+const activeIndex = ref(props.startIndex);
 
 const prev = () => {
   if (activeIndex.value > 0) activeIndex.value--
 }
 
 const next = () => {
-  if (activeIndex.value < images.length - 1) activeIndex.value++
+  if (activeIndex.value < props.images.length - 1) activeIndex.value++
 }
 </script>
 
@@ -28,11 +34,11 @@ const next = () => {
           class="image-carousel__image"
           v-for="(image, index) in images"
           :key="index"
-          :style="{ '--background-image': `url(${image})` }"
+          :style="{ '--background-image': `url(${image.url})` }"
           v-show="activeIndex === index"
         >
-          <div class="image-carousel__close">
-            <img class="image-carousel__close" src="../assets/icons/Cross.svg">
+          <div class="image-carousel__close" @click="emit('close')">
+            <img src="../assets/icons/Cross.svg">
           </div>
           <div class="image-carousel__nav">
             <div class="image-carousel__prev" @click="prev">
@@ -40,6 +46,7 @@ const next = () => {
             </div>
             <div class="image-carousel__index">
               <p>{{ activeIndex + 1 }}/{{ images.length }}</p>
+
             </div>
             <div class="image-carousel__next" @click="next">
               <img src="../assets/icons/Arrow.svg">
@@ -48,7 +55,8 @@ const next = () => {
         </div>
       </div>
       <div class="image-carousel__meta">
-
+        <span class="image-carousel__title">{{ images[activeIndex].title }}</span>
+        <span class="image-carousel__date">{{ new Date(images[activeIndex].uploadDate?.seconds * 1000).toLocaleDateString('da-DK') }}</span>
       </div>
       <div class="image-carousel__buttons">
         <Button variant="cta-secondary">Download<img src="../assets/icons/Download.svg"></Button>
@@ -73,6 +81,8 @@ const next = () => {
   background: rgba(46, 46, 46, 0.6);
   z-index: 100;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
 
   &__container {
     margin: 24px;
@@ -120,8 +130,32 @@ const next = () => {
     cursor: pointer;
   }
 
+  &__meta {
+    padding: 0 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-family: $font-family-base;
+    font-size: $h3-mobile-size;
+    line-height: $h3-mobile-lh;
+    font-weight: $font-weight-regular;
+    color: $color-text;
+  }
+
+  &__date {
+    font-family: $font-family-base;
+    font-size: $body-mobile-size;
+    line-height: $body-mobile-lh;
+    font-weight: $font-weight-regular;
+    color: $color-text;
+  }
+
   &__buttons {
-    padding: 24px;
+    padding: 0px 24px 24px 24px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;

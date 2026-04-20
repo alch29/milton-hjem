@@ -22,12 +22,12 @@ const imageCategories = ['Gulv', 'Tag', 'Elektricitet', 'Vægge', 'Udendørs', '
 
 const categories = computed(() => props.type === 'documents' ? documentCategories : imageCategories)
 
-const selectedFile = ref(null)
+const selectedFiles = ref([])
 const selectedCategory = ref(null)
 const title = ref('')
 
 function onFileChange(event) {
-  selectedFile.value = event.target.files[0]
+  selectedFiles.value = Array.from(event.target.files)
 }
 
 function selectCategory(category) {
@@ -35,13 +35,16 @@ function selectCategory(category) {
 }
 
 async function handleUpload() {
-  if (!selectedFile.value || !selectedCategory.value) return
-  if (props.type === 'documents') {
-    await documentStore.uploadDocument(selectedFile.value, selectedCategory.value, title.value.trim())
-  } else {
-    await imageStore.uploadImage(selectedFile.value, selectedCategory.value, title.value.trim())
+  if (!selectedFiles.value.length || !selectedCategory.value) return
+  const batchId = Date.now().toString()
+  for (const file of selectedFiles.value) {
+    if (props.type === 'documents') {
+      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim())
+    } else {
+      await imageStore.uploadImage(file, selectedCategory.value, title.value.trim(), batchId)
+    }
   }
-  selectedFile.value = null
+  selectedFiles.value = []
   selectedCategory.value = null
   title.value = ''
   emit('close')
@@ -56,8 +59,8 @@ async function handleUpload() {
           <img src="../assets/icons/Photo.svg">
           <img src="../assets/icons/Document.svg">
         </div>
-        <p>{{ selectedFile ? selectedFile.name : 'Upload medie' }}</p>
-        <input ref="fileInput" type="file" style="display: none" @change="onFileChange" />
+        <p>{{ selectedFiles.length ? `${selectedFiles.length} fil(er) valgt` : 'Upload medie' }}</p>
+        <input ref="fileInput" type="file" multiple style="display: none" @change="onFileChange" />
       </div>
 
       <div class="upload-media__input">
@@ -79,7 +82,7 @@ async function handleUpload() {
       </div>
 
       <div class="upload-media__button">
-        <Button @click="handleUpload" :disabled="!selectedFile || !selectedCategory">Upload</Button>
+        <Button @click="handleUpload" :disabled="!selectedFiles.length || !selectedCategory">Upload</Button>
       </div>
     </div>
   </div>
