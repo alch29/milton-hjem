@@ -1,9 +1,11 @@
 <script setup>
-import Card from '@/components/cardComponents/Card.vue'
-import { RouterLink } from 'vue-router'
-import { useTimelineStore } from '@/stores/timeline'
+import Card from '@/components/cardComponents/Card.vue';
+import { RouterLink } from 'vue-router';
+import { useTimelineStore } from '@/stores/timeline';
+import { onMounted } from 'vue';
 
-const store = useTimelineStore()
+const store = useTimelineStore();
+onMounted(() => store.fetchTimeline());
 </script>
 
 <template>

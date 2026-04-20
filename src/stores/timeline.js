@@ -1,20 +1,35 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/config/firebase';
+import { useUserStore } from './user';
 
 export const useTimelineStore = defineStore('timeline', () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const items = ref([
-    { id: 1, title: 'Opstart', date: new Date('2026-01-10'), type: 'default' },
-    { id: 2, title: 'Fundament støbt', date: new Date('2026-02-20'), type: 'default' },
-    { id: 3, title: 'Møde med arkitekt', date: new Date('2026-04-05'), type: 'meeting' },
-    { id: 4, title: 'De indvendige vægge', date: new Date('2026-04-11'), type: 'default' },
-    { id: 5, title: 'Rejsegilde', date: new Date('2026-06-15'), type: 'default' },
-    { id: 6, title: 'Energimærket', date: new Date('2026-08-17'), type: 'default' },
-    { id: 7, title: 'Møde med entreprenør', date: new Date('2026-09-01'), type: 'meeting' },
-    { id: 8, title: 'Indflytning', date: new Date('2027-03-01'), type: 'completed' },
-  ]);
+  const items = ref([]);
+
+  async function fetchTimeline() {
+    const userStore = useUserStore();
+    const clientId = userStore.selectedUser?.id ?? userStore.currentUser?.id;
+    if (!clientId) return;
+
+    const q = query(collection(db, 'timelines'), where('clientId', '==', clientId));
+    const timelineSnapshot = await getDocs(q);
+    if (timelineSnapshot.empty) return;
+
+    const timelineDoc = timelineSnapshot.docs[0];
+    const eventsSnapshot = await getDocs(collection(db, 'timelines', timelineDoc.id, 'events'));
+    
+    items.value = eventsSnapshot.docs
+      .map(document => ({
+        id: document.id,
+        ...document.data(),
+        date: document.data().date.toDate()
+      }))
+      .sort((a, b) => a.date - b.date);
+  };
 
   const nextIndex = computed(() =>
     items.value.findIndex(item => item.date >= today)
@@ -29,18 +44,18 @@ export const useTimelineStore = defineStore('timeline', () => {
     if (next > 0) result.push(items.value[next + 1]);
     if (last && last !== items.value[next]) result.push(last);
   
-    return result
+    return result;
   });
 
   const formatDate = (date) =>
     date.toLocaleDateString('da-DK', { day: 'numeric', month: 'short', year: 'numeric' });
 
   const getVariant = (item, index) => {
-    if (item.type === 'completed') return 'card--completed'
-    if (index === nextIndex.value) return 'card--highlighted'
-    if (item.date < today) return 'card--greyed-out'
-    if (item.type === 'meeting') return 'card--meeting'
-    return 'card--default'
+    if (item.type === 'completed') return 'card--completed';
+    if (index === nextIndex.value) return 'card--highlighted';
+    if (item.date < today) return 'card--greyed-out';
+    if (item.type === 'meeting') return 'card--meeting';
+    return 'card--default';
   };
 
   return { 
@@ -49,5 +64,6 @@ export const useTimelineStore = defineStore('timeline', () => {
     previewItems,
     formatDate, 
     getVariant,
+    fetchTimeline
   };
 });

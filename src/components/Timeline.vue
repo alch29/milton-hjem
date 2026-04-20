@@ -1,13 +1,16 @@
-<!-- Aleks wants this -->
-
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Card from '@/components/cardComponents/Card.vue';
 import Calendar from '@/components/Calender.vue';
+import EditTimeline from '@/components/EditTimeline.vue';
 import { useTimelineStore } from '@/stores/timeline';
+import { useUserStore } from '@/stores/user';
 
+const userStore = useUserStore();
 const store = useTimelineStore();
-const showCalendar = ref(false);
+onMounted(() => store.fetchTimeline());
+
+const activeView = ref('timeline');
 </script>
 
 <template>
@@ -15,24 +18,33 @@ const showCalendar = ref(false);
     <div class="timeline__header">
       <h3>Tidslinje for huset</h3>
       <div class="timeline__icons">
+        <button
+          class="timeline__icon"
+          @click="activeView = 'edit'"
+          :class="{ 'timeline__icon--active': activeView === 'edit' }"
+        >
+          <img src="@/assets/icons/Edit.svg">
+        </button>
         <button 
           class="timeline__icon" 
-          @click="showCalendar = true" 
-          :class="{ 'timeline__icon--active': showCalendar }"
+          @click="activeView = 'calendar'" 
+          :class="{ 'timeline__icon--active': activeView === 'calendar' }"
         >
           <img src="@/assets/icons/Calender.svg">
         </button>
         <button 
           class="timeline__icon" 
-          @click="showCalendar = false" 
-          :class="{ 'timeline__icon--active': !showCalendar }"
+          @click="activeView = 'timeline'" 
+          :class="{ 'timeline__icon--active': activeView === 'timeline' }"
         >
           <img src="@/assets/icons/Timeline.svg">
         </button>
       </div>
     </div>
 
-    <Calendar v-if="showCalendar" />
+    <Calendar v-if="activeView === 'calendar'" />
+
+    <EditTimeline v-else-if="activeView === 'edit'" />
 
     <div v-else class="timeline__content">
       <div
