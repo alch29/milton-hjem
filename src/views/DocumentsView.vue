@@ -44,7 +44,7 @@ function goToCategory(category) {
 
 
 .documents-view {
-  padding: 16px;
+  padding: 24px;
 
   &__grid {
     display: grid;

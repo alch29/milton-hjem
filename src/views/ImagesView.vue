@@ -43,7 +43,7 @@ function goToCategory(category) {
 @use '@/assets/scss/variables' as *;
 
 .images-view {
-  padding: 16px;
+  padding: 24px;
 
   &__grid {
     display: grid;
