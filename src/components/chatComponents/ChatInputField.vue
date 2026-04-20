@@ -60,7 +60,7 @@ function selectAttachment(type) {
 @use '@/assets/scss/variables' as *;
 
 .chat-input {
-  padding: 16px;
+  padding: 24px;
   background-color: $color-white;
   position: fixed;
   bottom: $nav-height;

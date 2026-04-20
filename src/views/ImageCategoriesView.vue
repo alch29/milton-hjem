@@ -87,7 +87,7 @@ function openCarousel(batch) {
 @use '@/assets/scss/variables' as *;
 
 .images-categories-view {
-  padding: 16px;
+  padding: 24px;
 
   &__list {
     margin: 16px 0 0;

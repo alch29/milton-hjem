@@ -80,7 +80,7 @@ function goToChat() {
 @use '@/assets/scss/variables' as *;
 
 .client-chats-view {
-  padding: 16px;
+  padding: 24px;
 
   &__title {
     padding: 20px 0;

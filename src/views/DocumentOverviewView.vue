@@ -60,7 +60,7 @@ function openDocument(url) {
 @use '@/assets/scss/variables' as *;
 
 .documents-overview-view {
-  padding: 16px;
+  padding: 24px;
 
   :deep(.card__content) {
     display: flex;
