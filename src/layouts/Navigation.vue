@@ -6,7 +6,7 @@ const links = [
   { name: 'upload',    label: 'Upload',     icon: 'Upload'   },
   { name: 'chat',      label: 'Beskeder',   icon: 'Message'  },
   { name: 'more',      label: 'Mere',       icon: 'More'     },
-]
+];
 </script>
 
 <template>
