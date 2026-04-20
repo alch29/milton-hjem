@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', () => {
   const currentUser = ref(null);
   const selectedUser = ref(null);
   const users = ref([]);
+  const consultant = ref(null);
 
   async function fetchCurrentUser() {
     const auth = getAuth();
@@ -28,17 +29,34 @@ export const useUserStore = defineStore('user', () => {
   };
 
   async function fetchAllClients() {
-    const q = query(collection(db, 'users'), where('isConsultant', '==', false));
+    const uid = getAuth().currentUser?.uid;
+    const q = query(
+      collection(db, 'users'),
+      where('isConsultant', '==', false),
+      where('consultantId', '==', uid)
+    );
     const snapshot = await getDocs(q);
-    users.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    users.value = snapshot.docs.map(document => ({ id: document.id, ...document.data() }));
+  };
+
+  async function fetchConsultant() {
+    const consultantId = currentUser.value?.consultantId;
+    if (!consultantId) return;
+  
+    const snapshot = await getDoc(doc(db, 'users', consultantId));
+    if (snapshot.exists()) {
+      consultant.value = { id: snapshot.id, ...snapshot.data() };
+    };
   };
 
   return {
     currentUser,
     selectedUser,
     users,
+    consultant,
     fetchCurrentUser,
     fetchSelectedUser,
-    fetchAllClients
+    fetchAllClients,
+    fetchConsultant
   }
 });

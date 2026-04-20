@@ -1,20 +1,18 @@
-<!-- Dennis? :D -->
-
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const emit = defineEmits(['search'])
+const emit = defineEmits(['search']);
 
-const searchQuery = ref('')
+const searchQuery = ref('');
 
 function onSearch() {
   emit('search', searchQuery.value)
-}
+};
 
 function clear() {
   searchQuery.value = ''
   emit('search', '')
-}
+};
 </script>
 
 <template>
@@ -38,6 +36,8 @@ function clear() {
   display: flex;
   align-items: center;
   background-color: $color-white;
+  border: solid 0.5px $color-text;
+  width: 100%;
   border-radius: 20px;
   padding: 0px 12px;
   margin: 4px 0px;
