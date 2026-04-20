@@ -19,7 +19,7 @@ const isOpen = ref(false)
     <div class="accordion__header">
       <span class="accordion__question">{{ question }}</span>
       <img
-        src="@/assets/icons/Arrow.svg"
+        src="@/assets/icons/down-chevron.svg"
         alt=""
         class="accordion__arrow"
         :class="{ 'accordion__arrow--open': isOpen }"
@@ -53,7 +53,11 @@ const isOpen = ref(false)
   background-color: $color-primary-light;
   padding: 16px;
   cursor: pointer;
-  width: 75%;
+  min-height: 8vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   transition: background-color 0.2s ease;
   border: solid 1px;
 
@@ -70,7 +74,7 @@ const isOpen = ref(false)
 
   &__question {
     font-family: $font-family-base;
-    font-size: $body-mobile-size;
+    font-size: $h3-mobile-size;
     line-height: $body-mobile-lh;
     font-weight: $font-weight-regular;
     color: $color-text;
@@ -81,16 +85,13 @@ const isOpen = ref(false)
   }
 
   &__arrow {
-    width: 18px;
-    height: 18px;
+    width: 52px;
+    height: 52px;
     flex-shrink: 0;
-    filter: brightness(0) invert(0);
     transition: transform 0.33s ease;
-    transform: rotate(90deg);
 
     &--open {
-      transform: rotate(-90deg);
-      filter: brightness(0);
+      transform: rotate(180deg);
     }
   }
 
@@ -100,7 +101,7 @@ const isOpen = ref(false)
 
   &__answer {
     font-family: $font-family-base;
-    font-size: $bread-mobile-size;
+    font-size: $body-mobile-size;
     line-height: $bread-mobile-lh;
     font-weight: $font-weight-regular;
     color: $color-text;
