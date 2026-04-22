@@ -8,6 +8,8 @@ export const useTimelineStore = defineStore('timeline', () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  const timelineId = ref(null); // kan fjernes hvis addEvent ikke skal bruges.
+
   const items = ref([]);
 
   async function fetchTimeline() {
@@ -20,6 +22,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     if (timelineSnapshot.empty) return;
 
     const timelineDoc = timelineSnapshot.docs[0];
+    timelineId.value = timelineDoc.id; // kan fjernes hvis addEvent ikke skal bruges.
     const eventsSnapshot = await getDocs(collection(db, 'timelines', timelineDoc.id, 'events'));
     
     items.value = eventsSnapshot.docs
@@ -29,6 +32,26 @@ export const useTimelineStore = defineStore('timeline', () => {
         date: document.data().date.toDate()
       }))
       .sort((a, b) => a.date - b.date);
+  };
+
+  // Nedenstående funktion skal muligvis ikke inkluderes, skal bruges til at oprette nye begivenheder i tidslinjer.
+  async function addEvent(title, description, date, type) {
+    if (!timelineId.value) return;
+  
+    const typeMap = {
+      'Standard': 'default',
+      'Møde': 'meeting',
+      'Huset står færdigt': 'completed'
+    };
+  
+    await addDoc(collection(db, 'timelines', timelineId.value, 'events'), {
+      title,
+      description,
+      date: Timestamp.fromDate(new Date(date)),
+      type: typeMap[type] ?? 'default'
+    });
+  
+    await fetchTimeline();
   };
 
   const nextIndex = computed(() =>
@@ -64,6 +87,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     previewItems,
     formatDate, 
     getVariant,
-    fetchTimeline
+    fetchTimeline,
+    addEvent
   };
 });
