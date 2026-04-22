@@ -25,6 +25,7 @@ export const useUserStore = defineStore('user', () => {
     const snapshot = await getDoc(doc(db, 'users', userId));
     if (snapshot.exists()) {
       selectedUser.value = { id: snapshot.id, ...snapshot.data() }
+      sessionStorage.setItem('selectedUserId', userId);
     };
   };
 

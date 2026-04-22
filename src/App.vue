@@ -1,15 +1,29 @@
 <script setup>
-import { useRoute } from 'vue-router';
 import Header from '@/layouts/Header.vue';
 import Navigation from '@/layouts/Navigation.vue';
+import { useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const route = useRoute();
+const router = useRouter();
 const store = useUserStore();
-onMounted(async () => {
-  await store.fetchCurrentUser();
-  await store.fetchConsultant();
+
+onMounted(() => {
+  const auth = getAuth();
+  onAuthStateChanged(auth, async (firebaseUser) => {
+    if (firebaseUser) {
+      await store.fetchCurrentUser();
+      await store.fetchConsultant();
+      const selectedUserId = sessionStorage.getItem('selectedUserId');
+      if (selectedUserId) {
+        await store.fetchSelectedUser(selectedUserId);
+      };
+    } else {
+      router.push({ name: 'login' });
+    }
+  });
 });
 </script>
 
