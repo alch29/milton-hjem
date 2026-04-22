@@ -11,7 +11,7 @@ export const useImageStore = defineStore('images', () => {
   const error = ref(null)
 
   // Actions
-  async function uploadImage(file, category, title, batchId) {
+  async function uploadImage(file, category, title, batchId, clientId) {
     error.value = null
     try {
       const fileRef = storageRef(storage, `images/${category}/${file.name}`)
@@ -22,17 +22,22 @@ export const useImageStore = defineStore('images', () => {
         uploadDate: new Date(),
         url: url,
         category: category.toLowerCase(),
-        batchId: batchId
+        batchId: batchId,
+        clientId: clientId
       })
     } catch (err) {
       error.value = 'Kunne ikke uploade billede'
     }
   }
 
-  async function fetchImages(category) {
+  async function fetchImages(category, clientId) {
     error.value = null
     try {
-      const q = query(collection(db, 'images'), where('category', '==', category))
+      const q = query(
+        collection(db, 'images'),
+        where('category', '==', category),
+        where('clientId', '==', clientId)
+      )
       const snapshot = await getDocs(q)
       images.value = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
     } catch (err) {

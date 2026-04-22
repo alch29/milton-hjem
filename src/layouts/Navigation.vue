@@ -1,12 +1,21 @@
 <script setup>
-const links = [
-  { name: 'home',      label: 'Hjem',       icon: 'Home'     },
-  { name: 'images',    label: 'Billeder',   icon: 'Photo'    },
-  { name: 'documents', label: 'Dokumenter', icon: 'Document' },
-  { name: 'upload',    label: 'Upload',     icon: 'Upload'   },
-  { name: 'chat',      label: 'Beskeder',   icon: 'Message'  },
-  { name: 'more',      label: 'Mere',       icon: 'More'     },
-];
+import { computed } from 'vue'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
+
+const allLinks = [
+  { name: 'home',      label: 'Hjem',       icon: 'Home',     consultantOnly: false },
+  { name: 'images',    label: 'Billeder',   icon: 'Photo',    consultantOnly: false },
+  { name: 'documents', label: 'Dokumenter', icon: 'Document', consultantOnly: false },
+  { name: 'upload',    label: 'Upload',     icon: 'Upload',   consultantOnly: true  },
+  { name: 'chat',      label: 'Beskeder',   icon: 'Message',  consultantOnly: false },
+  { name: 'more',      label: 'Mere',       icon: 'More',     consultantOnly: false },
+]
+
+const links = computed(() =>
+  allLinks.filter(link => !link.consultantOnly || userStore.currentUser?.isConsultant)
+)
 </script>
 
 <template>
