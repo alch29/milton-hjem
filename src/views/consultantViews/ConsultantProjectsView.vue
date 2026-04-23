@@ -1,11 +1,22 @@
 <script setup>
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+import { useTimelineStore } from '@/stores/timeline';
 import Card from '@/components/cardComponents/Card.vue';
 import SearchBar from '@/components/SearchBar.vue';
 
 const store = useUserStore();
+const timelineStore = useTimelineStore();
+const router = useRouter();
+
 onMounted(() => store.fetchAllClients());
+
+async function selectClient(userId) {
+  timelineStore.items = []
+  await store.fetchSelectedUser(userId)
+  router.push({ name: 'home' })
+}
 
 </script>
 
@@ -22,15 +33,12 @@ onMounted(() => store.fetchAllClients());
         v-for="user in store.users"
         :key="user.id"
       >
-        <RouterLink 
-          :to="{ name: 'home'}" 
-          @click="store.fetchSelectedUser(user.id)"
-          class="consultant-projects-view__project-card">
+        <div @click="selectClient(user.id)" class="consultant-projects-view__project-card">
           <Card class="card--highlighted">
             <template #content>{{ user.address }}, {{ user.postalCode }}</template>
             <template #icon-right><img src="@/assets/icons/Notification.svg"></template>
           </Card>
-        </RouterLink>
+        </div>
       </div>
     </div>
   </div>
