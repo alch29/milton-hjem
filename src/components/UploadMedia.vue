@@ -44,7 +44,7 @@ async function handleUpload() {
     : userStore.currentUser?.id
   for (const file of selectedFiles.value) {
     if (props.type === 'documents') {
-      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim())
+      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim(), clientId)
     } else {
       await imageStore.uploadImage(file, selectedCategory.value, title.value.trim(), batchId, clientId)
     }

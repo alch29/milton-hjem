@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { collection, getDocs, addDoc, deleteDoc, doc, query, where } from 'firebase/firestore'
+import { collection, getDocs, addDoc, query, where } from 'firebase/firestore'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { db, storage } from '@/config/firebase'
 
@@ -11,7 +11,7 @@ export const useDocumentStore = defineStore('documents', () => {
   const error = ref(null)
 
   // Actions
-  async function uploadDocument(file, category, title) {
+  async function uploadDocument(file, category, title, clientId) {
     error.value = null
     try {
       const fileRef = storageRef(storage, `documents/${category}/${file.name}`)
@@ -21,22 +21,27 @@ export const useDocumentStore = defineStore('documents', () => {
         title: title || file.name,
         uploadDate: new Date(),
         url: url,
-        category: category.toLowerCase()
+        category: category.toLowerCase(),
+        clientId: clientId
       })
     } catch (error) {
       error.value = 'Kunne ikke uploade dokument'
-    } 
+    }
   }
 
-  async function fetchDocuments(category) {
+  async function fetchDocuments(category, clientId) {
     error.value = null
     try {
-      const q = query(collection(db, 'documents'), where('category', '==', category))
+      const q = query(
+        collection(db, 'documents'),
+        where('category', '==', category),
+        where('clientId', '==', clientId)
+      )
       const snapshot = await getDocs(q)
       documents.value = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
     } catch (error) {
       error.value = 'Kunne ikke hente dokumenter'
-    } 
+    }
   }
 
   // Getters

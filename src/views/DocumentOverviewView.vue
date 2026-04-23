@@ -5,15 +5,18 @@ import Sort from '@/components/Sort.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import Card from '@/components/cardComponents/Card.vue'
 import { useDocumentStore } from '@/stores/document'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const documentStore = useDocumentStore()
+const userStore = useUserStore()
 
 const sortOrder = ref(null)
 const searchQuery = ref('')
 
 onMounted(() => {
-  documentStore.fetchDocuments(route.params.category)
+  const clientId = userStore.currentUser?.id
+  documentStore.fetchDocuments(route.params.category, clientId)
 })
 
 const sortedDocuments = computed(() => {
