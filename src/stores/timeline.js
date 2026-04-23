@@ -64,7 +64,6 @@ export const useTimelineStore = defineStore('timeline', () => {
     previewItems,
     formatDate, 
     getVariant,
-    fetchTimeline,
-    addEvent
+    fetchTimeline
   };
 });
