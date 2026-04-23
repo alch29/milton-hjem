@@ -63,7 +63,7 @@ function selectAttachment(type) {
   padding: 24px;
   background-color: $color-white;
   position: fixed;
-  bottom: $nav-height;
+  bottom: 76px;
   left: 0;
   right: 0;
 

@@ -41,10 +41,12 @@ watch(messages, async () => {
 .chat-view {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - 120px);
+  overflow: hidden;
 
   &__messages {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: 12px 0 72px;
     display: flex;
