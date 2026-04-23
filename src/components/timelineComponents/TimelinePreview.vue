@@ -13,7 +13,7 @@ onMounted(() => store.fetchTimeline());
     <div class="timeline-preview__header">
       <h3>Tidslinje for huset</h3>
       <RouterLink :to="{ name: 'timeline' }">
-        <img class="timeline-preview__icon" src="../assets/icons/Timeline.svg">
+        <img class="timeline-preview__icon" src="@/assets/icons/Timeline.svg">
       </RouterLink>
     </div>
     <div class="timeline-preview__content">

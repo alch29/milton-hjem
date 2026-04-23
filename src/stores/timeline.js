@@ -48,7 +48,7 @@ export const useTimelineStore = defineStore('timeline', () => {
   });
 
   const formatDate = (date) =>
-    date.toLocaleDateString('da-DK', { day: 'numeric', month: 'short', year: 'numeric' });
+    date.toLocaleDateString('da-DK', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
   const getVariant = (item, index) => {
     if (item.type === 'completed') return 'card--completed';

@@ -3,12 +3,24 @@ import { ref, onMounted } from 'vue';
 import Card from '@/components/cardComponents/Card.vue';
 import Calendar from '@/components/Calender.vue';
 import EditTimeline from '@/components/timelineComponents/EditTimeline.vue';
+import TimelineCard from '@/components/timelineComponents/TimelineCard.vue';
 import { useTimelineStore } from '@/stores/timeline';
+import { useUserStore } from '@/stores/user';
 
 const store = useTimelineStore();
+const userStore = useUserStore();
 onMounted(() => store.fetchTimeline());
 
 const activeView = ref('timeline');
+const selectedItem = ref(null);
+
+function openCard(item) {
+  selectedItem.value = item;
+};
+
+function closeCard() {
+  selectedItem.value = null;
+};
 </script>
 
 <template>
@@ -20,6 +32,7 @@ const activeView = ref('timeline');
           class="timeline__icon"
           @click="activeView = 'edit'"
           :class="{ 'timeline__icon--active': activeView === 'edit' }"
+          v-if="userStore.currentUser?.isConsultant"
         >
           <img src="@/assets/icons/Edit.svg">
         </button>
@@ -50,12 +63,20 @@ const activeView = ref('timeline');
         :key="item.id"
         :class="['timeline__item', store.getVariant(item, index)]"
       >
-        <Card :class="['card--standard', store.getVariant(item, index)]">
+        <Card 
+          :class="['card--standard', store.getVariant(item, index)]"
+          @click="openCard(item)"
+        >
           <template #content>{{ item.title }}</template>
           <template #meta>{{ store.formatDate(item.date) }}</template>
         </Card>
       </div>
     </div>
+    <TimelineCard 
+      v-if="selectedItem" 
+      :item="selectedItem" 
+      @close="closeCard" 
+    />
   </div>
 </template>
 
