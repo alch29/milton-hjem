@@ -32,6 +32,7 @@
     justify-content: space-between;
     align-items: center;
     font-size: $h3-mobile-size;
+    cursor: pointer;
 
     &__content {
       display: flex;

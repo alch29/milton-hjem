@@ -1,6 +1,6 @@
 <script setup>
-import InputField from './InputField.vue';
-import Button from './Button.vue';
+import InputField from '../InputField.vue';
+import Button from '../Button.vue';
 import { ref } from 'vue';
 import { useTimelineStore } from '@/stores/timeline';
 
