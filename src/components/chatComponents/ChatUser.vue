@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import ChatUserInfoPartial from '@/components/chatComponents/ChatUserInfoPartial.vue'
+import ChatUserInfo from '@/components/chatComponents/ChatUserInfo.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
 defineProps({
@@ -56,7 +56,7 @@ function onSearch(query) {
     </div>
   </div>
 
-  <ChatUserInfoPartial
+  <ChatUserInfo
   v-if="showInfo"
   :name="name"
   :avatar="avatar"

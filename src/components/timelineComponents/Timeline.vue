@@ -2,11 +2,9 @@
 import { ref, onMounted } from 'vue';
 import Card from '@/components/cardComponents/Card.vue';
 import Calendar from '@/components/Calender.vue';
-import EditTimeline from '@/components/EditTimeline.vue';
+import EditTimeline from '@/components/timelineComponents/EditTimeline.vue';
 import { useTimelineStore } from '@/stores/timeline';
-import { useUserStore } from '@/stores/user';
 
-const userStore = useUserStore();
 const store = useTimelineStore();
 onMounted(() => store.fetchTimeline());
 

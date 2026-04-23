@@ -1,5 +1,5 @@
 <script setup>
-import Timeline from '@/components/Timeline.vue';
+import Timeline from '@/components/timelineComponents/Timeline.vue';
 import Breadcrumb from '@/components/Breadcrumb.vue';
 </script>
 

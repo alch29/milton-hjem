@@ -1,5 +1,5 @@
 <script setup>
-import TimelinePreview from '@/components/TimelinePreview.vue';
+import TimelinePreview from '@/components/timelineComponents/TimelinePreview.vue';
 import Breadcrumb from '@/components/Breadcrumb.vue';
 import Card from '@/components/cardComponents/Card.vue';
 import ProgressBar from '@/components/ProgressBar.vue';

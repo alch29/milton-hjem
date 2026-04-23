@@ -13,10 +13,10 @@ const router = useRouter();
 onMounted(() => store.fetchAllClients());
 
 async function selectClient(userId) {
-  timelineStore.items = []
+  timelineStore.items = [];
   await store.fetchSelectedUser(userId)
-  router.push({ name: 'home' })
-}
+  router.push({ name: 'home' });
+};
 
 </script>
 
