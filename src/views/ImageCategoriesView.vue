@@ -6,9 +6,11 @@ import SearchBar from '@/components/SearchBar.vue'
 import CardImageCategory from '@/components/cardComponents/CardImageCategory.vue'
 import ImageCarousel from '@/components/ImageCarousel.vue'
 import { useImageStore } from '@/stores/image'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const imageStore = useImageStore()
+const userStore = useUserStore()
 
 const sortOrder = ref(null)
 const searchQuery = ref('')
@@ -17,7 +19,8 @@ const showCarousel = ref(false)
 const activeBatch = ref([])
 
 onMounted(() => {
-  imageStore.fetchImages(route.params.category)
+  const clientId = userStore.currentUser?.id
+  imageStore.fetchImages(route.params.category, clientId)
 })
 
 const sortedImages = computed(() => {

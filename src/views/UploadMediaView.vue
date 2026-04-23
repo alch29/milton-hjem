@@ -36,7 +36,7 @@ const activeType = ref(null)
 @use '@/assets/scss/variables' as *;
 
 .upload-media-view {
-  padding: 16px;
+  padding: 24px;
 
   &__title {
     padding: 20px 0;
