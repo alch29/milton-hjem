@@ -15,7 +15,9 @@ const sortOrder = ref(null)
 const searchQuery = ref('')
 
 onMounted(() => {
-  const clientId = userStore.currentUser?.id
+  const clientId = userStore.currentUser?.isConsultant
+    ? userStore.selectedUser?.id
+    : userStore.currentUser?.id
   documentStore.fetchDocuments(route.params.category, clientId)
 })
 

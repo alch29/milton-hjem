@@ -19,7 +19,9 @@ const showCarousel = ref(false)
 const activeBatch = ref([])
 
 onMounted(() => {
-  const clientId = userStore.currentUser?.id
+  const clientId = userStore.currentUser?.isConsultant
+    ? userStore.selectedUser?.id
+    : userStore.currentUser?.id
   imageStore.fetchImages(route.params.category, clientId)
 })
 
