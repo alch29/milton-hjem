@@ -67,6 +67,10 @@ async function login() {
 
   &__logo {
     margin-bottom: 32px;
+    
+    & img {
+      width: 130px;
+    }
   }
 
   &__checkbox {
