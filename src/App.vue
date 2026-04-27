@@ -4,14 +4,14 @@ import Navigation from '@/layouts/Navigation.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/config/firebase';
 
 const route = useRoute();
 const router = useRouter();
 const store = useUserStore();
 
 onMounted(() => {
-  const auth = getAuth();
   onAuthStateChanged(auth, async (firebaseUser) => {
     if (firebaseUser) {
       await store.fetchCurrentUser();

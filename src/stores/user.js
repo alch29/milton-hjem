@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/config/firebase';
-import { getAuth } from 'firebase/auth';
+import { db, auth } from '@/config/firebase';
 
 export const useUserStore = defineStore('user', () => {
   const currentUser = ref(null);
@@ -11,7 +10,6 @@ export const useUserStore = defineStore('user', () => {
   const consultant = ref(null);
 
   async function fetchCurrentUser() {
-    const auth = getAuth();
     const uid = auth.currentUser?.uid;
     if (!uid) return
 
