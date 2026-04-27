@@ -5,9 +5,9 @@ defineProps({
   phone: { type: String, default: '' },
   email: { type: String, default: '' },
   address: { type: String, default: '' },
-})
+});
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 </script>
 
 <template>
@@ -18,8 +18,7 @@ const emit = defineEmits(['close'])
       </button>
 
       <div class="chat-user-info__avatar">
-        <img v-if="avatar" :src="avatar" :alt="name" />
-        <img v-else src="@/assets/icons/User.svg" alt="Placeholder" class="chat-user-info__avatar--placeholder" />
+        <img src="@/assets/icons/User.svg" alt="Placeholder" class="chat-user-info__avatar--placeholder" />
       </div>
 
       <span class="chat-user-info__name">{{ name }}</span>

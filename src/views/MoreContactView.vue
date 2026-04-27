@@ -14,7 +14,7 @@ const store = useUserStore();
     <h1>Kontakt</h1>
     <CardContactInfo v-if="store.currentUser?.isConsultant">
       <template #image>
-        <img src="../assets/images/LivogMalthe.jpg">
+        <img src="../assets/icons/User.svg">
       </template>
       <template #user-name>
         <h3>{{ store.selectedUser?.firstName }} {{ store.selectedUser?.lastName }}</h3>
@@ -28,13 +28,13 @@ const store = useUserStore();
     </CardContactInfo>
     <CardContactInfo v-if="!store.currentUser?.isConsultant">
       <template #image>
-        <img src="../assets/images/LivogMalthe.jpg">
+        <img src="../assets/icons/User.svg">
       </template>
       <template #user-name>
         <h3>{{ store.consultant?.firstName }} {{ store.consultant?.lastName }}</h3>
       </template>
       <template #user-role>
-        <p>Byggerådgiver</p>
+        <p>{{ store.consultant?.role }}</p>
       </template>
       <template #contact-info>
         <p>{{ store.consultant?.phoneNumber }}</p>

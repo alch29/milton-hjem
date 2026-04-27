@@ -1,10 +1,13 @@
 <script setup>
-import { useRouter } from 'vue-router'
-import Card from '@/components/cardComponents/Card.vue'
-import Accordion from '@/components/Accordion.vue'
-import HansEgedal from '@/assets/images/Hansegedal.WebP'
+import { useRouter } from 'vue-router';
+import Card from '@/components/cardComponents/Card.vue';
+import Accordion from '@/components/Accordion.vue';
+import userIcon from '@/assets/icons/User.svg';
+import { useUserStore } from '@/stores/user';
 
-const router = useRouter()
+const store = useUserStore();
+
+const router = useRouter();
 
 const faqs = [
   { question: 'Må jeg ændre materialer eller plantegning undervejs?', 
@@ -19,17 +22,15 @@ const faqs = [
     answer: 'Når du trykker ind på valgte billeder eller filer kan du trykke på download-ikonet' },
   { question: 'Kan jeg kontakte byggeleder eller håndværkere?', 
     answer: 'Kontakt din byggerådgiver, hvis du ønsker direkte kontakt. Eller planlæg et måde med din byggerådgiver' },
-]
+];
 
 const chats = [
-  { id: 1, name: 'Hans Egedal', title: 'Byggerådgiver', avatar: HansEgedal, lastMessage: '10:24' },
-  { id: 2, name: 'Mette Frediksen', title: 'Mink', avatar: null, lastMessage: 'I går' },
-  { id: 3, name: 'Thomas Hansen', title: 'Projektleder', avatar: null, lastMessage: 'Man' },
-]
+  { id: 1, name: `${store.consultant?.firstName} ${store.consultant?.lastName}`, title: store.consultant?.role, avatar: userIcon, lastMessage: '10:24' },
+];
 
 function goToChat() {
-  router.push({ name: 'chat' })
-}
+  router.push({ name: 'chat' });
+};
 </script>
 
 <template>
