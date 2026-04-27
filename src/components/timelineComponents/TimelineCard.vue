@@ -54,6 +54,7 @@ defineEmits(['close']);
         display: flex;
         flex-direction: column;
         gap: 16px;
+        width: 100%;
     }
 
     &__header {

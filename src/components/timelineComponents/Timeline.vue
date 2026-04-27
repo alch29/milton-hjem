@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import Card from '@/components/cardComponents/Card.vue';
 import Calendar from '@/components/Calender.vue';
 import EditTimeline from '@/components/timelineComponents/EditTimeline.vue';
@@ -21,6 +21,10 @@ function openCard(item) {
 function closeCard() {
   selectedItem.value = null;
 };
+
+watchEffect(() => {
+  if (userStore.currentUser?.id) store.fetchTimeline()
+});
 </script>
 
 <template>
