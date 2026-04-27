@@ -3,14 +3,11 @@ import TimelinePreview from '@/components/timelineComponents/TimelinePreview.vue
 import Breadcrumb from '@/components/Breadcrumb.vue';
 import Card from '@/components/cardComponents/Card.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
-import { onMounted } from 'vue';
 import { useUserStore } from '../stores/user';
 
 const store = useUserStore();
-onMounted(async () => {
-  await store.fetchCurrentUser()
-  await store.fetchConsultant()
-});
+
+
 </script>
 
 <template>

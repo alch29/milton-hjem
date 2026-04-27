@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue';
+import { watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTimelineStore } from '@/stores/timeline';
@@ -10,7 +10,9 @@ const store = useUserStore();
 const timelineStore = useTimelineStore();
 const router = useRouter();
 
-onMounted(() => store.fetchAllClients());
+watch(() => store.currentUser, (user) => {
+  if (user) store.fetchAllClients()
+}, { immediate: true })
 
 async function selectClient(userId) {
   timelineStore.items = [];

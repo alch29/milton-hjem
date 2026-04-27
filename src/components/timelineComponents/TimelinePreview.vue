@@ -1,11 +1,16 @@
 <script setup>
+import { watchEffect } from 'vue';
 import Card from '@/components/cardComponents/Card.vue';
 import { RouterLink } from 'vue-router';
 import { useTimelineStore } from '@/stores/timeline';
-import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/user';
 
 const store = useTimelineStore();
-onMounted(() => store.fetchTimeline());
+const userStore = useUserStore();
+
+watchEffect(() => {
+  if (userStore.currentUser?.id) store.fetchTimeline()
+})
 </script>
 
 <template>

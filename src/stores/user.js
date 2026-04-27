@@ -30,7 +30,7 @@ export const useUserStore = defineStore('user', () => {
   };
 
   async function fetchAllClients() {
-    const uid = getAuth().currentUser?.uid;
+    const uid = currentUser.value?.id;
     const q = query(
       collection(db, 'users'),
       where('isConsultant', '==', false),
