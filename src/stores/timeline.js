@@ -42,7 +42,7 @@ export const useTimelineStore = defineStore('timeline', () => {
 
     if (items.value[next]) result.push(items.value[next]);
     if (next > 0) result.push(items.value[next + 1]);
-    if (last && last !== items.value[next]) result.push(last);
+    if (last && last !== items.value[next] && last !== items.value[next + 1]) result.push(last);
   
     return result;
   });
