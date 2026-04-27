@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { useUserStore } from './user';
+import { useFormatDate } from '@/composables/useFormatDate';
 
 export const useTimelineStore = defineStore('timeline', () => {
   const today = new Date();
@@ -47,8 +48,9 @@ export const useTimelineStore = defineStore('timeline', () => {
     return result;
   });
 
-  const formatDate = (date) =>
-    date.toLocaleDateString('da-DK', { day: 'numeric', month: 'numeric', year: 'numeric' });
+  // const formatDate = (date) =>
+  //   date.toLocaleDateString('da-DK', { day: 'numeric', month: 'numeric', year: 'numeric' });
+  const { formatDate } = useFormatDate();
 
   const getVariant = (item, index) => {
     if (item.type === 'completed') return 'card--completed';
