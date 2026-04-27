@@ -1,9 +1,5 @@
 <script setup>
 defineProps({
-  icon: {
-    type: String,
-    required: true
-  },
   placeholder: {
     type: String,
     default: ''
@@ -16,14 +12,16 @@ defineProps({
     type: String,
     default: ''
   }
-})
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue']);
 </script>
 
 <template>
   <div class="input-field">
-    <img :src="`/src/assets/icons/${icon}.svg`" :alt="placeholder" class="input-field__icon" />
+    <div class="input-field__icon" v-if="$slots.icon">
+      <slot name="icon" />
+    </div>
     <input
       :type="type"
       :placeholder="placeholder"
@@ -41,14 +39,14 @@ defineEmits(['update:modelValue'])
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid $color-primary-light;
+  border: 1px solid $color-text;
   padding: 0 16px;
   margin: 4px 0;
   background-color: $color-white;
   width: 100%;
 
   &:focus-within {
-    border-color: $color-primary;
+    border-color: $color-primary-light;
   }
 
   &__icon {

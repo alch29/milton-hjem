@@ -70,7 +70,7 @@ async function handleUpload() {
 
       <div class="upload-media__input">
         <h3 class="upload-media__text">Tilføj titel:</h3>
-        <InputField v-model="title" icon="Document" placeholder="Titel" />
+        <InputField v-model="title" placeholder="Titel" />
       </div>
 
       <div class="upload-media__categories">

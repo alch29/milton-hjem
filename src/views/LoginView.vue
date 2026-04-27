@@ -38,8 +38,12 @@ async function login() {
     </div>
     <h1>Log ind</h1>
     <p>Velkommen til MiltonHjem</p>
-    <InputField icon="User" placeholder="Brugernavn" v-model="email" />
-    <InputField icon="Access" placeholder="Adgangskode" type="password" v-model="password" />
+    <InputField placeholder="Brugernavn" v-model="email" >
+      <template #icon><img src="../assets/icons/User.svg"></template>
+    </InputField>
+    <InputField placeholder="Adgangskode" type="password" v-model="password">
+      <template #icon><img src="../assets/icons/Access.svg"></template>
+    </InputField>
     <div class="login-view__checkbox">
       <input type="checkbox" name="rememberMe">
       <label for="rememberMe">Husk mig</label>
