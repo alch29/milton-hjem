@@ -9,7 +9,7 @@ const allLinks = [
   { name: 'images',    label: 'Billeder',   icon: 'Photo',    consultantOnly: false },
   { name: 'documents', label: 'Dokumenter', icon: 'Document', consultantOnly: false },
   { name: 'upload',    label: 'Upload',     icon: 'Upload',   consultantOnly: true  },
-  { name: 'chat',      label: 'Beskeder',   icon: 'Message',  consultantOnly: false },
+  { name: 'chat',         label: 'Beskeder',   icon: 'Message',  consultantOnly: false, clientName: 'client-chats' },
   { name: 'more',      label: 'Mere',       icon: 'More',     consultantOnly: false },
 ]
 
@@ -23,7 +23,7 @@ const links = computed(() =>
     <RouterLink
       v-for="link in links"
       :key="link.name"
-      :to="{ name: link.name }"
+      :to="{ name: !userStore.currentUser?.isConsultant && link.clientName ? link.clientName : link.name }"
       class="navigation__item"
     >
       <img :src="`/src/assets/icons/${link.icon}.svg`" :alt="link.label" class="navigation__icon" />
