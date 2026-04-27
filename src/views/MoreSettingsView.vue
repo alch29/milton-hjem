@@ -16,7 +16,7 @@ const store = useUserStore();
     <p class="breadcrumbs">Min profil</p>
     <CardContactInfo>
       <template #image>
-        <img src="../assets/images/Hansegedal.WebP">
+        <img src="../assets/icons/User.svg">
       </template>
       <template #user-name>
         <h3>{{ store.currentUser?.firstName }} {{ store.currentUser?.lastName }}</h3>

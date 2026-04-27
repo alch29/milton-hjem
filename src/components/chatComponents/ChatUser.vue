@@ -1,7 +1,10 @@
 <script setup>
-import { ref } from 'vue'
-import ChatUserInfo from '@/components/chatComponents/ChatUserInfo.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import { ref } from 'vue';
+import ChatUserInfo from '@/components/chatComponents/ChatUserInfo.vue';
+import SearchBar from '@/components/SearchBar.vue';
+import { useUserStore } from '@/stores/user';
+
+const store = useUserStore();
 
 defineProps({
   name: {
@@ -12,21 +15,20 @@ defineProps({
     type: String,
     default: null
   }
-})
+});
 
-const emit = defineEmits(['call', 'search'])
+const emit = defineEmits(['call', 'search']);
 
-const showSearch = ref(false)
-const showInfo = ref(false)
+const showSearch = ref(false);
+const showInfo = ref(false);
 
 function toggleSearch() {
-  showSearch.value = !showSearch.value
-  if (!showSearch.value) searchQuery.value = ''
-}
+  showSearch.value = !showSearch.value;
+};
 
 function onSearch(query) {
   emit('search', query)
-}
+};
 
 
 </script>
@@ -35,11 +37,11 @@ function onSearch(query) {
   <div class="chat-user-wrapper">
     <div class="chat-user">
       <div class="chat-user__avatar" @click="showInfo = true">
-        <img v-if="avatar" :src="avatar" :alt="name" />
-        <img v-else src="@/assets/icons/User.svg" alt="Placeholder" class="chat-user__avatar--placeholder" />
+        <img src="@/assets/icons/User.svg" alt="Placeholder" class="chat-user__avatar--placeholder" />
       </div>
 
-      <span class="chat-user__name" @click="showInfo = true">{{ name }}</span>
+      <span v-if="!store.currentUser?.isConsultant" class="chat-user__name" @click="showInfo = true">{{ store.consultant?.firstName + ' ' + store.consultant?.lastName }}</span>
+      <span v-if="store.currentUser?.isConsultant" class="chat-user__name" @click="showInfo = true">{{ store.selectedUser?.firstName + ' ' + store.selectedUser?.lastName }}</span>
 
       <div class="chat-user__actions">
         <button class="chat-user__btn" @click="emit('call')">
@@ -57,14 +59,22 @@ function onSearch(query) {
   </div>
 
   <ChatUserInfo
-  v-if="showInfo"
-  :name="name"
-  :avatar="avatar"
-  phone="+45 12 34 56 78"
-  email="john@example.com"
-  address="Eksempelgade 1, 8000 Aarhus"
-  @close="showInfo = false"
-/>
+    v-if="showInfo && !store.currentUser?.isConsultant"
+    :name="store.consultant?.firstName + ' ' + store.consultant?.lastName"
+    :avatar="avatar"
+    :phone="store.consultant?.phoneNumber"
+    :email="store.consultant?.email"
+    @close="showInfo = false"
+  />
+
+  <ChatUserInfo
+    v-if="showInfo && store.currentUser?.isConsultant"
+    :name="store.selectedUser?.firstName + ' ' + store.selectedUser?.lastName"
+    :avatar="avatar"
+    :phone="store.selectedUser?.phoneNumber"
+    :email="store.selectedUser?.email"
+    @close="showInfo = false"
+  />
 
 </template>
 
