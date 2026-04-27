@@ -24,7 +24,7 @@ async function selectClient(userId) {
 
 <template>
   <div class="consultant-projects-view">
-    <div class="login-view__logo">
+    <div class="consultant-projects-view__logo">
       <img src="@/assets/images/milton_huse_logo_transparent.png" alt="Milton huse logo">
     </div>
     <h1>Projekter</h1>
@@ -62,6 +62,14 @@ async function selectClient(userId) {
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+
+  &__logo {
+    margin-bottom: 32px;
+    
+    & img {
+      width: 130px;
+    }
   }
   
   &__project-card {
