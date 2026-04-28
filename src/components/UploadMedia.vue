@@ -4,7 +4,7 @@ import Button from '@/components/Button.vue'
 import InputField from './InputField.vue'
 import { useDocumentStore } from '@/stores/document'
 import { useImageStore } from '@/stores/image'
-import { useUserStore } from '@/stores/user'
+import { useClientId } from '@/composables/useClientId'
 
 const props = defineProps({
   type: {
@@ -17,7 +17,7 @@ const emit = defineEmits(['close'])
 
 const documentStore = useDocumentStore()
 const imageStore = useImageStore()
-const userStore = useUserStore()
+const { clientId } = useClientId()
 
 const documentCategories = ['Kontrakter', 'Godkendelser', 'Plantegninger', 'Materialer', 'Fejl & Mangler', 'Andet']
 const imageCategories = ['Gulv', 'Tag', 'Elektricitet', 'Vægge', 'Udendørs', 'Materialer']
@@ -39,14 +39,12 @@ function selectCategory(category) {
 async function handleUpload() {
   if (!selectedFiles.value.length || !selectedCategory.value) return
   const batchId = Date.now().toString()
-  const clientId = userStore.currentUser?.isConsultant
-    ? userStore.selectedUser?.id
-    : userStore.currentUser?.id
+
   for (const file of selectedFiles.value) {
     if (props.type === 'documents') {
-      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim(), clientId)
+      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim(), clientId.value)
     } else {
-      await imageStore.uploadImage(file, selectedCategory.value, title.value.trim(), batchId, clientId)
+      await imageStore.uploadImage(file, selectedCategory.value, title.value.trim(), batchId, clientId.value)
     }
   }
   selectedFiles.value = []
