@@ -6,6 +6,8 @@ import SearchBar from '@/components/SearchBar.vue'
 import Card from '@/components/cardComponents/Card.vue'
 import { useDocumentStore } from '@/stores/document'
 import { useClientId } from '@/composables/useClientId'
+import { useSortAndFilter } from '@/composables/useSortAndFilter'
+
 
 const route = useRoute()
 const documentStore = useDocumentStore()
@@ -18,19 +20,11 @@ onMounted(() => {
   documentStore.fetchDocuments(route.params.category, clientId.value)
 })
 
-const sortedDocuments = computed(() => {
-  let docs = [...documentStore.documents]
-  if (searchQuery.value) docs = docs.filter(doc => doc.title.toLowerCase().includes(searchQuery.value.toLowerCase()))
-  if (sortOrder.value === 'newest') return docs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-  if (sortOrder.value === 'oldest') return docs.sort((a, b) => new Date(a.uploadDate) - new Date(b.uploadDate))
-  if (sortOrder.value === 'alphabetical') return docs.sort((a, b) => a.title.localeCompare(b.title))
-  if (sortOrder.value === 'alphabetical-reverse') return docs.sort((a, b) => b.title.localeCompare(a.title))
-  return docs
-})
-
-function handleSort(value) {
-  sortOrder.value = value
-}
+const { result: sortedDocuments } = useSortAndFilter(
+  computed(() => documentStore.documents),
+  searchQuery,
+  sortOrder
+)
 
 function openDocument(url) {
   window.open(url, '_blank')
@@ -39,7 +33,7 @@ function openDocument(url) {
 
 <template>
   <div class="documents-overview-view">
-    <Sort @sort="handleSort" />
+    <Sort @sort="value => sortOrder = value" />
     <SearchBar @search="query => searchQuery = query" />
       
     <div class="documents-overview-view__list">
