@@ -1,40 +1,42 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import Sort from '@/components/Sort.vue'
-import SearchBar from '@/components/SearchBar.vue'
-import Card from '@/components/cardComponents/Card.vue'
-import { useDocumentStore } from '@/stores/document'
-import { useClientId } from '@/composables/useClientId'
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import Sort from '@/components/Sort.vue';
+import SearchBar from '@/components/SearchBar.vue';
+import Card from '@/components/cardComponents/Card.vue';
+import { useDocumentStore } from '@/stores/document';
+import { useClientId } from '@/composables/useClientId';
+import { useFormatDate } from '@/composables/useFormatDate';
 
-const route = useRoute()
-const documentStore = useDocumentStore()
-const { clientId } = useClientId()
+const { formatDate } = useFormatDate();
+const route = useRoute();
+const documentStore = useDocumentStore();
+const { clientId } = useClientId();
 
-const sortOrder = ref(null)
-const searchQuery = ref('')
+const sortOrder = ref(null);
+const searchQuery = ref('');
 
 onMounted(() => {
-  documentStore.fetchDocuments(route.params.category, clientId.value)
-})
+  documentStore.fetchDocuments(route.params.category, clientId.value);
+});
 
 const sortedDocuments = computed(() => {
   let docs = [...documentStore.documents]
-  if (searchQuery.value) docs = docs.filter(doc => doc.title.toLowerCase().includes(searchQuery.value.toLowerCase()))
-  if (sortOrder.value === 'newest') return docs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-  if (sortOrder.value === 'oldest') return docs.sort((a, b) => new Date(a.uploadDate) - new Date(b.uploadDate))
-  if (sortOrder.value === 'alphabetical') return docs.sort((a, b) => a.title.localeCompare(b.title))
-  if (sortOrder.value === 'alphabetical-reverse') return docs.sort((a, b) => b.title.localeCompare(a.title))
+  if (searchQuery.value) docs = docs.filter(doc => doc.title.toLowerCase().includes(searchQuery.value.toLowerCase()));
+  if (sortOrder.value === 'newest') return docs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+  if (sortOrder.value === 'oldest') return docs.sort((a, b) => new Date(a.uploadDate) - new Date(b.uploadDate));
+  if (sortOrder.value === 'alphabetical') return docs.sort((a, b) => a.title.localeCompare(b.title));
+  if (sortOrder.value === 'alphabetical-reverse') return docs.sort((a, b) => b.title.localeCompare(a.title));
   return docs
-})
+});
 
 function handleSort(value) {
   sortOrder.value = value
-}
+};
 
 function openDocument(url) {
   window.open(url, '_blank')
-}
+};
 </script>
 
 <template>
@@ -51,7 +53,7 @@ function openDocument(url) {
           <span class="documents-overview-view__name">{{ doc.title }}</span>
         </template>
         <template #meta>
-          <span class="documents-overview-view__date">{{ new Date(doc.uploadDate?.seconds * 1000).toLocaleDateString('da-DK') }}</span>
+          <span class="documents-overview-view__date">{{ formatDate(new Date(doc.uploadDate?.seconds * 1000)) }}</span>
         </template>
       </Card>
     </div>

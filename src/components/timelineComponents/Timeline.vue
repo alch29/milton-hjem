@@ -2,7 +2,6 @@
 import { ref, onMounted, watchEffect } from 'vue';
 import Card from '@/components/cardComponents/Card.vue';
 import Calendar from '@/components/Calender.vue';
-import EditTimeline from '@/components/timelineComponents/EditTimeline.vue';
 import TimelineCard from '@/components/timelineComponents/TimelineCard.vue';
 import { useTimelineStore } from '@/stores/timeline';
 import { useUserStore } from '@/stores/user';
@@ -32,14 +31,6 @@ watchEffect(() => {
     <div class="timeline__header">
       <h3>Tidslinje for huset</h3>
       <div class="timeline__icons">
-        <button
-          class="timeline__icon"
-          @click="activeView = 'edit'"
-          :class="{ 'timeline__icon--active': activeView === 'edit' }"
-          v-if="userStore.currentUser?.isConsultant"
-        >
-          <img src="@/assets/icons/Edit.svg">
-        </button>
         <button 
           class="timeline__icon" 
           @click="activeView = 'calendar'" 
