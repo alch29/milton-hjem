@@ -1,9 +1,10 @@
 export function useFormatDate() {
 
     function formatDate(date) {
-        const year = date.value.getFullYear();
-        const day = date.value.getDate();
-        const month = date.value.getMonth() + 1;
+        if (!date) return '';
+        const year = date.getFullYear();
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
         return `${day}/${month}/${year}`;
     };
 

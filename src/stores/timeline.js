@@ -48,8 +48,6 @@ export const useTimelineStore = defineStore('timeline', () => {
     return result;
   });
 
-  // const formatDate = (date) =>
-  //   date.toLocaleDateString('da-DK', { day: 'numeric', month: 'numeric', year: 'numeric' });
   const { formatDate } = useFormatDate();
 
   const getVariant = (item, index) => {
