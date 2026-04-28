@@ -1,16 +1,19 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import Sort from '@/components/Sort.vue'
-import SearchBar from '@/components/SearchBar.vue'
-import CardImageCategory from '@/components/cardComponents/CardImageCategory.vue'
-import ImageCarousel from '@/components/ImageCarousel.vue'
-import { useImageStore } from '@/stores/image'
-import { useClientId } from '@/composables/useClientId'
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import Sort from '@/components/Sort.vue';
+import SearchBar from '@/components/SearchBar.vue';
+import CardImageCategory from '@/components/cardComponents/CardImageCategory.vue';
+import ImageCarousel from '@/components/ImageCarousel.vue';
+import { useImageStore } from '@/stores/image';
+import { useClientId } from '@/composables/useClientId';
+import { useFormatDate } from '@/composables/useFormatDate';
+import { useSortAndFilter } from '@/composables/useSortAndFilter';
 
-const route = useRoute()
-const imageStore = useImageStore()
-const { clientId } = useClientId()
+const { formatDate } = useFormatDate();
+const route = useRoute();
+const imageStore = useImageStore();
+const { clientId } = useClientId();
 
 const sortOrder = ref(null);
 const searchQuery = ref('');
@@ -22,15 +25,11 @@ onMounted(() => {
   imageStore.fetchImages(route.params.category, clientId.value);
 });
 
-const sortedImages = computed(() => {
-  let imgs = [...imageStore.images]
-  if (searchQuery.value) imgs = imgs.filter(img => img.title.toLowerCase().includes(searchQuery.value.toLowerCase()))
-  if (sortOrder.value === 'newest') return imgs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-  if (sortOrder.value === 'oldest') return imgs.sort((a, b) => new Date(a.uploadDate) - new Date(b.uploadDate))
-  if (sortOrder.value === 'alphabetical') return imgs.sort((a, b) => a.title.localeCompare(b.title))
-  if (sortOrder.value === 'alphabetical-reverse') return imgs.sort((a, b) => b.title.localeCompare(a.title))
-  return imgs
-})
+const { result: sortedImages } = useSortAndFilter(
+  computed(() => imageStore.images),
+  searchQuery,
+  sortOrder
+)
 
 const batches = computed(() => {
   const groups = {}
