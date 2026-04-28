@@ -1,5 +1,22 @@
 <script setup>
 import Card from '@/components/cardComponents/Card.vue';
+import { signOut } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { useUserStore } from '../stores/user';
+import { useRouter } from 'vue-router';
+
+const store = useUserStore();
+const router = useRouter();
+
+async function logout() {
+  await signOut(auth);
+  store.currentUser = null;
+  store.selectedUser = null;
+  store.consultant = null;
+  sessionStorage.removeItem('selectedUserId');
+  indexedDB.deleteDatabase('firebaseLocalStorageDb');
+  router.push({ name: 'login' });
+}
 </script>
 
 <template>
@@ -22,14 +39,14 @@ import Card from '@/components/cardComponents/Card.vue';
           </template>
         </Card>
       </RouterLink>
-      <RouterLink :to="{ name: 'login' }" class="more-view__card">
+      <div class="more-view__card" @click="logout">
         <Card>
           <template #content>
             <img src="../assets/icons/LogOut.svg">
             <p>Log ud</p>
           </template>
         </Card>
-      </RouterLink>
+      </div>
     </div>
   </div>
 </template>

@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
-import { auth } from '../config/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { auth, authReady } from '../config/firebase';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -94,21 +93,12 @@ const router = createRouter({
 });
 
 
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.meta.requiresAuth;
+router.beforeEach(async (to) => {
+  if (!to.meta.requiresAuth) return;
 
-  if (!requiresAuth) {
-    next();
-    return;
-  };
- 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      next(value);
-    } else {
-      next('/');
-    };
-  });
+  await authReady;
+
+  if (!auth.currentUser) return '/';
 });
 
 export default router;

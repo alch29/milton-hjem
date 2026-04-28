@@ -5,6 +5,8 @@ import Card from '@/components/cardComponents/Card.vue';
 import { useUserStore } from '../stores/user';
 
 const store = useUserStore();
+
+
 </script>
 
 <template>
