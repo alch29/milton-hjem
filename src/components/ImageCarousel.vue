@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import Button from './Button.vue';
+import { useFormatDate } from '@/composables/useFormatDate';
 
+const { formatDate } = useFormatDate();
 const props = defineProps({
   images: {
     type: Array,
@@ -56,7 +58,7 @@ const next = () => {
       </div>
       <div class="image-carousel__meta">
         <span class="image-carousel__title">{{ images[activeIndex].title }}</span>
-        <span class="image-carousel__date">{{ new Date(images[activeIndex].uploadDate?.seconds * 1000).toLocaleDateString('da-DK') }}</span>
+        <span class="image-carousel__date">{{ formatDate(new Date(images[activeIndex].uploadDate?.seconds * 1000)) }}</span>
       </div>
       <div class="image-carousel__buttons">
         <Button variant="cta-secondary">Download<img src="../assets/icons/Download.svg"></Button>

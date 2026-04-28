@@ -1,24 +1,25 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import Sort from '@/components/Sort.vue'
-import SearchBar from '@/components/SearchBar.vue'
-import Card from '@/components/cardComponents/Card.vue'
-import { useDocumentStore } from '@/stores/document'
-import { useClientId } from '@/composables/useClientId'
-import { useSortAndFilter } from '@/composables/useSortAndFilter'
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import Sort from '@/components/Sort.vue';
+import SearchBar from '@/components/SearchBar.vue';
+import Card from '@/components/cardComponents/Card.vue';
+import { useDocumentStore } from '@/stores/document';
+import { useClientId } from '@/composables/useClientId';
+import { useFormatDate } from '@/composables/useFormatDate';  
+import { useSortAndFilter } from '@/composables/useSortAndFilter';
 
+const { formatDate } = useFormatDate();
+const route = useRoute();
+const documentStore = useDocumentStore();
+const { clientId } = useClientId();
 
-const route = useRoute()
-const documentStore = useDocumentStore()
-const { clientId } = useClientId()
-
-const sortOrder = ref(null)
-const searchQuery = ref('')
+const sortOrder = ref(null);
+const searchQuery = ref('');
 
 onMounted(() => {
-  documentStore.fetchDocuments(route.params.category, clientId.value)
-})
+  documentStore.fetchDocuments(route.params.category, clientId.value);
+});
 
 const { result: sortedDocuments } = useSortAndFilter(
   computed(() => documentStore.documents),
@@ -28,7 +29,7 @@ const { result: sortedDocuments } = useSortAndFilter(
 
 function openDocument(url) {
   window.open(url, '_blank')
-}
+};
 </script>
 
 <template>
@@ -45,7 +46,7 @@ function openDocument(url) {
           <span class="documents-overview-view__name">{{ doc.title }}</span>
         </template>
         <template #meta>
-          <span class="documents-overview-view__date">{{ new Date(doc.uploadDate?.seconds * 1000).toLocaleDateString('da-DK') }}</span>
+          <span class="documents-overview-view__date">{{ formatDate(new Date(doc.uploadDate?.seconds * 1000)) }}</span>
         </template>
       </Card>
     </div>

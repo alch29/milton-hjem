@@ -2,7 +2,9 @@
 import { useTimelineStore } from '@/stores/timeline';
 import { onMounted } from 'vue';
 import Button from '@/components/Button.vue';
+import { useFormatDate } from '@/composables/useFormatDate';
 
+const { formatDate } = useFormatDate();
 const store = useTimelineStore();
 onMounted(() => store.fetchTimeline());
 
@@ -15,7 +17,7 @@ defineEmits(['close']);
         <div class="timeline-card__container">
             <div class="timeline-card__header">
                 <h3>{{ item.title }}</h3>
-                <h3>{{ store.formatDate(item.date) }}</h3>
+                <h3>{{ formatDate(item.date) }}</h3>
             </div>
             <p>{{ item.description }}</p>
             <Button 
