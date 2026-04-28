@@ -1,7 +1,10 @@
 <script setup>
 import { computed } from 'vue';
 import { useTimelineStore } from '@/stores/timeline';
+import { useFormatDate } from '@/composables/useFormatDate';
+
 const store = useTimelineStore();
+const { formatDate } = useFormatDate();
 
 const startDate = computed(() => store.items[0]?.date);
 const endDate = computed(() => store.items[store.items.length - 1]?.date);
@@ -16,14 +19,6 @@ function calculateDays(startDate, endDate) {
 const currentValue = computed(() => calculateDays(startDate.value, today));
 const maxValue = computed(() => calculateDays(startDate.value, endDate.value));
 const progress = computed(() => Math.min((currentValue.value / maxValue.value) * 100, 100));
-
-const formattedEndDate = computed(() => {
-  if (!endDate.value) return '';
-  const year = endDate.value.getFullYear();
-  const date = endDate.value.getDate();
-  const month = endDate.value.getMonth() + 1;
-  return `${date}/${month}/${year}`;
-});
 </script>
 
 <template>
@@ -39,7 +34,7 @@ const formattedEndDate = computed(() => {
       <div class="progress-bar__icon"><img src="../assets/icons/Goal.svg"></div>
     </div>
     <div class="progress-bar__meta">
-      <p>Forventet slutdato: {{ formattedEndDate }}</p>
+      <p>Forventet slutdato: {{ formatDate(endDate) }}</p>
     </div>
   </div>
 </template>
