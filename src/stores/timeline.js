@@ -11,11 +11,13 @@ export const useTimelineStore = defineStore('timeline', () => {
 
   const items = ref([]);
 
+  const { formatDate } = useFormatDate();
+
   /**
-   * Fetches the timeline events for the current client from Firestore and populates items.
-   * Uses selectedUser if available (consultant view), otherwise falls back to currentUser.
+   * Fetches the timeline events for the current client from Firestore and updates the state of the items array.
+   * Uses selectedUser if available (from consultant view), otherwise falls back to currentUser.
    * Events are sorted chronologically by date.
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} Returns a promise since it's an async function. Doesn't return any value/data (void), but updates state.
    */
   async function fetchTimeline() {
     const userStore = useUserStore();
@@ -43,9 +45,9 @@ export const useTimelineStore = defineStore('timeline', () => {
   };
 
   /**
-   * The index of the next upcoming event in items (the first event on or after today).
+   * The index of the next upcoming event in the items array (the first event on or after today).
    * Returns -1 if all events are in the past.
-   * @type {import('vue').ComputedRef<number>}
+   * @type {import('vue').ComputedRef<number>} nextIndex is a Vue ComputedRef containing the type number.
    */
   const nextIndex = computed(() => {
     return items.value.findIndex(item => {
@@ -55,9 +57,9 @@ export const useTimelineStore = defineStore('timeline', () => {
   );
 
   /**
-   * A subset of timeline items for dashboard preview: the next upcoming event,
-   * the one after it, and the last event (if distinct). Returns at most 3 items.
-   * @type {import('vue').ComputedRef<Object[]>}
+   * A small set of timeline items for timeline preview component that is used on the homepage.
+   * Shows the next upcoming event, the one after it, and the last event. Returns at most 3 items.
+   * @type {import('vue').ComputedRef<Object[]>} previewItems is a Vue ComputedRef containing the type Object.
    */
   const previewItems = computed(() => {
     const next = nextIndex.value;
@@ -71,10 +73,8 @@ export const useTimelineStore = defineStore('timeline', () => {
     return result;
   });
 
-  const { formatDate } = useFormatDate();
-
   /**
-   * Returns a CSS class variant string for a timeline card based on its type, date, and position.
+   * Returns a CSS class string for a timeline card based on its type, date, and position.
    * @param {Object} item - The timeline event object.
    * @param {number} index - The index of the item in the items array.
    * @returns {string} A CSS class string (e.g. 'card--highlighted', 'card--completed').
