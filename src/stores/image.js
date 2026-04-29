@@ -1,31 +1,35 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { collection, getDocs, addDoc, query, where } from 'firebase/firestore';
+import { ref } from 'vue';
+import { collection, getDocs, addDoc, setDoc, doc, query, where } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/config/firebase';
 
 export const useImageStore = defineStore('images', () => {
 
   // State
-  const images = ref([]);
+  const batches = ref([]);
   const error = ref(null);
 
   // Actions
 
-  // LOOK AT THIS DUMBASS
   async function uploadImage({file, category, title, batchId, clientId}) {
     error.value = null;
     try {
       const fileRef = storageRef(storage, `images/${category}/${file.name}`);
       await uploadBytes(fileRef, file);
       const url = await getDownloadURL(fileRef);
-      await addDoc(collection(db, 'images'), {
+
+      const batchRef = doc(db, 'batches', batchId);
+      await setDoc(batchRef, {
         title: title || file.name,
         uploadDate: new Date(),
         url: url,
         category: category.toLowerCase(),
-        batchId: batchId,
         clientId: clientId
+      }, { merge: true });
+
+      await addDoc(collection(db, 'batches', batchId, 'images'), {
+        file: url
       });
     } catch (err) {
       err.value = 'Kunne ikke uploade billede';
@@ -36,27 +40,25 @@ export const useImageStore = defineStore('images', () => {
     error.value = null;
     try {
       const q = query(
-        collection(db, 'images'),
+        collection(db, 'batches'),
         where('category', '==', category),
         where('clientId', '==', clientId)
       );
-      const snapshot = await getDocs(q);
-      images.value = snapshot.docs.map(d => {
-        return { id: d.id, ...d.data() };
-      });
+      const batchSnapshot = await getDocs(q);
+
+      batches.value = await Promise.all(
+        batchSnapshot.docs.map(async (batchDoc) => {
+          const imagesSnapshot = await getDocs(collection(db, 'batches', batchDoc.id, 'images'));
+          const images = imagesSnapshot.docs.map(imgDoc => {
+            return { id: imgDoc.id, url: imgDoc.data().file };
+          });
+          return { id: batchDoc.id, ...batchDoc.data(), images };
+        })
+      );
     } catch (err) {
       err.value = 'Kunne ikke hente billeder';
     }
   }
 
-  // Getters
-  const imagesByCategory = computed(() => {
-    return (category) => {
-      return images.value.filter(i => {
-        return i.category === category;
-      });
-    };
-  });
-
-  return { images, error, fetchImages, uploadImage, imagesByCategory };
+  return { batches, error, fetchImages, uploadImage };
 });

@@ -25,29 +25,25 @@ onMounted(() => {
   imageStore.fetchImages(route.params.category, clientId.value);
 });
 
-const { result: sortedImages } = useSortAndFilter(
+const { result: sortedBatches } = useSortAndFilter(
   computed(() => {
-    return imageStore.images;
+    return imageStore.batches;
   }),
   searchQuery,
   sortOrder
 );
 
-const batches = computed(() => {
-  const groups = {};
-  for (const img of sortedImages.value) {
-    const key = img.batchId || 'legacy';
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(img);
-  }
-  return Object.values(groups);
-});
-
 function openCarousel(batch) {
-  activeBatch.value = batch;
+  activeBatch.value = batch.images.map(img => {
+    return {
+      ...img,
+      title: batch.title,
+      uploadDate: batch.uploadDate
+    };
+  });
   carouselStartIndex.value = 0;
   showCarousel.value = true;
-};
+}
 </script>
 
 <template>
@@ -57,24 +53,24 @@ function openCarousel(batch) {
 
     <div class="images-categories-view__list">
       <CardImageCategory
-        v-for="(batch, i) in batches"
-        :key="i"
+        v-for="batch in sortedBatches"
+        :key="batch.id"
         class="images-categories-view__card"
         @click="openCarousel(batch)"
       >
         <template #title>
-          <span class="images-categories-view__name">{{ batch[0].title }}</span>
+          <span class="images-categories-view__name">{{ batch.title }}</span>
         </template>
         <template #meta>
-          <span class="images-categories-view__date">{{ formatDate(new Date(batch[0].uploadDate?.seconds * 1000)) }}</span>
+          <span class="images-categories-view__date">{{ formatDate(new Date(batch.uploadDate?.seconds * 1000)) }}</span>
         </template>
         <template #image-count>
-          <span>{{ batch.length }}</span>
+          <span>{{ batch.images.length }}</span>
         </template>
         <template #image>
           <img
-            :src="batch[0].url"
-            :alt="batch[0].title"
+            :src="batch.url"
+            :alt="batch.title"
           >
         </template>
       </CardImageCategory>

@@ -29,6 +29,7 @@ const categories = computed(() => {
 const selectedFiles = ref([]);
 const selectedCategory = ref(null);
 const title = ref('');
+const uploading = ref(false);
 
 function onFileChange(fileInput) {
   selectedFiles.value = Array.from(fileInput.target.files);
@@ -39,7 +40,8 @@ function selectCategory(category) {
 }
 
 async function handleUpload() {
-  if (!selectedFiles.value.length || !selectedCategory.value) return;
+  if (uploading.value || !selectedFiles.value.length || !selectedCategory.value) return;
+  uploading.value = true;
   const batchId = Date.now().toString();
 
   for (const file of selectedFiles.value) {
@@ -49,6 +51,7 @@ async function handleUpload() {
       await imageStore.uploadImage({ file, category: selectedCategory.value, title: title.value.trim(), batchId, clientId: clientId.value });
     }
   }
+  uploading.value = false;
   selectedFiles.value = [];
   selectedCategory.value = null;
   title.value = '';
