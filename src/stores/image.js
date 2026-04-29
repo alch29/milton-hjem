@@ -13,14 +13,14 @@ export const useImageStore = defineStore('images', () => {
   // Actions
 
   /**
-   * Uploads an image to Firebase Storage and registers it under the given batch in Firestore.
-   * Multiple images with the same batchId are grouped together under one batch document.
-   * @param {Object} params - Upload parameters.
+   * Uploads an image to Firebase Storage and saves it under a batch in Firestore.
+   * All images uploaded at the same time share a batchId, so they're grouped together.
+   * We use setDoc with merge:true on the batch so we don't overwrite it when uploading multiple files.
    * @param {File} params.file - The image file to upload.
-   * @param {string} params.category - The category the image belongs to (e.g. 'Gulv').
-   * @param {string} params.title - The display title for the batch.
-   * @param {string} params.batchId - A shared ID (timestamp) grouping images uploaded together.
-   * @param {string} params.clientId - The Firestore ID of the client this image belongs to.
+   * @param {string} params.category - Which category the image belongs to.
+   * @param {string} params.title - Title for the batch. Falls back to file name if empty.
+   * @param {string} params.batchId - Shared ID for all images uploaded in the same session.
+   * @param {string} params.clientId - The client this image belongs to.
    * @returns {Promise<void>}
    */
   async function uploadImage({file, category, title, batchId, clientId}) {
@@ -48,10 +48,10 @@ export const useImageStore = defineStore('images', () => {
   }
 
   /**
-   * Fetches all image batches for a given category and client from Firestore,
-   * including the images stored in each batch's subcollection.
-   * @param {string} category - The category to filter batches by (lowercase).
-   * @param {string} clientId - The Firestore ID of the client whose images to fetch.
+   * Fetches all batches for a category and client, and also loads the images inside each batch.
+   * Images are stored as a subcollection under each batch document, so we need two queries.
+   * @param {string} category - The category to filter by (should be lowercase).
+   * @param {string} clientId - The client whose images we want.
    * @returns {Promise<void>}
    */
   async function fetchImages(category, clientId) {

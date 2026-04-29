@@ -13,12 +13,11 @@ export const useDocumentStore = defineStore('documents', () => {
   // Actions
 
   /**
-   * Uploads a document file to Firebase Storage and saves its metadata to Firestore.
-   * @param {Object} params - Upload parameters.
-   * @param {File} params.file - The file to upload.
-   * @param {string} params.category - The category to file the document under.
-   * @param {string} params.title - The display title for the document.
-   * @param {string} params.clientId - The Firestore ID of the client this document belongs to.
+   * Uploads a document to Firebase Storage, then saves the metadata (title, date, url, etc.) to Firestore.
+   * @param {File} params.file - The actual file being uploaded.
+   * @param {string} params.category - Which category it goes under.
+   * @param {string} params.title - A name for the document. Falls back to the file name if empty.
+   * @param {string} params.clientId - The ID of the client this document should be uploaded to.
    * @returns {Promise<void>}
    */
   async function uploadDocument({file, category, title, clientId}) {
@@ -40,9 +39,9 @@ export const useDocumentStore = defineStore('documents', () => {
   }
 
   /**
-   * Fetches all documents for a given category and client from Firestore.
-   * @param {string} category - The category to filter documents by.
-   * @param {string} clientId - The Firestore ID of the client whose documents to fetch.
+   * Gets all documents from Firestore that match a specific category and client.
+   * @param {string} category - The category to look for.
+   * @param {string} clientId - The client's ID, so we only get their documents.
    * @returns {Promise<void>}
    */
   async function fetchDocuments(category, clientId) {
@@ -65,8 +64,9 @@ export const useDocumentStore = defineStore('documents', () => {
   // Getters
 
   /**
-   * Returns a function that filters the documents list by category.
-   * @returns {function(string): Object[]} A function that takes a category string and returns matching documents.
+   * A computed getter that lets you filter documents by category.
+   * Returns a function you call with a category string to get the matching documents.
+   * @returns {function(string): Object[]}
    */
   const documentsByCategory = computed(() => {
     return (category) => {

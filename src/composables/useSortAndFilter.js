@@ -1,17 +1,18 @@
 import { computed } from 'vue';
 
 /**
- * Composable that returns a filtered and sorted version of a reactive list.
- * Filtering matches against the item's title (case-insensitive).
- * Sorting supports: 'newest', 'oldest' (by uploadDate.seconds), 'alphabetical', 'alphabetical-reverse'.
- * @param {import('vue').ComputedRef<Object[]>} items - The reactive list to filter and sort.
- * @param {import('vue').Ref<string>} searchQuery - The search string to filter titles by.
- * @param {import('vue').Ref<string|null>} sortOrder - The active sort order key.
+ * Takes a list of items and returns it sorted depending on what has been chosen.
+ * Filtering checks if the item's title includes the search query (case-insensitive).
+ * Sorting can be: 'newest', 'oldest', 'alphabetical', or 'alphabetical-reverse'.
+ * Note: newest/oldest sorting uses uploadDate.seconds because Firestore timestamps aren't plain JS.
+ * @param {import('vue').ComputedRef<Object[]>} items - The list to work with.
+ * @param {import('vue').Ref<string>} searchQuery - What the user typed in the search bar.
+ * @param {import('vue').Ref<string|null>} sortOrder - The chosen sort option, or null for no sorting.
  * @returns {{ result: import('vue').ComputedRef<Object[]> }}
  */
 export function useSortAndFilter(items, searchQuery, sortOrder) {
   /**
-   * The filtered and sorted list, recomputed whenever items, searchQuery, or sortOrder change.
+   * The final list after filtering and sorting. Updates automatically when any input changes.
    * @type {import('vue').ComputedRef<Object[]>}
    */
   const result = computed(() => {
