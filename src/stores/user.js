@@ -9,6 +9,11 @@ export const useUserStore = defineStore('user', () => {
   const users = ref([]);
   const consultant = ref(null);
 
+  /**
+   * Fetches the currently authenticated user from Firestore and stores them in currentUser.
+   * Does nothing if no user is authenticated.
+   * @returns {Promise<void>}
+   */
   async function fetchCurrentUser() {
     const uid = auth.currentUser?.uid;
     if (!uid) return;
@@ -19,6 +24,12 @@ export const useUserStore = defineStore('user', () => {
     };
   };
 
+  /**
+   * Fetches a specific user by ID from Firestore and stores them in selectedUser.
+   * Also saves the userId to sessionStorage for persistence across reloads.
+   * @param {string} userId - The Firestore document ID of the user to fetch.
+   * @returns {Promise<void>}
+   */
   async function fetchSelectedUser(userId) {
     const snapshot = await getDoc(doc(db, 'users', userId));
     if (snapshot.exists()) {
@@ -27,6 +38,11 @@ export const useUserStore = defineStore('user', () => {
     };
   };
 
+  /**
+   * Fetches all clients belonging to the currently logged-in consultant.
+   * Filters users where isConsultant is false and consultantId matches the current user.
+   * @returns {Promise<void>}
+   */
   async function fetchAllClients() {
     const uid = currentUser.value?.id;
     const q = query(
@@ -40,10 +56,15 @@ export const useUserStore = defineStore('user', () => {
     });
   };
 
+  /**
+   * Fetches the consultant assigned to the current user and stores them in consultant.
+   * Does nothing if the current user has no consultantId.
+   * @returns {Promise<void>}
+   */
   async function fetchConsultant() {
     const consultantId = currentUser.value?.consultantId;
     if (!consultantId) return;
-  
+
     const snapshot = await getDoc(doc(db, 'users', consultantId));
     if (snapshot.exists()) {
       consultant.value = { id: snapshot.id, ...snapshot.data() };

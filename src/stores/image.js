@@ -12,6 +12,17 @@ export const useImageStore = defineStore('images', () => {
 
   // Actions
 
+  /**
+   * Uploads an image to Firebase Storage and registers it under the given batch in Firestore.
+   * Multiple images with the same batchId are grouped together under one batch document.
+   * @param {Object} params - Upload parameters.
+   * @param {File} params.file - The image file to upload.
+   * @param {string} params.category - The category the image belongs to (e.g. 'Gulv').
+   * @param {string} params.title - The display title for the batch.
+   * @param {string} params.batchId - A shared ID (timestamp) grouping images uploaded together.
+   * @param {string} params.clientId - The Firestore ID of the client this image belongs to.
+   * @returns {Promise<void>}
+   */
   async function uploadImage({file, category, title, batchId, clientId}) {
     error.value = null;
     try {
@@ -36,6 +47,13 @@ export const useImageStore = defineStore('images', () => {
     }
   }
 
+  /**
+   * Fetches all image batches for a given category and client from Firestore,
+   * including the images stored in each batch's subcollection.
+   * @param {string} category - The category to filter batches by (lowercase).
+   * @param {string} clientId - The Firestore ID of the client whose images to fetch.
+   * @returns {Promise<void>}
+   */
   async function fetchImages(category, clientId) {
     error.value = null;
     try {

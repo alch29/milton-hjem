@@ -11,6 +11,12 @@ export const useTimelineStore = defineStore('timeline', () => {
 
   const items = ref([]);
 
+  /**
+   * Fetches the timeline events for the current client from Firestore and populates items.
+   * Uses selectedUser if available (consultant view), otherwise falls back to currentUser.
+   * Events are sorted chronologically by date.
+   * @returns {Promise<void>}
+   */
   async function fetchTimeline() {
     const userStore = useUserStore();
     const clientId = userStore.selectedUser?.id ?? userStore.currentUser?.id;
@@ -36,6 +42,11 @@ export const useTimelineStore = defineStore('timeline', () => {
       });
   };
 
+  /**
+   * The index of the next upcoming event in items (the first event on or after today).
+   * Returns -1 if all events are in the past.
+   * @type {import('vue').ComputedRef<number>}
+   */
   const nextIndex = computed(() => {
     return items.value.findIndex(item => {
       return item.date >= today;
@@ -43,6 +54,11 @@ export const useTimelineStore = defineStore('timeline', () => {
   }
   );
 
+  /**
+   * A subset of timeline items for dashboard preview: the next upcoming event,
+   * the one after it, and the last event (if distinct). Returns at most 3 items.
+   * @type {import('vue').ComputedRef<Object[]>}
+   */
   const previewItems = computed(() => {
     const next = nextIndex.value;
     const last = items.value[items.value.length - 1];
@@ -57,6 +73,12 @@ export const useTimelineStore = defineStore('timeline', () => {
 
   const { formatDate } = useFormatDate();
 
+  /**
+   * Returns a CSS class variant string for a timeline card based on its type, date, and position.
+   * @param {Object} item - The timeline event object.
+   * @param {number} index - The index of the item in the items array.
+   * @returns {string} A CSS class string (e.g. 'card--highlighted', 'card--completed').
+   */
   const getVariant = (item, index) => {
     if (item.type === 'completed') return 'card--completed';
     if (index === nextIndex.value) return 'card--highlighted';

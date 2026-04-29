@@ -11,7 +11,16 @@ export const useDocumentStore = defineStore('documents', () => {
   const error = ref(null);
 
   // Actions
-  // LOOK AT THIS DUMBASS
+
+  /**
+   * Uploads a document file to Firebase Storage and saves its metadata to Firestore.
+   * @param {Object} params - Upload parameters.
+   * @param {File} params.file - The file to upload.
+   * @param {string} params.category - The category to file the document under.
+   * @param {string} params.title - The display title for the document.
+   * @param {string} params.clientId - The Firestore ID of the client this document belongs to.
+   * @returns {Promise<void>}
+   */
   async function uploadDocument({file, category, title, clientId}) {
     error.value = null;
     try {
@@ -30,6 +39,12 @@ export const useDocumentStore = defineStore('documents', () => {
     }
   }
 
+  /**
+   * Fetches all documents for a given category and client from Firestore.
+   * @param {string} category - The category to filter documents by.
+   * @param {string} clientId - The Firestore ID of the client whose documents to fetch.
+   * @returns {Promise<void>}
+   */
   async function fetchDocuments(category, clientId) {
     error.value = null;
     try {
@@ -48,6 +63,11 @@ export const useDocumentStore = defineStore('documents', () => {
   }
 
   // Getters
+
+  /**
+   * Returns a function that filters the documents list by category.
+   * @returns {function(string): Object[]} A function that takes a category string and returns matching documents.
+   */
   const documentsByCategory = computed(() => {
     return (category) => {
       return documents.value.filter(d => {

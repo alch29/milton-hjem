@@ -1,0 +1,10 @@
+{
+    "source": {
+        "include": ["src/stores", "src/composables", "src/config", "src/router"],
+        "includePattern": ".js$"
+    },
+    "opts": {
+        "destination": "./docs",
+        "recurse": true
+    }
+}
