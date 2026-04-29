@@ -12,7 +12,7 @@ export const useDocumentStore = defineStore('documents', () => {
 
   // Actions
   // LOOK AT THIS DUMBASS
-  async function uploadDocument(file, category, title, clientId) {
+  async function uploadDocument({file, category, title, clientId}) {
     error.value = null;
     try {
       const fileRef = storageRef(storage, `documents/${category}/${file.name}`);

@@ -44,9 +44,9 @@ async function handleUpload() {
 
   for (const file of selectedFiles.value) {
     if (props.type === 'documents') {
-      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim(), clientId.value);
+      await documentStore.uploadDocument({file, category: selectedCategory.value, title: title.value.trim(), clientId: clientId.value});
     } else {
-      await imageStore.uploadImage(file, selectedCategory.value, title.value.trim(), batchId, clientId.value);
+      await imageStore.uploadImage({ file, category: selectedCategory.value, title: title.value.trim(), batchId, clientId: clientId.value });
     }
   }
   selectedFiles.value = [];

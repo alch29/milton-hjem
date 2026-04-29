@@ -13,7 +13,7 @@ export const useImageStore = defineStore('images', () => {
   // Actions
 
   // LOOK AT THIS DUMBASS
-  async function uploadImage(file, category, title, batchId, clientId) {
+  async function uploadImage({file, category, title, batchId, clientId}) {
     error.value = null;
     try {
       const fileRef = storageRef(storage, `images/${category}/${file.name}`);
