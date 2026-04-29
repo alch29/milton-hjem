@@ -34,6 +34,32 @@ async function logout() {
           </template>
         </Card>
       </RouterLink>
+      <a
+        v-if="!store.currentUser?.isConsultant"
+        target="_blank"
+        href="https://miltonhuse.dk/inspiration/cases"
+        class="more-view__card"
+      >
+        <Card>
+          <template #content>
+            <img src="../assets/icons/Arrow.svg">
+            <p>Cases</p>
+          </template>
+        </Card>
+      </a>
+      <a
+        v-if="!store.currentUser?.isConsultant"
+        target="_blank"
+        href="https://miltonhuse.dk/inspiration"
+        class="more-view__card"
+      >
+        <Card>
+          <template #content>
+            <img src="../assets/icons/Arrow.svg">
+            <p>Inspiration</p>
+          </template>
+        </Card>
+      </a>
       <RouterLink
         :to="{ name: 'more-contact' }"
         class="more-view__card"
