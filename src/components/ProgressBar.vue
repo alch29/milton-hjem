@@ -6,19 +6,29 @@ import { useFormatDate } from '@/composables/useFormatDate';
 const store = useTimelineStore();
 const { formatDate } = useFormatDate();
 
-const startDate = computed(() => store.items[0]?.date);
-const endDate = computed(() => store.items[store.items.length - 1]?.date);
+const startDate = computed(() => {
+  return store.items[0]?.date;
+});
+const endDate = computed(() => {
+  return store.items[store.items.length - 1]?.date;
+});
 const today = new Date();
 
-function calculateDays(startDate, endDate) {
-    let timeDifference = endDate - startDate;
-    let daysDifference = timeDifference / (1000 * 3600 * 24);
-    return daysDifference;
+function calculateDays(firstDate, lastDate) {
+  const timeDifference = lastDate - firstDate;
+  const daysDifference = timeDifference / (1000 * 3600 * 24);
+  return daysDifference;
 };
 
-const currentValue = computed(() => calculateDays(startDate.value, today));
-const maxValue = computed(() => calculateDays(startDate.value, endDate.value));
-const progress = computed(() => Math.min((currentValue.value / maxValue.value) * 100, 100));
+const currentValue = computed(() => {
+  return calculateDays(startDate.value, today);
+});
+const maxValue = computed(() => {
+  return calculateDays(startDate.value, endDate.value);
+});
+const progress = computed(() => {
+  return Math.min((currentValue.value / maxValue.value) * 100, 100);
+});
 </script>
 
 <template>
@@ -28,10 +38,11 @@ const progress = computed(() => Math.min((currentValue.value / maxValue.value) *
         <div
           class="progress-bar__current-progress"
           :style="{ width: progress + '%' }"
-        >
-        </div>
+        />
       </div>
-      <div class="progress-bar__icon"><img src="../assets/icons/Goal.svg"></div>
+      <div class="progress-bar__icon">
+        <img src="../assets/icons/Goal.svg">
+      </div>
     </div>
     <div class="progress-bar__meta">
       <p>Forventet slutdato: {{ formatDate(endDate) }}</p>

@@ -9,8 +9,8 @@ const store = useTimelineStore();
 const userStore = useUserStore();
 
 watchEffect(() => {
-  if (userStore.currentUser?.id) store.fetchTimeline()
-})
+  if (userStore.currentUser?.id) store.fetchTimeline();
+});
 </script>
 
 <template>
@@ -18,18 +18,25 @@ watchEffect(() => {
     <div class="timeline-preview__header">
       <h3>Tidslinje for huset</h3>
       <RouterLink :to="{ name: 'timeline' }">
-        <img class="timeline-preview__icon" src="@/assets/icons/Timeline.svg">
+        <img
+          class="timeline-preview__icon"
+          src="@/assets/icons/Timeline.svg"
+        >
       </RouterLink>
     </div>
     <div class="timeline-preview__content">
       <div
-        v-for="(item, index) in store.previewItems"
+        v-for="item in store.previewItems"
         :key="item.id"
         :class="['timeline-preview__item', store.getVariant(item, store.items.indexOf(item))]"
       >
         <Card :class="['card--standard', store.getVariant(item, store.items.indexOf(item))]">
-          <template #content>{{ item.title }}</template>
-          <template #meta>{{ store.formatDate(item.date) }}</template>
+          <template #content>
+            {{ item.title }}
+          </template>
+          <template #meta>
+            {{ store.formatDate(item.date) }}
+          </template>
         </Card>
       </div>
     </div>

@@ -5,10 +5,10 @@
   <div class="card-image-category">
     <div class="card-image-category__content">
       <div>
-        <slot name="title"/>
+        <slot name="title" />
       </div>
       <div>
-        <slot name="meta"/>
+        <slot name="meta" />
       </div>
     </div>
     <div class="card-image-category__image">

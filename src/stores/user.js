@@ -11,18 +11,18 @@ export const useUserStore = defineStore('user', () => {
 
   async function fetchCurrentUser() {
     const uid = auth.currentUser?.uid;
-    if (!uid) return
+    if (!uid) return;
 
     const snapshot = await getDoc(doc(db, 'users', uid));
     if (snapshot.exists()) {
-      currentUser.value = { id: snapshot.id, ...snapshot.data() }
+      currentUser.value = { id: snapshot.id, ...snapshot.data() };
     };
   };
 
   async function fetchSelectedUser(userId) {
     const snapshot = await getDoc(doc(db, 'users', userId));
     if (snapshot.exists()) {
-      selectedUser.value = { id: snapshot.id, ...snapshot.data() }
+      selectedUser.value = { id: snapshot.id, ...snapshot.data() };
       sessionStorage.setItem('selectedUserId', userId);
     };
   };
@@ -35,7 +35,9 @@ export const useUserStore = defineStore('user', () => {
       where('consultantId', '==', uid)
     );
     const snapshot = await getDocs(q);
-    users.value = snapshot.docs.map(document => ({ id: document.id, ...document.data() }));
+    users.value = snapshot.docs.map(userDocument => {
+      return { id: userDocument.id, ...userDocument.data() };
+    });
   };
 
   async function fetchConsultant() {
@@ -57,5 +59,5 @@ export const useUserStore = defineStore('user', () => {
     fetchSelectedUser,
     fetchAllClients,
     fetchConsultant
-  }
+  };
 });

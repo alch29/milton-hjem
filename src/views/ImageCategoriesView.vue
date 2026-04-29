@@ -26,25 +26,27 @@ onMounted(() => {
 });
 
 const { result: sortedImages } = useSortAndFilter(
-  computed(() => imageStore.images),
+  computed(() => {
+    return imageStore.images;
+  }),
   searchQuery,
   sortOrder
-)
+);
 
 const batches = computed(() => {
-  const groups = {}
+  const groups = {};
   for (const img of sortedImages.value) {
-    const key = img.batchId || 'legacy'
-    if (!groups[key]) groups[key] = []
-    groups[key].push(img)
+    const key = img.batchId || 'legacy';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(img);
   }
-  return Object.values(groups)
+  return Object.values(groups);
 });
 
 function openCarousel(batch) {
-  activeBatch.value = batch
-  carouselStartIndex.value = 0
-  showCarousel.value = true
+  activeBatch.value = batch;
+  carouselStartIndex.value = 0;
+  showCarousel.value = true;
 };
 </script>
 
@@ -70,7 +72,10 @@ function openCarousel(batch) {
           <span>{{ batch.length }}</span>
         </template>
         <template #image>
-          <img :src="batch[0].url" :alt="batch[0].title" />
+          <img
+            :src="batch[0].url"
+            :alt="batch[0].title"
+          >
         </template>
       </CardImageCategory>
     </div>
@@ -78,7 +83,7 @@ function openCarousel(batch) {
     <ImageCarousel
       v-if="showCarousel"
       :images="activeBatch"
-      :startIndex="carouselStartIndex"
+      :start-index="carouselStartIndex"
       @close="showCarousel = false"
     />
   </div>

@@ -5,7 +5,7 @@
   <div class="card-contact-info">
     <div class="card-contact-info__content">
       <div class="card-contact-info__image">
-          <slot name="image" />
+        <slot name="image" />
       </div>
       <div>
         <slot name="user-name" />

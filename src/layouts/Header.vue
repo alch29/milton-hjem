@@ -1,7 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { onMounted } from 'vue';
 
 const route = useRoute();
 const store = useUserStore();
@@ -10,14 +9,21 @@ const store = useUserStore();
 <template>
   <header class="header">
     <div class="header__container">
-      <img src="@/assets/images/milton-huse.jpg" alt="Milton Huse" class="header__logo" />
+      <img
+        src="@/assets/images/milton-huse.jpg"
+        alt="Milton Huse"
+        class="header__logo"
+      >
     </div>
     <RouterLink
+      v-if="store.currentUser?.isConsultant && ['images', 'documents', 'upload', 'timeline'].includes(route.name)"
       :to="{ name: 'consultant-projects' }"
       class="header__breadcrumb"
-      v-if="store.currentUser?.isConsultant && ['images', 'documents', 'upload', 'timeline'].includes(route.name)"
     >
-      <img class="header__icon" src="../assets/icons/Arrow.svg">
+      <img
+        class="header__icon"
+        src="../assets/icons/Arrow.svg"
+      >
       <p>{{ store.selectedUser?.address }}, {{ store.selectedUser?.postalCode }}</p>
     </RouterLink>
   </header>

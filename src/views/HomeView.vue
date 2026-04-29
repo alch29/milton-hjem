@@ -13,8 +13,8 @@ const store = useUserStore();
 <template>
   <main class="home-view">
     <RouterLink 
-      :to="{ name: 'consultant-projects' }" 
-      v-if="store.currentUser?.isConsultant"
+      v-if="store.currentUser?.isConsultant" 
+      :to="{ name: 'consultant-projects' }"
       class="home-view__breadcrumb"
     >
       <Breadcrumb>PROJEKTER</Breadcrumb>
@@ -28,7 +28,7 @@ const store = useUserStore();
         {{ store.currentUser?.address }}, {{ store.currentUser?.postalCode }}
       </h3>
     </div>
-    <ProgressBar></ProgressBar>
+    <ProgressBar />
     <Card>
       <template #body>
         <h2>Primær kontaktperson</h2>

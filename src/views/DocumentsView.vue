@@ -1,8 +1,8 @@
 <script setup>
-import { useRouter } from 'vue-router'
-import Card from '@/components/cardComponents/Card.vue'
+import { useRouter } from 'vue-router';
+import Card from '@/components/cardComponents/Card.vue';
 
-const router = useRouter()
+const router = useRouter();
 
 const categories = [
   { label: 'Kontrakter',       value: 'kontrakter'    },
@@ -10,17 +10,19 @@ const categories = [
   { label: 'Plantegninger',    value: 'plantegninger' },
   { label: 'Materialer',       value: 'materialer'    },
   { label: 'Fejl & Mangler',   value: 'fejl & mangler'},
-  { label: 'Andet',            value: 'andet'         },
-]
+  { label: 'Andet',            value: 'andet'         }
+];
 
 function goToCategory(category) {
-  router.push({ name: 'document-category', params: { category } })
+  router.push({ name: 'document-category', params: { category } });
 }
 </script>
 
 <template>
   <div class="documents-view">
-    <h1 class="documents-view__title">Mappeoversigt</h1>
+    <h1 class="documents-view__title">
+      Mappeoversigt
+    </h1>
     <div class="documents-view__grid">
       <Card
         v-for="cat in categories"
@@ -29,7 +31,11 @@ function goToCategory(category) {
         @click="goToCategory(cat.value)"
       >
         <template #icon-left>
-          <img src="@/assets/icons/Folder.svg" alt="" class="documents-view__icon" />
+          <img
+            src="@/assets/icons/Folder.svg"
+            alt=""
+            class="documents-view__icon"
+          >
         </template>
         <template #content>
           <span class="documents-view__label">{{ cat.label }}</span>

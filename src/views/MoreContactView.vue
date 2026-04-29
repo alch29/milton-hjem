@@ -8,7 +8,10 @@ const store = useUserStore();
 
 <template>
   <div class="more-contact-view">
-    <RouterLink :to="{ name: 'more' }" class="more-contact-view__breadcrumb">
+    <RouterLink
+      :to="{ name: 'more' }"
+      class="more-contact-view__breadcrumb"
+    >
       <Breadcrumb>Mere</Breadcrumb>
     </RouterLink>
     <h1>Kontakt</h1>

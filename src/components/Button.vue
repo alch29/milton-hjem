@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps({
+defineProps({
   variant: {
     type: String,
     default: 'cta-primary'
@@ -11,7 +11,7 @@ const props = defineProps({
   <div
     class="button"
     :class="`button--${variant}`"
-    >
+  >
     <slot />
   </div>
 </template>

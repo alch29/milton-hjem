@@ -1,34 +1,56 @@
 <script setup>
-import { ref } from 'vue'
-import UploadMedia from '@/components/UploadMedia.vue'
-import Card from '@/components/cardComponents/Card.vue'
+import { ref } from 'vue';
+import UploadMedia from '@/components/UploadMedia.vue';
+import Card from '@/components/cardComponents/Card.vue';
 
-const activeType = ref(null)
+const activeType = ref(null);
 </script>
 
 <template>
   <div class="upload-media-view">
-    <h1 class="upload-media-view__title">Upload medie</h1>
+    <h1 class="upload-media-view__title">
+      Upload medie
+    </h1>
     <div class="upload-media-view__grid">
-      <Card class="upload-media-view__card" @click="activeType = 'images'">
+      <Card
+        class="upload-media-view__card"
+        @click="activeType = 'images'"
+      >
         <template #icon-left>
-          <img src="@/assets/icons/Photo.svg" alt="" class="upload-media-view__icon" />
+          <img
+            src="@/assets/icons/Photo.svg"
+            alt=""
+            class="upload-media-view__icon"
+          >
         </template>
         <template #content>
           <span class="upload-media-view__label">Upload billeder</span>
         </template>
       </Card>      
-      <Card class="upload-media-view__card" @click="activeType = 'documents'">
+      <Card
+        class="upload-media-view__card"
+        @click="activeType = 'documents'"
+      >
         <template #icon-left>
-          <img src="@/assets/icons/Document.svg" alt="" class="upload-media-view__icon" />
+          <img
+            src="@/assets/icons/Document.svg"
+            alt=""
+            class="upload-media-view__icon"
+          >
         </template>
         <template #content>
           <span class="upload-media-view__label">Upload dokumenter</span>
         </template>
       </Card>
     </div>
-    <h3 class="upload-media-view__title">Seneste uploads</h3>
-    <UploadMedia v-if="activeType" :type="activeType" @close="activeType = null" />
+    <h3 class="upload-media-view__title">
+      Seneste uploads
+    </h3>
+    <UploadMedia
+      v-if="activeType"
+      :type="activeType"
+      @close="activeType = null"
+    />
   </div>
 </template>
 

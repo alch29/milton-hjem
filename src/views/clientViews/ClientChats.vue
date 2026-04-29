@@ -21,11 +21,11 @@ const faqs = [
   { question: 'Hvordan downloader jeg filerne?', 
     answer: 'Når du trykker ind på valgte billeder eller filer kan du trykke på download-ikonet' },
   { question: 'Kan jeg kontakte byggeleder eller håndværkere?', 
-    answer: 'Kontakt din byggerådgiver, hvis du ønsker direkte kontakt. Eller planlæg et måde med din byggerådgiver' },
+    answer: 'Kontakt din byggerådgiver, hvis du ønsker direkte kontakt. Eller planlæg et måde med din byggerådgiver' }
 ];
 
 const chats = [
-  { id: 1, name: `${store.consultant?.firstName} ${store.consultant?.lastName}`, title: store.consultant?.role, avatar: userIcon, lastMessage: '10:24' },
+  { id: 1, name: `${store.consultant?.firstName} ${store.consultant?.lastName}`, title: store.consultant?.role, avatar: userIcon, lastMessage: '10:24' }
 ];
 
 function goToChat() {
@@ -35,7 +35,9 @@ function goToChat() {
 
 <template>
   <div class="client-chats-view">
-    <h1 class="client-chats-view__title">Beskeder</h1>
+    <h1 class="client-chats-view__title">
+      Beskeder
+    </h1>
     <div class="client-chats-view__list">
       <Card
         v-for="chat in chats"
@@ -45,8 +47,17 @@ function goToChat() {
       >
         <template #icon-left>
           <div class="client-chats-view__avatar">
-            <img v-if="chat.avatar" :src="chat.avatar" :alt="chat.name" />
-            <img v-else src="@/assets/icons/User.svg" :alt="chat.name" class="client-chats-view__avatar-placeholder" />
+            <img
+              v-if="chat.avatar"
+              :src="chat.avatar"
+              :alt="chat.name"
+            >
+            <img
+              v-else
+              src="@/assets/icons/User.svg"
+              :alt="chat.name"
+              class="client-chats-view__avatar-placeholder"
+            >
           </div>
         </template>
         <template #content>
@@ -62,9 +73,15 @@ function goToChat() {
     </div>
 
     <div class="client-chats-view__faq">
-      <h3 class="client-chats-view__faq-title">Ofte stillede spørgsmål</h3>
-      <h2 class="client-chats-view__faq-subtitle">Har du spørgsmål?</h2>
-      <p class="client-chats-view__faq-description">Se her for at finde svaret på dit spørgsmål inden du kontakter din byggerådgiver.</p>
+      <h3 class="client-chats-view__faq-title">
+        Ofte stillede spørgsmål
+      </h3>
+      <h2 class="client-chats-view__faq-subtitle">
+        Har du spørgsmål?
+      </h2>
+      <p class="client-chats-view__faq-description">
+        Se her for at finde svaret på dit spørgsmål inden du kontakter din byggerådgiver.
+      </p>
       <div class="client-chats-view__faq-list">
         <Accordion
           v-for="faq in faqs"

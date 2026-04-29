@@ -7,29 +7,36 @@ import ChatMessage from '@/components/chatComponents/ChatMessage.vue';
 const messages = ref([
   { id: 1, text: 'Hej! Hvordan går det', timestamp: '14:00', isSent: false },
   { id: 2, text: 'Det går godt, hvad med jer', timestamp: '14:01', isSent: true },
-  { id: 2, text: 'Rigtig godt, tak!', timestamp: '14:01', isSent: false },
-])
+  { id: 2, text: 'Rigtig godt, tak!', timestamp: '14:01', isSent: false }
+]);
 
 // Scroll to bottom when messages change
-const messagesContainer = ref()
+const messagesContainer = ref();
 watch(messages, async () => {
-  await nextTick()
-  messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+  await nextTick();
+  messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
 }, { deep: true });
 
 </script>
 
 <template>
   <div class="chat-view">
-    <ChatUser name="Liv og Malthe" avatar="src\assets\images\LivogMalthe.jpg" @call="() => console.log('Call')" />
+    <ChatUser
+      name="Liv og Malthe"
+      avatar="src\assets\images\LivogMalthe.jpg"
+      @call="() => console.log('Call')"
+    />
 
-    <div class="chat-view__messages" ref="messagesContainer">
+    <div
+      ref="messagesContainer"
+      class="chat-view__messages"
+    >
       <ChatMessage
         v-for="msg in messages"
         :key="msg.id"
         :text="msg.text"
         :timestamp="msg.timestamp"
-        :isSent="msg.isSent"
+        :is-sent="msg.isSent"
       />
     </div>
 

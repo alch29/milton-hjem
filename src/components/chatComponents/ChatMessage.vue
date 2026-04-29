@@ -12,13 +12,18 @@ defineProps({
     type: Boolean,
     default: false
   }
-})
+});
 </script>
 
 <template>
-  <div class="chat-message" :class="{ 'chat-message--sent': isSent, 'chat-message--received': !isSent }">
+  <div
+    class="chat-message"
+    :class="{ 'chat-message--sent': isSent, 'chat-message--received': !isSent }"
+  >
     <div class="chat-message__bubble">
-      <p class="chat-message__text">{{ text }}</p>
+      <p class="chat-message__text">
+        {{ text }}
+      </p>
       <span class="chat-message__timestamp">{{ timestamp }}</span>
     </div>
   </div>

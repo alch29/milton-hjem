@@ -6,25 +6,36 @@ const emit = defineEmits(['search']);
 const searchQuery = ref('');
 
 function onSearch() {
-  emit('search', searchQuery.value)
+  emit('search', searchQuery.value);
 };
 
 function clear() {
-  searchQuery.value = ''
-  emit('search', '')
+  searchQuery.value = '';
+  emit('search', '');
 };
 </script>
 
 <template>
   <div class="search-bar">
-    <img src="@/assets/icons/Search.svg" alt="Søg" class="search-bar__icon" />
+    <img
+      src="@/assets/icons/Search.svg"
+      alt="Søg"
+      class="search-bar__icon"
+    >
     <input
       v-model="searchQuery"
       type="text"
       @input="onSearch"
-    />
-    <button class="search-bar__clear" v-if="searchQuery" @click="clear">
-      <img src="@/assets/icons/Cross.svg" alt="Ryd" />
+    >
+    <button
+      v-if="searchQuery"
+      class="search-bar__clear"
+      @click="clear"
+    >
+      <img
+        src="@/assets/icons/Cross.svg"
+        alt="Ryd"
+      >
     </button>
   </div>
 </template>

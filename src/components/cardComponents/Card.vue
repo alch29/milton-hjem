@@ -4,12 +4,18 @@
 
 <template>
   <div class="card">
-    <div v-if="$slots.body" class="card__body">
+    <div
+      v-if="$slots.body"
+      class="card__body"
+    >
       <slot name="body" />
     </div>
-    <div v-if="$slots.content" class="card__content">
-        <slot name="icon-left" />
-        <slot name="content" />
+    <div
+      v-if="$slots.content"
+      class="card__content"
+    >
+      <slot name="icon-left" />
+      <slot name="content" />
     </div>
     <div class="card__meta">
       <slot name="meta" />

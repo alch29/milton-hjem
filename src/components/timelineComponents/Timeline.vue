@@ -8,7 +8,9 @@ import { useUserStore } from '@/stores/user';
 
 const store = useTimelineStore();
 const userStore = useUserStore();
-onMounted(() => store.fetchTimeline());
+onMounted(() => {
+  return store.fetchTimeline();
+});
 
 const activeView = ref('timeline');
 const selectedItem = ref(null);
@@ -22,7 +24,7 @@ function closeCard() {
 };
 
 watchEffect(() => {
-  if (userStore.currentUser?.id) store.fetchTimeline()
+  if (userStore.currentUser?.id) store.fetchTimeline();
 });
 </script>
 
@@ -33,15 +35,15 @@ watchEffect(() => {
       <div class="timeline__icons">
         <button 
           class="timeline__icon" 
-          @click="activeView = 'calendar'" 
-          :class="{ 'timeline__icon--active': activeView === 'calendar' }"
+          :class="{ 'timeline__icon--active': activeView === 'calendar' }" 
+          @click="activeView = 'calendar'"
         >
           <img src="@/assets/icons/Calender.svg">
         </button>
         <button 
           class="timeline__icon" 
-          @click="activeView = 'timeline'" 
-          :class="{ 'timeline__icon--active': activeView === 'timeline' }"
+          :class="{ 'timeline__icon--active': activeView === 'timeline' }" 
+          @click="activeView = 'timeline'"
         >
           <img src="@/assets/icons/Timeline.svg">
         </button>
@@ -52,7 +54,10 @@ watchEffect(() => {
 
     <EditTimeline v-else-if="activeView === 'edit'" />
 
-    <div v-else class="timeline__content">
+    <div
+      v-else
+      class="timeline__content"
+    >
       <div
         v-for="(item, index) in store.items"
         :key="item.id"
@@ -62,8 +67,12 @@ watchEffect(() => {
           :class="['card--standard', store.getVariant(item, index)]"
           @click="openCard(item)"
         >
-          <template #content>{{ item.title }}</template>
-          <template #meta>{{ store.formatDate(item.date) }}</template>
+          <template #content>
+            {{ item.title }}
+          </template>
+          <template #meta>
+            {{ store.formatDate(item.date) }}
+          </template>
         </Card>
       </div>
     </div>

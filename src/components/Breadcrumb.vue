@@ -2,11 +2,15 @@
 </script>
 
 <template>
-    <div 
-    class="breadcrumb breadcrumbs">
-        <img class="breadcrumb__image" src="../assets/icons/Arrow.svg">
-        <slot />
-    </div>
+  <div 
+    class="breadcrumb breadcrumbs"
+  >
+    <img
+      class="breadcrumb__image"
+      src="../assets/icons/Arrow.svg"
+    >
+    <slot />
+  </div>
 </template>
 
 <style lang="scss" scoped>

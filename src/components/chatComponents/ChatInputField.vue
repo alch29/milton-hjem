@@ -1,45 +1,59 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const message = ref('')
-const showAttachMenu = ref(false)
+const message = ref('');
+const showAttachMenu = ref(false);
 
-const emit = defineEmits(['send'])
+const emit = defineEmits(['send', 'attach']);
 
 function sendMessage() {
-  if (!message.value.trim()) return
-  emit('send', message.value)
-  message.value = ''
+  if (!message.value.trim()) return;
+  emit('send', message.value);
+  message.value = '';
 }
 
 function toggleAttachMenu() {
-  showAttachMenu.value = !showAttachMenu.value
+  showAttachMenu.value = !showAttachMenu.value;
 }
 
 function selectAttachment(type) {
-  showAttachMenu.value = false
+  showAttachMenu.value = false;
   // type is 'document' or 'photo'
-  emit('attach', type)
+  emit('attach', type);
 }
 </script>
 
 <template>
   <div class="chat-input">
-    <div class="attach-menu" v-if="showAttachMenu">
-
+    <div
+      v-if="showAttachMenu"
+      class="attach-menu"
+    >
       <button @click="selectAttachment('photo')">
-        <img src="@/assets/icons/Photo.svg" alt="Photo" />
+        <img
+          src="@/assets/icons/Photo.svg"
+          alt="Photo"
+        >
         <span>Foto</span>
       </button>
       <button @click="selectAttachment('document')">
-        <img src="@/assets/icons/Document.svg" alt="Document" />
+        <img
+          src="@/assets/icons/Document.svg"
+          alt="Document"
+        >
         <span>Dokument</span>
       </button>
     </div>
 
     <div class="input-row">
-      <button class="attach-btn" @click="toggleAttachMenu">
-        <img src="@/assets/icons/Attach.svg" alt="Attach" />
+      <button
+        class="attach-btn"
+        @click="toggleAttachMenu"
+      >
+        <img
+          src="@/assets/icons/Attach.svg"
+          alt="Attach"
+        >
       </button>
       <div class="input-wrapper">
         <input
@@ -47,9 +61,15 @@ function selectAttachment(type) {
           type="text"
           placeholder="Skriv en besked..."
           @keyup.enter="sendMessage"
-        />
-        <button class="send-btn" @click="sendMessage">
-          <img src="@/assets/icons/Sent.svg" alt="Send" />
+        >
+        <button
+          class="send-btn"
+          @click="sendMessage"
+        >
+          <img
+            src="@/assets/icons/Sent.svg"
+            alt="Send"
+          >
         </button>
       </div>
     </div>

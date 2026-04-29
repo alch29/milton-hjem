@@ -1,6 +1,6 @@
 <script setup>
 import Header from '@/layouts/Header.vue';
-import Navigation from '@/layouts/Navigation.vue';
+import Nav from '@/layouts/Navigation.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
@@ -31,7 +31,7 @@ onMounted(() => {
   <div class="app">
     <Header v-if="route.name !== 'login' && route.name !== 'consultant-projects'" />
     <RouterView />
-    <Navigation v-if="route.name !== 'login' && route.name !== 'consultant-projects'" />
+    <Nav v-if="route.name !== 'login' && route.name !== 'consultant-projects'" />
   </div>
 </template>
 

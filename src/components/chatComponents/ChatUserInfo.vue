@@ -4,21 +4,34 @@ defineProps({
   avatar: { type: String, default: null },
   phone: { type: String, default: '' },
   email: { type: String, default: '' },
-  address: { type: String, default: '' },
+  address: { type: String, default: '' }
 });
 
 const emit = defineEmits(['close']);
 </script>
 
 <template>
-  <div class="chat-user-info-overlay" @click.self="emit('close')">
+  <div
+    class="chat-user-info-overlay"
+    @click.self="emit('close')"
+  >
     <div class="chat-user-info">
-      <button class="chat-user-info__close" @click="emit('close')">
-        <img src="@/assets/icons/Cross.svg" alt="Luk" />
+      <button
+        class="chat-user-info__close"
+        @click="emit('close')"
+      >
+        <img
+          src="@/assets/icons/Cross.svg"
+          alt="Luk"
+        >
       </button>
 
       <div class="chat-user-info__avatar">
-        <img src="@/assets/icons/User.svg" alt="Placeholder" class="chat-user-info__avatar--placeholder" />
+        <img
+          src="@/assets/icons/User.svg"
+          alt="Placeholder"
+          class="chat-user-info__avatar--placeholder"
+        >
       </div>
 
       <span class="chat-user-info__name">{{ name }}</span>

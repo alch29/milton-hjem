@@ -27,7 +27,7 @@ function toggleSearch() {
 };
 
 function onSearch(query) {
-  emit('search', query)
+  emit('search', query);
 };
 
 
@@ -36,24 +36,55 @@ function onSearch(query) {
 <template>
   <div class="chat-user-wrapper">
     <div class="chat-user">
-      <div class="chat-user__avatar" @click="showInfo = true">
-        <img src="@/assets/icons/User.svg" alt="Placeholder" class="chat-user__avatar--placeholder" />
+      <div
+        class="chat-user__avatar"
+        @click="showInfo = true"
+      >
+        <img
+          src="@/assets/icons/User.svg"
+          alt="Placeholder"
+          class="chat-user__avatar--placeholder"
+        >
       </div>
 
-      <span v-if="!store.currentUser?.isConsultant" class="chat-user__name" @click="showInfo = true">{{ store.consultant?.firstName + ' ' + store.consultant?.lastName }}</span>
-      <span v-if="store.currentUser?.isConsultant" class="chat-user__name" @click="showInfo = true">{{ store.selectedUser?.firstName + ' ' + store.selectedUser?.lastName }}</span>
+      <span
+        v-if="!store.currentUser?.isConsultant"
+        class="chat-user__name"
+        @click="showInfo = true"
+      >{{ store.consultant?.firstName + ' ' + store.consultant?.lastName }}</span>
+      <span
+        v-if="store.currentUser?.isConsultant"
+        class="chat-user__name"
+        @click="showInfo = true"
+      >{{ store.selectedUser?.firstName + ' ' + store.selectedUser?.lastName }}</span>
 
       <div class="chat-user__actions">
-        <button class="chat-user__btn" @click="emit('call')">
-          <img src="@/assets/icons/Phone.svg" alt="Ring op" />
+        <button
+          class="chat-user__btn"
+          @click="emit('call')"
+        >
+          <img
+            src="@/assets/icons/Phone.svg"
+            alt="Ring op"
+          >
         </button>
-        <button class="chat-user__btn" :class="{ 'chat-user__btn--active': showSearch }" @click="toggleSearch">
-          <img src="@/assets/icons/Search.svg" alt="Søg" />
+        <button
+          class="chat-user__btn"
+          :class="{ 'chat-user__btn--active': showSearch }"
+          @click="toggleSearch"
+        >
+          <img
+            src="@/assets/icons/Search.svg"
+            alt="Søg"
+          >
         </button>
       </div>
     </div>
 
-    <div v-if="showSearch" class="chat-user-wrapper__search">
+    <div
+      v-if="showSearch"
+      class="chat-user-wrapper__search"
+    >
       <SearchBar @search="onSearch" />
     </div>
   </div>
@@ -75,7 +106,6 @@ function onSearch(query) {
     :email="store.selectedUser?.email"
     @close="showInfo = false"
   />
-
 </template>
 
 <style lang="scss" scoped>

@@ -22,13 +22,15 @@ onMounted(() => {
 });
 
 const { result: sortedDocuments } = useSortAndFilter(
-  computed(() => documentStore.documents),
+  computed(() => {
+    return documentStore.documents;
+  }),
   searchQuery,
   sortOrder
-)
+);
 
 function openDocument(url) {
-  window.open(url, '_blank')
+  window.open(url, '_blank');
 };
 </script>
 
@@ -38,9 +40,17 @@ function openDocument(url) {
     <SearchBar @search="query => searchQuery = query" />
       
     <div class="documents-overview-view__list">
-      <Card v-for="doc in sortedDocuments" :key="doc.id" @click="openDocument(doc.url)">
+      <Card
+        v-for="doc in sortedDocuments"
+        :key="doc.id"
+        @click="openDocument(doc.url)"
+      >
         <template #icon-left>
-          <img src="@/assets/icons/Document.svg" alt="Dokument" class="documents-overview-view__icon" />
+          <img
+            src="@/assets/icons/Document.svg"
+            alt="Dokument"
+            class="documents-overview-view__icon"
+          >
         </template>
         <template #content>
           <span class="documents-overview-view__name">{{ doc.title }}</span>

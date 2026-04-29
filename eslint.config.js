@@ -4,10 +4,10 @@ import pluginVue from "eslint-plugin-vue";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
+  js.configs.recommended,
+  ...pluginVue.configs["flat/recommended"],
   {
     files: ["src/**/*.{js,vue}"], // Only cover the src folder
-    plugins: { js, vue: pluginVue },
-    extends: ["js/recommended", "plugin:vue/vue3-recommended"],
     languageOptions: {
       globals: globals.browser,
       sourceType: "module", // Vite uses ES modules
@@ -32,8 +32,8 @@ export default defineConfig([
       'no-async-promise-executor': "error", // Disallow async functions as Promise executors
 
       // Vue specific
+      'vue/multi-word-component-names': "off", // Allow single-word component names
       'vue/component-name-in-template-casing': ["error", "PascalCase"], // Enforce PascalCase for component names in templates
-      'vue/script-setup-uses-vars': "error", // Prevent false positives for no-unused-vars with <script setup>
       'vue/no-v-html': "warn", // Warn on use of v-html to prevent XSS vulnerabilities
     },
   },

@@ -4,12 +4,15 @@ import Breadcrumb from '@/components/Breadcrumb.vue';
 </script>
 
 <template>
-    <main class="timeline-view">
-        <RouterLink :to="{ name: 'home' }" class="timeline-view__breadcrumb">
-          <Breadcrumb>FORSIDE</Breadcrumb>
-        </RouterLink>
-        <Timeline />
-    </main>
+  <main class="timeline-view">
+    <RouterLink
+      :to="{ name: 'home' }"
+      class="timeline-view__breadcrumb"
+    >
+      <Breadcrumb>FORSIDE</Breadcrumb>
+    </RouterLink>
+    <Timeline />
+  </main>
 </template>
 
 <style lang="scss" scoped>

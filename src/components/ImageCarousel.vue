@@ -13,19 +13,19 @@ const props = defineProps({
     type: Number,
     default: 0
   }
-})
+});
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 
 const activeIndex = ref(props.startIndex);
 
 const prev = () => {
-  if (activeIndex.value > 0) activeIndex.value--
-}
+  if (activeIndex.value > 0) activeIndex.value--;
+};
 
 const next = () => {
-  if (activeIndex.value < props.images.length - 1) activeIndex.value++
-}
+  if (activeIndex.value < props.images.length - 1) activeIndex.value++;
+};
 </script>
 
 <template>
@@ -33,24 +33,32 @@ const next = () => {
     <div class="image-carousel__container">
       <div class="image-carousel__images">
         <div
-          class="image-carousel__image"
           v-for="(image, index) in images"
-          :key="index"
-          :style="{ '--background-image': `url(${image.url})` }"
           v-show="activeIndex === index"
+          :key="index"
+          class="image-carousel__image"
+          :style="{ '--background-image': `url(${image.url})` }"
         >
-          <div class="image-carousel__close" @click="emit('close')">
+          <div
+            class="image-carousel__close"
+            @click="emit('close')"
+          >
             <img src="../assets/icons/Cross.svg">
           </div>
           <div class="image-carousel__nav">
-            <div class="image-carousel__prev" @click="prev">
+            <div
+              class="image-carousel__prev"
+              @click="prev"
+            >
               <img src="../assets/icons/Arrow.svg">
             </div>
             <div class="image-carousel__index">
               <p>{{ activeIndex + 1 }}/{{ images.length }}</p>
-
             </div>
-            <div class="image-carousel__next" @click="next">
+            <div
+              class="image-carousel__next"
+              @click="next"
+            >
               <img src="../assets/icons/Arrow.svg">
             </div>
           </div>
@@ -61,8 +69,15 @@ const next = () => {
         <span class="image-carousel__date">{{ formatDate(new Date(images[activeIndex].uploadDate?.seconds * 1000)) }}</span>
       </div>
       <div class="image-carousel__buttons">
-        <Button variant="cta-secondary">Download<img src="../assets/icons/Download.svg"></Button>
-        <Button variant="cta-secondary">Vidersend til byggerådgiver<img class="image-carousel__buttons--sent" src="../assets/icons/Sent.svg"></Button>
+        <Button variant="cta-secondary">
+          Download<img src="../assets/icons/Download.svg">
+        </Button>
+        <Button variant="cta-secondary">
+          Vidersend til byggerådgiver<img
+            class="image-carousel__buttons--sent"
+            src="../assets/icons/Sent.svg"
+          >
+        </Button>
       </div>
     </div>
   </div>

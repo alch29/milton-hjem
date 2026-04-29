@@ -5,57 +5,70 @@ import { useTimelineStore } from '@/stores/timeline';
 const store = useTimelineStore();
 
 const getEventVariant = (day) => {
-  const item = store.items.find(item =>
-    item.date.getDate() === day &&
-    item.date.getMonth() === currentMonth.value &&
-    item.date.getFullYear() === currentYear.value
-  )
-  if (!item) return null
-  const index = store.items.indexOf(item)
-  return store.getVariant(item, index)
-}
+  const item = store.items.find(eventItem => {
+    return eventItem.date.getDate() === day &&
+    eventItem.date.getMonth() === currentMonth.value &&
+    eventItem.date.getFullYear() === currentYear.value;
+  }
+  );
+  if (!item) return null;
+  const index = store.items.indexOf(item);
+  return store.getVariant(item, index);
+};
 
 const today = new Date();
 const currentMonth = ref(today.getMonth());
 const currentYear = ref(today.getFullYear());
 
-const daysInMonth = computed(() => 
-  new Date(currentYear.value, currentMonth.value + 1, 0).getDate()
+const daysInMonth = computed(() => {
+  return new Date(currentYear.value, currentMonth.value + 1, 0).getDate();
+}
 );
 
-const firstDayOfMonth = computed(() => {
-  const day = new Date(currentYear.value, currentMonth.value, 1).getDay()
-  return day === 0 ? 6 : day - 1
-});
-
-const monthName = computed(() =>
-  new Date(currentYear.value, currentMonth.value).toLocaleDateString('da-DK', { month: 'long', year: 'numeric' })
+const monthName = computed(() => {
+  return new Date(currentYear.value, currentMonth.value).toLocaleDateString('da-DK', { month: 'long', year: 'numeric' });
+}
 );
 
 const prevMonth = () => {
-  if (currentMonth.value === 0) { currentMonth.value = 11; currentYear.value-- }
-  else currentMonth.value--
+  if (currentMonth.value === 0) {
+    currentMonth.value = 11; currentYear.value--; 
+  } else currentMonth.value--;
 };
 
 const nextMonth = () => {
-  if (currentMonth.value === 11) { currentMonth.value = 0; currentYear.value++ }
-  else currentMonth.value++
+  if (currentMonth.value === 11) {
+    currentMonth.value = 0; currentYear.value++; 
+  } else currentMonth.value++;
 };
 </script>
 
 <template>
   <div class="calendar">
     <div class="calendar__header">
-      <button @click="prevMonth"><img class="calendar__arrow calendar__arrow--left" src="@/assets/icons/Arrow.svg"></button>
+      <button @click="prevMonth">
+        <img
+          class="calendar__arrow calendar__arrow--left"
+          src="@/assets/icons/Arrow.svg"
+        >
+      </button>
       <span class="calendar__month-name">{{ monthName }}</span>
-      <button @click="nextMonth"><img class="calendar__arrow" src="@/assets/icons/Arrow.svg"></button>
+      <button @click="nextMonth">
+        <img
+          class="calendar__arrow"
+          src="@/assets/icons/Arrow.svg"
+        >
+      </button>
     </div>
     <div class="calendar__grid">
       <div class="calendar__day-names">
-        <span v-for="day in ['M','T','O','T','F','L','S']" class="calendar__day-name">{{ day }}</span>
+        <span
+          v-for="day in ['M','T','O','T','F','L','S']"
+          :key="day"
+          class="calendar__day-name"
+        >{{ day }}</span>
       </div>
       <div class="calendar__day-dates">
-        <span v-for="n in firstDayOfMonth" />
         <span
           v-for="day in daysInMonth"
           :key="day"

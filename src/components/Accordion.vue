@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 defineProps({
   question: {
@@ -10,12 +10,16 @@ defineProps({
     type: String,
     required: true
   }
-})
+});
 
-const isOpen = ref(false)
+const isOpen = ref(false);
 </script>
 <template>
-  <div class="accordion" :class="{ 'accordion--open': isOpen }" @click="isOpen = !isOpen">
+  <div
+    class="accordion"
+    :class="{ 'accordion--open': isOpen }"
+    @click="isOpen = !isOpen"
+  >
     <div class="accordion__header">
       <span class="accordion__question">{{ question }}</span>
       <img
@@ -23,11 +27,16 @@ const isOpen = ref(false)
         alt=""
         class="accordion__arrow"
         :class="{ 'accordion__arrow--open': isOpen }"
-      />
+      >
     </div>
     <Transition name="accordion">
-      <div v-if="isOpen" class="accordion__body">
-        <p class="accordion__answer">{{ answer }}</p>
+      <div
+        v-if="isOpen"
+        class="accordion__body"
+      >
+        <p class="accordion__answer">
+          {{ answer }}
+        </p>
       </div>
     </Transition>
   </div>

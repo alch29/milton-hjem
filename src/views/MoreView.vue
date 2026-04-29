@@ -23,7 +23,10 @@ async function logout() {
   <div class="more-view">
     <h1>Mere</h1>
     <div class="more-view__card-container">
-      <RouterLink :to="{ name: 'more-settings' }" class="more-view__card">
+      <RouterLink
+        :to="{ name: 'more-settings' }"
+        class="more-view__card"
+      >
         <Card>
           <template #content>
             <img src="../assets/icons/User.svg">
@@ -31,7 +34,10 @@ async function logout() {
           </template>
         </Card>
       </RouterLink>
-      <RouterLink :to="{ name: 'more-contact' }" class="more-view__card">
+      <RouterLink
+        :to="{ name: 'more-contact' }"
+        class="more-view__card"
+      >
         <Card>
           <template #content>
             <img src="../assets/icons/Arrow.svg">
@@ -39,7 +45,10 @@ async function logout() {
           </template>
         </Card>
       </RouterLink>
-      <div class="more-view__card" @click="logout">
+      <div
+        class="more-view__card"
+        @click="logout"
+      >
         <Card>
           <template #content>
             <img src="../assets/icons/LogOut.svg">

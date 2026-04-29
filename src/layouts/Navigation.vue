@@ -1,8 +1,8 @@
 <script setup>
-import { computed } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { computed } from 'vue';
+import { useUserStore } from '@/stores/user';
 
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 const allLinks = [
   { name: 'home',      label: 'Hjem',       icon: 'Home',     consultantOnly: false },
@@ -10,12 +10,15 @@ const allLinks = [
   { name: 'documents', label: 'Dokumenter', icon: 'Document', consultantOnly: false },
   { name: 'upload',    label: 'Upload',     icon: 'Upload',   consultantOnly: true  },
   { name: 'chat',         label: 'Beskeder',   icon: 'Message',  consultantOnly: false, clientName: 'client-chats' },
-  { name: 'more',      label: 'Mere',       icon: 'More',     consultantOnly: false },
-]
+  { name: 'more',      label: 'Mere',       icon: 'More',     consultantOnly: false }
+];
 
-const links = computed(() =>
-  allLinks.filter(link => !link.consultantOnly || userStore.currentUser?.isConsultant)
-)
+const links = computed(() => {
+  return allLinks.filter(link => {
+    return !link.consultantOnly || userStore.currentUser?.isConsultant;
+  });
+}
+);
 </script>
 
 <template>
@@ -26,7 +29,11 @@ const links = computed(() =>
       :to="{ name: !userStore.currentUser?.isConsultant && link.clientName ? link.clientName : link.name }"
       class="navigation__item"
     >
-      <img :src="`/src/assets/icons/${link.icon}.svg`" :alt="link.label" class="navigation__icon" />
+      <img
+        :src="`/src/assets/icons/${link.icon}.svg`"
+        :alt="link.label"
+        class="navigation__icon"
+      >
       <span class="navigation__label">{{ link.label }}</span>
     </RouterLink>
   </nav>

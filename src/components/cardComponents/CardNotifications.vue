@@ -3,10 +3,16 @@
 
 <template>
   <div class="card-notifications">
-    <h3 class="card-notifications__title">Notifikationer</h3>
+    <h3 class="card-notifications__title">
+      Notifikationer
+    </h3>
     <div class="card-notifications__notification">
-      <p class="card-notifications__notification-title">title</p>
-      <p class="card-notifications__notification-content breadcrumbs">content</p>
+      <p class="card-notifications__notification-title">
+        title
+      </p>
+      <p class="card-notifications__notification-content breadcrumbs">
+        content
+      </p>
     </div>
   </div>
 </template>

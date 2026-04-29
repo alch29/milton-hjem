@@ -4,10 +4,11 @@ import { useUserStore } from '@/stores/user';
 export function useClientId() {
   const userStore = useUserStore();
 
-  const clientId = computed(() =>
-    userStore.currentUser?.isConsultant
+  const clientId = computed(() => {
+    return userStore.currentUser?.isConsultant
       ? userStore.selectedUser?.id
-      : userStore.currentUser?.id
+      : userStore.currentUser?.id;
+  }
   );
 
   return { clientId };

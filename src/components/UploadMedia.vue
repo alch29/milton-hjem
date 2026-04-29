@@ -1,91 +1,122 @@
 <script setup>
-import { ref, computed } from 'vue'
-import Button from '@/components/Button.vue'
-import InputField from './InputField.vue'
-import { useDocumentStore } from '@/stores/document'
-import { useImageStore } from '@/stores/image'
-import { useClientId } from '@/composables/useClientId'
+import { ref, computed } from 'vue';
+import Button from '@/components/Button.vue';
+import InputField from './InputField.vue';
+import { useDocumentStore } from '@/stores/document';
+import { useImageStore } from '@/stores/image';
+import { useClientId } from '@/composables/useClientId';
 
 const props = defineProps({
   type: {
     type: String,
     required: true
   }
-})
+});
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 
-const documentStore = useDocumentStore()
-const imageStore = useImageStore()
-const { clientId } = useClientId()
+const documentStore = useDocumentStore();
+const imageStore = useImageStore();
+const { clientId } = useClientId();
 
-const documentCategories = ['Kontrakter', 'Godkendelser', 'Plantegninger', 'Materialer', 'Fejl & Mangler', 'Andet']
-const imageCategories = ['Gulv', 'Tag', 'Elektricitet', 'Vægge', 'Udendørs', 'Materialer']
+const documentCategories = ['Kontrakter', 'Godkendelser', 'Plantegninger', 'Materialer', 'Fejl & Mangler', 'Andet'];
+const imageCategories = ['Gulv', 'Tag', 'Elektricitet', 'Vægge', 'Udendørs', 'Materialer'];
 
-const categories = computed(() => props.type === 'documents' ? documentCategories : imageCategories)
+const categories = computed(() => {
+  return props.type === 'documents' ? documentCategories : imageCategories;
+});
 
-const selectedFiles = ref([])
-const selectedCategory = ref(null)
-const title = ref('')
+const selectedFiles = ref([]);
+const selectedCategory = ref(null);
+const title = ref('');
 
-function onFileChange(event) {
-  selectedFiles.value = Array.from(event.target.files)
+function onFileChange(fileInput) {
+  selectedFiles.value = Array.from(fileInput.target.files);
 }
 
 function selectCategory(category) {
-  selectedCategory.value = category
+  selectedCategory.value = category;
 }
 
 async function handleUpload() {
-  if (!selectedFiles.value.length || !selectedCategory.value) return
-  const batchId = Date.now().toString()
+  if (!selectedFiles.value.length || !selectedCategory.value) return;
+  const batchId = Date.now().toString();
 
   for (const file of selectedFiles.value) {
     if (props.type === 'documents') {
-      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim(), clientId.value)
+      await documentStore.uploadDocument(file, selectedCategory.value, title.value.trim(), clientId.value);
     } else {
-      await imageStore.uploadImage(file, selectedCategory.value, title.value.trim(), batchId, clientId.value)
+      await imageStore.uploadImage(file, selectedCategory.value, title.value.trim(), batchId, clientId.value);
     }
   }
-  selectedFiles.value = []
-  selectedCategory.value = null
-  title.value = ''
-  emit('close')
+  selectedFiles.value = [];
+  selectedCategory.value = null;
+  title.value = '';
+  emit('close');
 }
 </script>
 
 <template>
-  <div class="upload-media" @click.self="emit('close')">
+  <div
+    class="upload-media"
+    @click.self="emit('close')"
+  >
     <div class="upload-media__container">
-      <div class="upload-media__field" @click="$refs.fileInput.click()">
+      <div
+        class="upload-media__field"
+        @click="$refs.fileInput.click()"
+      >
         <div class="upload-media__icons">
           <img src="../assets/icons/Photo.svg">
           <img src="../assets/icons/Document.svg">
         </div>
         <p>{{ selectedFiles.length ? `${selectedFiles.length} fil(er) valgt` : 'Upload medie' }}</p>
-        <input ref="fileInput" type="file" multiple style="display: none" @change="onFileChange" />
+        <input
+          ref="fileInput"
+          type="file"
+          multiple
+          style="display: none"
+          @change="onFileChange"
+        >
       </div>
 
       <div class="upload-media__input">
-        <h3 class="upload-media__text">Tilføj titel:</h3>
-        <InputField v-model="title" placeholder="Titel" />
+        <h3 class="upload-media__text">
+          Tilføj titel:
+        </h3>
+        <InputField
+          v-model="title"
+          placeholder="Titel"
+        />
       </div>
 
       <div class="upload-media__categories">
-        <h3 class="upload-media__text">Tilføj kategori:</h3>
+        <h3 class="upload-media__text">
+          Tilføj kategori:
+        </h3>
         <div class="upload-media__category-buttons">
-          <div v-for="category in categories" :key="category">
+          <div
+            v-for="category in categories"
+            :key="category"
+          >
             <Button
               variant="category"
               :class="{ 'button--category-chosen': selectedCategory === category }"
               @click="selectCategory(category)"
-            >{{ category }}</Button>
+            >
+              {{ category }}
+            </Button>
           </div>
         </div>
       </div>
 
       <div class="upload-media__button">
-        <Button @click="handleUpload" :disabled="!selectedFiles.length || !selectedCategory">Upload</Button>
+        <Button
+          :disabled="!selectedFiles.length || !selectedCategory"
+          @click="handleUpload"
+        >
+          Upload
+        </Button>
       </div>
     </div>
   </div>

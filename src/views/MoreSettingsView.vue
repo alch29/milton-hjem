@@ -11,11 +11,16 @@ const store = useUserStore();
 
 <template>
   <div class="more-settings-view">
-    <RouterLink :to="{ name: 'more' }" class="more-settings-view__breadcrumb">
+    <RouterLink
+      :to="{ name: 'more' }"
+      class="more-settings-view__breadcrumb"
+    >
       <Breadcrumb>Mere</Breadcrumb>
     </RouterLink>
     <h1>Mine indstillinger</h1>
-    <p class="breadcrumbs">Min profil</p>
+    <p class="breadcrumbs">
+      Min profil
+    </p>
     <CardContactInfo>
       <template #image>
         <img src="../assets/icons/User.svg">
@@ -30,7 +35,9 @@ const store = useUserStore();
         <p>{{ store.currentUser?.postalCode }}</p>
       </template>
     </CardContactInfo>
-    <p class="breadcrumbs">Notifikationspræferencer</p>
+    <p class="breadcrumbs">
+      Notifikationspræferencer
+    </p>
     <Card>
       <template #content>
         <h3>Slå notifikationer til</h3>

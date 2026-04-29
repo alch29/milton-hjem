@@ -6,29 +6,37 @@ import { useFormatDate } from '@/composables/useFormatDate';
 
 const { formatDate } = useFormatDate();
 const store = useTimelineStore();
-onMounted(() => store.fetchTimeline());
+onMounted(() => {
+  return store.fetchTimeline();
+});
 
-defineProps({ item: Object });
+defineProps({
+  item: {
+    type: Object,
+    default: null
+  }
+});
+
 defineEmits(['close']);
 </script>
 
 <template>
-    <div class="timeline-card">
-        <div class="timeline-card__container">
-            <div class="timeline-card__header">
-                <h3>{{ item.title }}</h3>
-                <h3>{{ formatDate(item.date) }}</h3>
-            </div>
-            <p>{{ item.description }}</p>
-            <Button 
-                variant="cta-secondary" 
-                @click="$emit('close')"
-                class="timeline-card__button"
-            >
-                Luk
-            </Button>
-        </div>
+  <div class="timeline-card">
+    <div class="timeline-card__container">
+      <div class="timeline-card__header">
+        <h3>{{ item.title }}</h3>
+        <h3>{{ formatDate(item.date) }}</h3>
+      </div>
+      <p>{{ item.description }}</p>
+      <Button 
+        variant="cta-secondary" 
+        class="timeline-card__button"
+        @click="$emit('close')"
+      >
+        Luk
+      </Button>
     </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

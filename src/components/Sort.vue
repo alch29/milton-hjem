@@ -1,41 +1,47 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const emit = defineEmits(['sort'])
+const emit = defineEmits(['sort']);
 
 const options = [
   { label: 'Nyeste først', value: 'newest' },
   { label: 'Ældste først', value: 'oldest' },
   { label: 'A - Å', value: 'alphabetical' },
-  { label: 'Å - A', value: 'alphabetical-reverse' },
-]
+  { label: 'Å - A', value: 'alphabetical-reverse' }
+];
 
-const selected = ref(null)
-const isOpen = ref(false)
+const selected = ref(null);
+const isOpen = ref(false);
 
-const selectedLabel = ref('Sorter')
+const selectedLabel = ref('Sorter');
 
 function select(option) {
-  selected.value = option.value
-  selectedLabel.value = option.label
-  isOpen.value = false
-  emit('sort', option.value)
+  selected.value = option.value;
+  selectedLabel.value = option.label;
+  isOpen.value = false;
+  emit('sort', option.value);
 }
 </script>
 
 <template>
   <div class="sort">
-    <button class="sort__trigger" @click="isOpen = !isOpen">
+    <button
+      class="sort__trigger"
+      @click="isOpen = !isOpen"
+    >
       <span>{{ selectedLabel }}</span>
       <img
         src="@/assets/icons/Arrow.svg"
         alt=""
         class="sort__chevron"
         :class="{ 'sort__chevron--open': isOpen }"
-      />
+      >
     </button>
 
-    <div v-if="isOpen" class="sort__dropdown">
+    <div
+      v-if="isOpen"
+      class="sort__dropdown"
+    >
       <button
         v-for="option in options"
         :key="option.value"

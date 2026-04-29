@@ -10,13 +10,15 @@ const store = useUserStore();
 const timelineStore = useTimelineStore();
 const router = useRouter();
 
-watch(() => store.currentUser, (user) => {
-  if (user) store.fetchAllClients()
-}, { immediate: true })
+watch(() => {
+  return store.currentUser;
+}, (user) => {
+  if (user) store.fetchAllClients();
+}, { immediate: true });
 
 async function selectClient(userId) {
   timelineStore.items = [];
-  await store.fetchSelectedUser(userId)
+  await store.fetchSelectedUser(userId);
   router.push({ name: 'home' });
 };
 
@@ -25,20 +27,30 @@ async function selectClient(userId) {
 <template>
   <div class="consultant-projects-view">
     <div class="consultant-projects-view__logo">
-      <img src="@/assets/images/milton_huse_logo_transparent.png" alt="Milton huse logo">
+      <img
+        src="@/assets/images/milton_huse_logo_transparent.png"
+        alt="Milton huse logo"
+      >
     </div>
     <h1>Projekter</h1>
-    <SearchBar></SearchBar>
+    <SearchBar />
     <div class="consultant-projects-view__projects-container">
       <div
-        class="consultant-projects-view__project"
         v-for="user in store.users"
         :key="user.id"
+        class="consultant-projects-view__project"
       >
-        <div @click="selectClient(user.id)" class="consultant-projects-view__project-card">
+        <div
+          class="consultant-projects-view__project-card"
+          @click="selectClient(user.id)"
+        >
           <Card class="card--highlighted">
-            <template #content>{{ user.address }}, {{ user.postalCode }}</template>
-            <template #icon-right><img src="@/assets/icons/Notification.svg"></template>
+            <template #content>
+              {{ user.address }}, {{ user.postalCode }}
+            </template>
+            <template #icon-right>
+              <img src="@/assets/icons/Notification.svg">
+            </template>
           </Card>
         </div>
       </div>

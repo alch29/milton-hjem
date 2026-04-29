@@ -19,16 +19,19 @@ defineEmits(['update:modelValue']);
 
 <template>
   <div class="input-field">
-    <div class="input-field__icon" v-if="$slots.icon">
+    <div
+      v-if="$slots.icon"
+      class="input-field__icon"
+    >
       <slot name="icon" />
     </div>
     <input
       :type="type"
       :placeholder="placeholder"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
       class="input-field__input"
-    />
+      @input="$emit('update:modelValue', $event.target.value)"
+    >
   </div>
 </template>
 

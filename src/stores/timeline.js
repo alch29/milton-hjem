@@ -24,16 +24,23 @@ export const useTimelineStore = defineStore('timeline', () => {
     const eventsSnapshot = await getDocs(collection(db, 'timelines', timelineDoc.id, 'events'));
     
     items.value = eventsSnapshot.docs
-      .map(document => ({
-        id: document.id,
-        ...document.data(),
-        date: document.data().date.toDate()
-      }))
-      .sort((a, b) => a.date - b.date);
+      .map(userDocument => {
+        return {
+          id: userDocument.id,
+          ...userDocument.data(),
+          date: userDocument.data().date.toDate()
+        };
+      })
+      .sort((a, b) => {
+        return a.date - b.date;
+      });
   };
 
-  const nextIndex = computed(() =>
-    items.value.findIndex(item => item.date >= today)
+  const nextIndex = computed(() => {
+    return items.value.findIndex(item => {
+      return item.date >= today;
+    });
+  }
   );
 
   const previewItems = computed(() => {

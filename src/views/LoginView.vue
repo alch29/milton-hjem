@@ -38,21 +38,41 @@ async function login() {
     </div>
     <h1>Log ind</h1>
     <p>Velkommen til MiltonHjem</p>
-    <InputField placeholder="Brugernavn" v-model="email" >
-      <template #icon><img src="../assets/icons/User.svg"></template>
+    <InputField
+      v-model="email"
+      placeholder="Brugernavn"
+    >
+      <template #icon>
+        <img src="../assets/icons/User.svg">
+      </template>
     </InputField>
-    <InputField placeholder="Adgangskode" type="password" v-model="password">
-      <template #icon><img src="../assets/icons/Access.svg"></template>
+    <InputField
+      v-model="password"
+      placeholder="Adgangskode"
+      type="password"
+    >
+      <template #icon>
+        <img src="../assets/icons/Access.svg">
+      </template>
     </InputField>
     <div class="login-view__checkbox">
-      <input type="checkbox" name="rememberMe">
+      <input
+        type="checkbox"
+        name="rememberMe"
+      >
       <label for="rememberMe">Husk mig</label>
     </div>
-    <Button @click="login">Log ind</Button>
-    <RouterLink class="login-view__link">Glemt adgangskode?</RouterLink>
+    <Button @click="login">
+      Log ind
+    </Button>
+    <RouterLink class="login-view__link">
+      Glemt adgangskode?
+    </RouterLink>
     <div class="login-view__sign-up">
       <p>Ikke oprettet endnu?</p>
-      <RouterLink class="login-view__link">Bliv oprettet her</RouterLink>
+      <RouterLink class="login-view__link">
+        Bliv oprettet her
+      </RouterLink>
     </div>
   </div>
 </template>
