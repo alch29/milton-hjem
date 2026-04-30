@@ -65,10 +65,11 @@ export const useTimelineStore = defineStore('timeline', () => {
     const next = nextIndex.value;
     const last = items.value[items.value.length - 1];
     const result = [];
+    const nextPlusOne = items.value[next + 1];
 
     if (items.value[next]) result.push(items.value[next]);
-    if (next > 0) result.push(items.value[next + 1]);
-    if (last && last !== items.value[next] && last !== items.value[next + 1]) result.push(last);
+    if (next >= 0 && nextPlusOne) result.push(nextPlusOne);
+    if (last && !result.includes(last)) result.push(last);
   
     return result;
   });
