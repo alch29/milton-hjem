@@ -3,17 +3,80 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
+    // Deny everything by default. Only the rules below can grant access.
     match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2026, 4, 30);
+      allow read, write: if false;
     }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Checks if the logged-in user is a consultant by looking at their own user document
+    function isConsultant() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isConsultant == true;
+    }
+
+    // Checks if a given clientId actually belongs to the logged-in consultant
+    function ownsClient(clientId) {
+      return get(/databases/$(database)/documents/users/$(clientId)).data.consultantId == request.auth.uid;
+    }
+
+    // Users
+    // Everyone can read their own profile.
+    // Consultants can also read the profiles of their clients (needed for the client list).
+    // No one can write — accounts are created manually in the Firebase console.
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow read: if isConsultant() && resource.data.consultantId == request.auth.uid;
+      // Clients need to read their assigned consultant's profile (e.g. to show contact info)
+      allow read: if isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.consultantId == userId;
+    }
+
+    // Documents
+    // Clients can read their own documents.
+    // Consultants can read and write documents, but only for clients that belong to them.
+    // We need a separate create rule because resource.data doesn't exist yet on a new document,
+    // so we check request.resource.data instead.
+    match /documents/{documentId} {
+      allow read: if isSignedIn() && resource.data.clientId == request.auth.uid;
+      allow read, update, delete: if isConsultant() && ownsClient(resource.data.clientId);
+      allow create: if isConsultant() && ownsClient(request.resource.data.clientId);
+    }
+
+    // Image batches
+    // Same logic as documents.
+    // For the images subcollection we look up the parent batch to find the clientId.
+    match /batches/{batchId} {
+      allow read: if isSignedIn() && resource.data.clientId == request.auth.uid;
+      allow read, update, delete: if isConsultant() && ownsClient(resource.data.clientId);
+      allow create: if isConsultant() && ownsClient(request.resource.data.clientId);
+
+      match /images/{imageId} {
+        allow read: if isSignedIn() &&
+          get(/databases/$(database)/documents/batches/$(batchId)).data.clientId == request.auth.uid;
+        allow read, write: if isConsultant() &&
+          ownsClient(get(/databases/$(database)/documents/batches/$(batchId)).data.clientId);
+      }
+    }
+
+    // Timelines
+    // Clients can read their own timeline and events.
+    // Only consultants can create or edit timeline events.
+    match /timelines/{timelineId} {
+      allow read: if isSignedIn() && resource.data.clientId == request.auth.uid;
+      allow read, update, delete: if isConsultant() && ownsClient(resource.data.clientId);
+      allow create: if isConsultant() && ownsClient(request.resource.data.clientId);
+
+      match /events/{eventId} {
+        allow read: if isSignedIn() &&
+          get(/databases/$(database)/documents/timelines/$(timelineId)).data.clientId == request.auth.uid;
+        allow read, write: if isConsultant() &&
+          ownsClient(get(/databases/$(database)/documents/timelines/$(timelineId)).data.clientId);
+      }
+    }
+
   }
 }
