@@ -4,12 +4,12 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDGo2UQjRWmznVSG5yWWISbvN2fMKeU4ic",
-  authDomain: "milton-hjem.firebaseapp.com",
-  projectId: "milton-hjem",
-  storageBucket: "milton-hjem.firebasestorage.app",
-  messagingSenderId: "1098533112729",
-  appId: "1:1098533112729:web:d4b1ceff0e992b38f06108"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

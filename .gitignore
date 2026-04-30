@@ -1,3 +1,6 @@
+# Environment variables (contains secrets — never commit this)
+.env
+
 # Logs
 logs
 *.log
