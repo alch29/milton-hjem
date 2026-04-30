@@ -1,3 +1,4 @@
+/** @module stores/timeline */
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { collection, getDocs, query, where } from 'firebase/firestore';
@@ -17,7 +18,9 @@ export const useTimelineStore = defineStore('timeline', () => {
    * Fetches the timeline events for the current client from Firestore and updates the state of the items array.
    * Uses selectedUser if available (from consultant view), otherwise falls back to currentUser.
    * Events are sorted chronologically by date.
-   * @returns {Promise<void>} Returns a promise since it's an async function. Doesn't return any value/data (void), but updates state.
+   * @function fetchTimeline
+   * @memberof module:stores/timeline
+   * @returns {Promise<void>}
    */
   async function fetchTimeline() {
     const userStore = useUserStore();
@@ -47,7 +50,9 @@ export const useTimelineStore = defineStore('timeline', () => {
   /**
    * The index of the next upcoming event in the items array (the first event on or after today).
    * Returns -1 if all events are in the past.
-   * @type {import('vue').ComputedRef<number>} nextIndex is a Vue ComputedRef containing the type number.
+   * @member nextIndex
+   * @memberof module:stores/timeline
+   * @type {number}
    */
   const nextIndex = computed(() => {
     return items.value.findIndex(item => {
@@ -59,7 +64,9 @@ export const useTimelineStore = defineStore('timeline', () => {
   /**
    * A small set of timeline items for timeline preview component that is used on the homepage.
    * Shows the next upcoming event, the one after it, and the last event. Returns at most 3 items.
-   * @type {import('vue').ComputedRef<Object[]>} previewItems is a Vue ComputedRef containing the type Object.
+   * @member previewItems
+   * @memberof module:stores/timeline
+   * @type {Object[]}
    */
   const previewItems = computed(() => {
     const next = nextIndex.value;
@@ -76,6 +83,8 @@ export const useTimelineStore = defineStore('timeline', () => {
 
   /**
    * Returns a CSS class string for a timeline card based on its type, date, and position.
+   * @function getVariant
+   * @memberof module:stores/timeline
    * @param {Object} item - The timeline event object.
    * @param {number} index - The index of the item in the items array.
    * @returns {string} A CSS class string (e.g. 'card--highlighted', 'card--completed').

@@ -1,19 +1,24 @@
 import { computed } from 'vue';
 
+/** @module composables/useSortAndFilter */
+
 /**
  * Takes a list of items and returns it sorted depending on what has been chosen.
  * Filtering checks if the item's title includes the search query (case-insensitive).
  * Sorting can be: 'newest', 'oldest', 'alphabetical', or 'alphabetical-reverse'.
  * Note: newest/oldest sorting uses uploadDate.seconds because Firestore timestamps aren't plain JS.
- * @param {import('vue').ComputedRef<Object[]>} items - The list to work with.
- * @param {import('vue').Ref<string>} searchQuery - What the user typed in the search bar.
- * @param {import('vue').Ref<string|null>} sortOrder - The chosen sort option, or null for no sorting.
- * @returns {{ result: import('vue').ComputedRef<Object[]> }}
+ * @memberof module:composables/useSortAndFilter
+ * @param {Object[]} items - The list to work with.
+ * @param {string} searchQuery - What the user typed in the search bar.
+ * @param {string|null} sortOrder - The chosen sort option, or null for no sorting.
+ * @returns {{ result: Object[] }}
  */
 export function useSortAndFilter(items, searchQuery, sortOrder) {
   /**
    * The final list after filtering and sorting. Updates automatically when any input changes.
-   * @type {import('vue').ComputedRef<Object[]>}
+   * @member result
+   * @memberof module:composables/useSortAndFilter
+   * @type {Object[]}
    */
   const result = computed(() => {
     let list = [...items.value];

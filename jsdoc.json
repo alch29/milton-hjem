@@ -5,6 +5,11 @@
     },
     "opts": {
         "destination": "./docs",
-        "recurse": true
+        "recurse": true,
+        "tutorials": "./tutorials",
+        "template": "./themes/docdash"
+    },
+    "docdash": {
+        "tutorialsLabel": "Guides"
     }
 }
