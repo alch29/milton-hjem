@@ -4,13 +4,17 @@ import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
 
+function iconUrl(name) {
+  return new URL(`../assets/icons/${name}.svg`, import.meta.url).href;
+}
+
 const allLinks = [
-  { name: 'home',      label: 'Hjem',       icon: 'Home',     consultantOnly: false },
-  { name: 'images',    label: 'Billeder',   icon: 'Photo',    consultantOnly: false },
-  { name: 'documents', label: 'Dokumenter', icon: 'Document', consultantOnly: false },
-  { name: 'upload',    label: 'Upload',     icon: 'Upload',   consultantOnly: true  },
-  { name: 'chat',         label: 'Beskeder',   icon: 'Message',  consultantOnly: false, clientName: 'client-chats' },
-  { name: 'more',      label: 'Mere',       icon: 'More',     consultantOnly: false }
+  { name: 'home',      label: 'Hjem',       icon: iconUrl('Home'),     consultantOnly: false },
+  { name: 'images',    label: 'Billeder',   icon: iconUrl('Photo'),    consultantOnly: false },
+  { name: 'documents', label: 'Dokumenter', icon: iconUrl('Document'), consultantOnly: false },
+  { name: 'upload',    label: 'Upload',     icon: iconUrl('Upload'),   consultantOnly: true  },
+  { name: 'chat',      label: 'Beskeder',   icon: iconUrl('Message'),  consultantOnly: false, clientName: 'client-chats' },
+  { name: 'more',      label: 'Mere',       icon: iconUrl('More'),     consultantOnly: false }
 ];
 
 const links = computed(() => {
@@ -30,7 +34,7 @@ const links = computed(() => {
       class="navigation__item"
     >
       <img
-        :src="`/src/assets/icons/${link.icon}.svg`"
+        :src="link.icon"
         :alt="link.label"
         class="navigation__icon"
       >
