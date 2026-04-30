@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: useClientId.js</title>
+    <title>JSDoc: Source: useFormatDate.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: useClientId.js</h1>
+    <h1 class="page-title">Source: useFormatDate.js</h1>
 
     
 
@@ -26,33 +26,27 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { computed } from 'vue';
-import { useUserStore } from '@/stores/user';
-
-/**
- * Figures out which client we looking at.
- * If the logged-in user is a consultant, we use the selected client's ID.
- * If they're a client, we just use their own ID.
- * @returns {{ clientId: string|undefined }}
+            <pre class="prettyprint source linenums"><code>/**
+ * Composable that handles date formatting.
+ * @returns {{ formatDate: function(Date): string }}
  */
-export function useClientId() {
-  const userStore = useUserStore();
+export function useFormatDate() {
 
   /**
-   * The ID of the client.
-   * Switches between selectedUser and currentUser depending on the role.
-   * @type {string|undefined}
+   * Formats a Date object as a day/month/year string.
+   * @param {Date} date - The date to be formatted.
+   * @returns {string} The formatted date string, or an empty string if false.
    */
-  const clientId = computed(() => {
-    return userStore.currentUser?.isConsultant
-      ? userStore.selectedUser?.id
-      : userStore.currentUser?.id;
-  }
-  );
+  function formatDate(date) {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    return `${day}/${month}/${year}`;
+  };
 
-  return { clientId };
-}
-</code></pre>
+  return { formatDate };
+};</code></pre>
         </article>
     </section>
 

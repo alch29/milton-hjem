@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>composables/useClientId.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,31 +35,50 @@
 
 <div id="main">
     
+    <h1 class="page-title">composables/useClientId.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { computed } from 'vue';
+import { useUserStore } from '@/stores/user';
 
+/** @module composables/useClientId */
 
-    <section class="package">
-        <h3> </h3>		
+/**
+ * Figures out which client we're currently looking at.
+ * If the logged-in user is a consultant, we use the selected client's ID.
+ * If they're a client, we just use their own ID.
+ * @memberof module:composables/useClientId
+ * @returns {{ clientId: string|undefined }}
+ */
+export function useClientId() {
+  const userStore = useUserStore();
+
+  /**
+   * The ID of the client.
+   * Switches between selectedUser and currentUser depending on the role.
+   * @member clientId
+   * @memberof module:composables/useClientId
+   * @type {string|undefined}
+   */
+  const clientId = computed(() => {
+    return userStore.currentUser?.isConsultant
+      ? userStore.selectedUser?.id
+      : userStore.currentUser?.id;
+  }
+  );
+
+  return { clientId };
+}
+</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
 
 
 
