@@ -12,7 +12,7 @@ export const useUserStore = defineStore('user', () => {
   /**
    * Fetches the currently authenticated user from Firestore and stores them in currentUser.
    * Does nothing if no user is authenticated.
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} Returns a promise since it's an async function. Doesn't return any value/data (void), but updates state.
    */
   async function fetchCurrentUser() {
     const uid = auth.currentUser?.uid;
@@ -26,9 +26,9 @@ export const useUserStore = defineStore('user', () => {
 
   /**
    * Fetches a specific user by ID from Firestore and stores them in selectedUser.
-   * Also saves the userId to sessionStorage for persistence across reloads.
+   * Also saves the userId to sessionStorage so it stays through reloads.
    * @param {string} userId - The Firestore document ID of the user to fetch.
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} Returns a promise since it's an async function. Doesn't return any value/data (void), but updates state.
    */
   async function fetchSelectedUser(userId) {
     const snapshot = await getDoc(doc(db, 'users', userId));
@@ -39,9 +39,9 @@ export const useUserStore = defineStore('user', () => {
   };
 
   /**
-   * Fetches all clients belonging to the currently logged-in consultant.
+   * Fetches all clients assigned to the currently logged-in consultant (for consultant view).
    * Filters users where isConsultant is false and consultantId matches the current user.
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} Returns a promise since it's an async function. Doesn't return any value/data (void), but updates state.
    */
   async function fetchAllClients() {
     const uid = currentUser.value?.id;
@@ -57,9 +57,9 @@ export const useUserStore = defineStore('user', () => {
   };
 
   /**
-   * Fetches the consultant assigned to the current user and stores them in consultant.
+   * Fetches the consultant assigned to the current user and stores them in consultant (for client view).
    * Does nothing if the current user has no consultantId.
-   * @returns {Promise<void>}
+   * @returns {Promise<void>} Returns a promise since it's an async function. Doesn't return any value/data (void), but updates state.
    */
   async function fetchConsultant() {
     const consultantId = currentUser.value?.consultantId;

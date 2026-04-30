@@ -1,13 +1,13 @@
 /**
- * Composable that provides a date formatting utility.
+ * Composable that handles date formatting.
  * @returns {{ formatDate: function(Date): string }}
  */
 export function useFormatDate() {
 
   /**
    * Formats a Date object as a day/month/year string.
-   * @param {Date} date - The date to format.
-   * @returns {string} The formatted date string (e.g. '4/3/2025'), or an empty string if falsy.
+   * @param {Date} date - The date to be formatted.
+   * @returns {string} The formatted date string, or an empty string if false.
    */
   function formatDate(date) {
     if (!date) return '';
