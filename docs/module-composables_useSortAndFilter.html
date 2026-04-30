@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>composables/useSortAndFilter - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-composables_useClientId.html">composables/useClientId</a><ul class='methods'><li data-type='method'><a href="module-composables_useClientId.html#.exports.useClientId">exports.useClientId</a></li></ul></li><li><a href="module-composables_useFormatDate.html">composables/useFormatDate</a><ul class='methods'><li data-type='method'><a href="module-composables_useFormatDate.html#.exports.useFormatDate">exports.useFormatDate</a></li><li data-type='method'><a href="module-composables_useFormatDate.html#.formatDate">formatDate</a></li></ul></li><li><a href="module-composables_useSortAndFilter.html">composables/useSortAndFilter</a><ul class='methods'><li data-type='method'><a href="module-composables_useSortAndFilter.html#.exports.useSortAndFilter">exports.useSortAndFilter</a></li></ul></li><li><a href="module-stores_document.html">stores/document</a><ul class='methods'><li data-type='method'><a href="module-stores_document.html#.documentsByCategory">documentsByCategory</a></li><li data-type='method'><a href="module-stores_document.html#.fetchDocuments">fetchDocuments</a></li><li data-type='method'><a href="module-stores_document.html#.uploadDocument">uploadDocument</a></li></ul></li><li><a href="module-stores_image.html">stores/image</a><ul class='methods'><li data-type='method'><a href="module-stores_image.html#.fetchImages">fetchImages</a></li><li data-type='method'><a href="module-stores_image.html#.uploadImage">uploadImage</a></li></ul></li><li><a href="module-stores_timeline.html">stores/timeline</a><ul class='methods'><li data-type='method'><a href="module-stores_timeline.html#.fetchTimeline">fetchTimeline</a></li><li data-type='method'><a href="module-stores_timeline.html#.getVariant">getVariant</a></li></ul></li><li><a href="module-stores_user.html">stores/user</a><ul class='methods'><li data-type='method'><a href="module-stores_user.html#.fetchAllClients">fetchAllClients</a></li><li data-type='method'><a href="module-stores_user.html#.fetchConsultant">fetchConsultant</a></li><li data-type='method'><a href="module-stores_user.html#.fetchCurrentUser">fetchCurrentUser</a></li><li data-type='method'><a href="module-stores_user.html#.fetchSelectedUser">fetchSelectedUser</a></li></ul></li></ul><h3>Guides</h3><ul><li><a href="tutorial-architecture.html">Architecture</a></li><li><a href="tutorial-database.html">Database</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">composables/useSortAndFilter</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".result"><span class="type-signature type-signature-static">(static) </span>result<span class="type-signature"> :Array.&lt;Object></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>The final list after filtering and sorting. Updates automatically when any input changes.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="composables_useSortAndFilter.js.html">composables/useSortAndFilter.js</a>, <a href="composables_useSortAndFilter.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The final list after filtering and sorting. Updates automatically when any input changes.
+</div>
+
+
+
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;Object></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".exports.useSortAndFilter"><span class="type-signature type-signature-static">(static) </span>exports.useSortAndFilter<span class="signature">(items, searchQuery, sortOrder)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Takes a list of items and returns it sorted depending on what has been chosen.Filtering checks if the item's title includes the search query (case-insensitive).Sorting can be: 'newest', 'oldest', 'alphabetical', or 'alphabetical-reverse'.Note: newest/oldest sorting uses uploadDate.seconds because Firestore timestamps aren't plain JS.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="composables_useSortAndFilter.js.html">composables/useSortAndFilter.js</a>, <a href="composables_useSortAndFilter.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>items</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The list to work with.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>searchQuery</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">What the user typed in the search bar.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sortOrder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The chosen sort option, or null for no sorting.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Thu Apr 30 2026 12:41:33 GMT+0200 (Centraleuropæisk sommertid) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

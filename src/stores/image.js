@@ -1,3 +1,4 @@
+/** @module stores/image */
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { collection, getDocs, addDoc, setDoc, doc, query, where } from 'firebase/firestore';
@@ -16,6 +17,8 @@ export const useImageStore = defineStore('images', () => {
    * Uploads an image to Firebase Storage and saves it under a batch in Firestore.
    * All images uploaded at the same time share a batchId, so they're grouped together.
    * We use setDoc with merge:true on the batch so we don't overwrite it when uploading multiple files.
+   * @function uploadImage
+   * @memberof module:stores/image
    * @param {File} params.file - The image file to upload.
    * @param {string} params.category - Which category the image belongs to.
    * @param {string} params.title - Title for the batch. Falls back to file name if empty.
@@ -50,6 +53,8 @@ export const useImageStore = defineStore('images', () => {
   /**
    * Fetches all batches for a category and client, and also loads the images inside each batch.
    * Images are stored as a subcollection under each batch document, so we need two queries.
+   * @function fetchImages
+   * @memberof module:stores/image
    * @param {string} category - The category to filter by (should be lowercase).
    * @param {string} clientId - The client whose images we want.
    * @returns {Promise<void>}

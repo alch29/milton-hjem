@@ -27,6 +27,7 @@
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/test-utils": "^2.4.6",
     "cypress": "^15.11.0",
+    "docdash": "^2.0.2",
     "eslint": "^10.0.3",
     "eslint-plugin-vue": "^10.8.0",
     "globals": "^17.5.0",

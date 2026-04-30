@@ -1,11 +1,14 @@
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 
+/** @module composables/useClientId */
+
 /**
- * Figures out which client we looking at.
+ * Figures out which client we're currently looking at.
  * If the logged-in user is a consultant, we use the selected client's ID.
  * If they're a client, we just use their own ID.
- * @returns {{ clientId: import('vue').ComputedRef<string|undefined> }}
+ * @memberof module:composables/useClientId
+ * @returns {{ clientId: string|undefined }}
  */
 export function useClientId() {
   const userStore = useUserStore();
@@ -13,7 +16,9 @@ export function useClientId() {
   /**
    * The ID of the client.
    * Switches between selectedUser and currentUser depending on the role.
-   * @type {import('vue').ComputedRef<string|undefined>}
+   * @member clientId
+   * @memberof module:composables/useClientId
+   * @type {string|undefined}
    */
   const clientId = computed(() => {
     return userStore.currentUser?.isConsultant

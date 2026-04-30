@@ -1,3 +1,4 @@
+/** @module stores/document */
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { collection, getDocs, addDoc, query, where } from 'firebase/firestore';
@@ -14,6 +15,8 @@ export const useDocumentStore = defineStore('documents', () => {
 
   /**
    * Uploads a document to Firebase Storage, then saves the metadata (title, date, url, etc.) to Firestore.
+   * @function uploadDocument
+   * @memberof module:stores/document
    * @param {File} params.file - The actual file being uploaded.
    * @param {string} params.category - Which category it goes under.
    * @param {string} params.title - A name for the document. Falls back to the file name if empty.
@@ -40,6 +43,8 @@ export const useDocumentStore = defineStore('documents', () => {
 
   /**
    * Gets all documents from Firestore that match a specific category and client.
+   * @function fetchDocuments
+   * @memberof module:stores/document
    * @param {string} category - The category to look for.
    * @param {string} clientId - The client's ID, so we only get their documents.
    * @returns {Promise<void>}
@@ -66,6 +71,8 @@ export const useDocumentStore = defineStore('documents', () => {
   /**
    * A computed getter that lets you filter documents by category.
    * Returns a function you call with a category string to get the matching documents.
+   * @function documentsByCategory
+   * @memberof module:stores/document
    * @returns {function(string): Object[]}
    */
   const documentsByCategory = computed(() => {
