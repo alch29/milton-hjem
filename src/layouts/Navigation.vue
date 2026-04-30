@@ -1,20 +1,22 @@
 <script setup>
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
+import HomeIcon from '@/assets/icons/Home.svg';
+import PhotoIcon from '@/assets/icons/Photo.svg';
+import DocumentIcon from '@/assets/icons/Document.svg';
+import UploadIcon from '@/assets/icons/Upload.svg';
+import MessageIcon from '@/assets/icons/Message.svg';
+import MoreIcon from '@/assets/icons/More.svg';
 
 const userStore = useUserStore();
 
-function iconUrl(name) {
-  return new URL(`../assets/icons/${name}.svg`, import.meta.url).href;
-}
-
 const allLinks = [
-  { name: 'home',      label: 'Hjem',       icon: iconUrl('Home'),     consultantOnly: false },
-  { name: 'images',    label: 'Billeder',   icon: iconUrl('Photo'),    consultantOnly: false },
-  { name: 'documents', label: 'Dokumenter', icon: iconUrl('Document'), consultantOnly: false },
-  { name: 'upload',    label: 'Upload',     icon: iconUrl('Upload'),   consultantOnly: true  },
-  { name: 'chat',      label: 'Beskeder',   icon: iconUrl('Message'),  consultantOnly: false, clientName: 'client-chats' },
-  { name: 'more',      label: 'Mere',       icon: iconUrl('More'),     consultantOnly: false }
+  { name: 'home',      label: 'Hjem',       icon: HomeIcon,     consultantOnly: false },
+  { name: 'images',    label: 'Billeder',   icon: PhotoIcon,    consultantOnly: false },
+  { name: 'documents', label: 'Dokumenter', icon: DocumentIcon, consultantOnly: false },
+  { name: 'upload',    label: 'Upload',     icon: UploadIcon,   consultantOnly: true  },
+  { name: 'chat',      label: 'Beskeder',   icon: MessageIcon,  consultantOnly: false, clientName: 'client-chats' },
+  { name: 'more',      label: 'Mere',       icon: MoreIcon,     consultantOnly: false }
 ];
 
 const links = computed(() => {
