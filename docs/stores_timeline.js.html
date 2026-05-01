@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>stores/timeline.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-composables_useClientId.html">composables/useClientId</a><ul class='methods'><li data-type='method'><a href="module-composables_useClientId.html#.exports.useClientId">exports.useClientId</a></li></ul></li><li><a href="module-composables_useFormatDate.html">composables/useFormatDate</a><ul class='methods'><li data-type='method'><a href="module-composables_useFormatDate.html#.exports.useFormatDate">exports.useFormatDate</a></li><li data-type='method'><a href="module-composables_useFormatDate.html#.formatDate">formatDate</a></li></ul></li><li><a href="module-composables_useSortAndFilter.html">composables/useSortAndFilter</a><ul class='methods'><li data-type='method'><a href="module-composables_useSortAndFilter.html#.exports.useSortAndFilter">exports.useSortAndFilter</a></li></ul></li><li><a href="module-stores_document.html">stores/document</a><ul class='methods'><li data-type='method'><a href="module-stores_document.html#.documentsByCategory">documentsByCategory</a></li><li data-type='method'><a href="module-stores_document.html#.fetchDocuments">fetchDocuments</a></li><li data-type='method'><a href="module-stores_document.html#.uploadDocument">uploadDocument</a></li></ul></li><li><a href="module-stores_image.html">stores/image</a><ul class='methods'><li data-type='method'><a href="module-stores_image.html#.fetchImages">fetchImages</a></li><li data-type='method'><a href="module-stores_image.html#.uploadImage">uploadImage</a></li></ul></li><li><a href="module-stores_timeline.html">stores/timeline</a><ul class='methods'><li data-type='method'><a href="module-stores_timeline.html#.fetchTimeline">fetchTimeline</a></li><li data-type='method'><a href="module-stores_timeline.html#.getVariant">getVariant</a></li></ul></li><li><a href="module-stores_user.html">stores/user</a><ul class='methods'><li data-type='method'><a href="module-stores_user.html#.fetchAllClients">fetchAllClients</a></li><li data-type='method'><a href="module-stores_user.html#.fetchConsultant">fetchConsultant</a></li><li data-type='method'><a href="module-stores_user.html#.fetchCurrentUser">fetchCurrentUser</a></li><li data-type='method'><a href="module-stores_user.html#.fetchSelectedUser">fetchSelectedUser</a></li></ul></li></ul><h3>Guides</h3><ul><li><a href="tutorial-architecture.html">Architecture</a></li><li><a href="tutorial-database.html">Database</a></li><li><a href="tutorial-difficulties_and_solutions.html">difficulties_and_solutions</a></li><li><a href="tutorial-install_guide.html">install_guide</a></li><li><a href="tutorial-permissions.html">permissions</a></li><li><a href="tutorial-refactoring.html">refactoring</a></li><li><a href="tutorial-technologies.html">technologies</a></li><li><a href="tutorial-test_strategy.html">test_strategy</a></li><li><a href="tutorial-userguide.html">userguide</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">stores/timeline.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module stores/timeline */
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/config/firebase';
+import { useUserStore } from './user';
+import { useFormatDate } from '@/composables/useFormatDate';
+
+export const useTimelineStore = defineStore('timeline', () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const items = ref([]);
+
+  const { formatDate } = useFormatDate();
+
+  /**
+   * Fetches the timeline events for the current client from Firestore and updates the state of the items array.
+   * Uses selectedUser if available (from consultant view), otherwise falls back to currentUser.
+   * Events are sorted chronologically by date.
+   * @function fetchTimeline
+   * @memberof module:stores/timeline
+   * @returns {Promise&lt;void>}
+   */
+  async function fetchTimeline() {
+    const userStore = useUserStore();
+    const clientId = userStore.selectedUser?.id ?? userStore.currentUser?.id;
+    if (!clientId) return;
+
+    const q = query(collection(db, 'timelines'), where('clientId', '==', clientId));
+    const timelineSnapshot = await getDocs(q);
+    if (timelineSnapshot.empty) return;
+
+    const timelineDoc = timelineSnapshot.docs[0];
+    const eventsSnapshot = await getDocs(collection(db, 'timelines', timelineDoc.id, 'events'));
+    
+    items.value = eventsSnapshot.docs
+      .map(userDocument => {
+        return {
+          id: userDocument.id,
+          ...userDocument.data(),
+          date: userDocument.data().date.toDate()
+        };
+      })
+      .sort((a, b) => {
+        return a.date - b.date;
+      });
+  };
+
+  /**
+   * The index of the next upcoming event in the items array (the first event on or after today).
+   * Returns -1 if all events are in the past.
+   * @member nextIndex
+   * @memberof module:stores/timeline
+   * @type {number}
+   */
+  const nextIndex = computed(() => {
+    return items.value.findIndex(item => {
+      return item.date >= today;
+    });
+  }
+  );
+
+  /**
+   * A small set of timeline items for timeline preview component that is used on the homepage.
+   * Shows the next upcoming event, the one after it, and the last event. Returns at most 3 items.
+   * @member previewItems
+   * @memberof module:stores/timeline
+   * @type {Object[]}
+   */
+  const previewItems = computed(() => {
+    const next = nextIndex.value;
+    const last = items.value[items.value.length - 1];
+    const result = [];
+    const nextPlusOne = items.value[next + 1];
+
+    if (items.value[next]) result.push(items.value[next]);
+    if (next >= 0 &amp;&amp; nextPlusOne) result.push(nextPlusOne);
+    if (last &amp;&amp; !result.includes(last)) result.push(last);
+  
+    return result;
+  });
+
+  /**
+   * Returns a CSS class string for a timeline card based on its type, date, and position.
+   * @function getVariant
+   * @memberof module:stores/timeline
+   * @param {Object} item - The timeline event object.
+   * @param {number} index - The index of the item in the items array.
+   * @returns {string} A CSS class string (e.g. 'card--highlighted', 'card--completed').
+   */
+  const getVariant = (item, index) => {
+    if (item.type === 'completed') return 'card--completed';
+    if (index === nextIndex.value) return 'card--highlighted';
+    if (item.date &lt; today) return 'card--greyed-out';
+    if (item.type === 'meeting') return 'card--meeting';
+    return 'card--default';
+  };
+
+  return { 
+    items, 
+    nextIndex,
+    previewItems,
+    formatDate, 
+    getVariant,
+    fetchTimeline
+  };
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Fri May 01 2026 09:02:09 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

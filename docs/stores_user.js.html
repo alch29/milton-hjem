@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>stores/user.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-composables_useClientId.html">composables/useClientId</a><ul class='methods'><li data-type='method'><a href="module-composables_useClientId.html#.exports.useClientId">exports.useClientId</a></li></ul></li><li><a href="module-composables_useFormatDate.html">composables/useFormatDate</a><ul class='methods'><li data-type='method'><a href="module-composables_useFormatDate.html#.exports.useFormatDate">exports.useFormatDate</a></li><li data-type='method'><a href="module-composables_useFormatDate.html#.formatDate">formatDate</a></li></ul></li><li><a href="module-composables_useSortAndFilter.html">composables/useSortAndFilter</a><ul class='methods'><li data-type='method'><a href="module-composables_useSortAndFilter.html#.exports.useSortAndFilter">exports.useSortAndFilter</a></li></ul></li><li><a href="module-stores_document.html">stores/document</a><ul class='methods'><li data-type='method'><a href="module-stores_document.html#.documentsByCategory">documentsByCategory</a></li><li data-type='method'><a href="module-stores_document.html#.fetchDocuments">fetchDocuments</a></li><li data-type='method'><a href="module-stores_document.html#.uploadDocument">uploadDocument</a></li></ul></li><li><a href="module-stores_image.html">stores/image</a><ul class='methods'><li data-type='method'><a href="module-stores_image.html#.fetchImages">fetchImages</a></li><li data-type='method'><a href="module-stores_image.html#.uploadImage">uploadImage</a></li></ul></li><li><a href="module-stores_timeline.html">stores/timeline</a><ul class='methods'><li data-type='method'><a href="module-stores_timeline.html#.fetchTimeline">fetchTimeline</a></li><li data-type='method'><a href="module-stores_timeline.html#.getVariant">getVariant</a></li></ul></li><li><a href="module-stores_user.html">stores/user</a><ul class='methods'><li data-type='method'><a href="module-stores_user.html#.fetchAllClients">fetchAllClients</a></li><li data-type='method'><a href="module-stores_user.html#.fetchConsultant">fetchConsultant</a></li><li data-type='method'><a href="module-stores_user.html#.fetchCurrentUser">fetchCurrentUser</a></li><li data-type='method'><a href="module-stores_user.html#.fetchSelectedUser">fetchSelectedUser</a></li></ul></li></ul><h3>Guides</h3><ul><li><a href="tutorial-architecture.html">Architecture</a></li><li><a href="tutorial-database.html">Database</a></li><li><a href="tutorial-difficulties_and_solutions.html">difficulties_and_solutions</a></li><li><a href="tutorial-install_guide.html">install_guide</a></li><li><a href="tutorial-permissions.html">permissions</a></li><li><a href="tutorial-refactoring.html">refactoring</a></li><li><a href="tutorial-technologies.html">technologies</a></li><li><a href="tutorial-test_strategy.html">test_strategy</a></li><li><a href="tutorial-userguide.html">userguide</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">stores/user.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module stores/user */
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { db, auth } from '@/config/firebase';
+
+export const useUserStore = defineStore('user', () => {
+  const currentUser = ref(null);
+  const selectedUser = ref(null);
+  const users = ref([]);
+  const consultant = ref(null);
+
+  /**
+   * Fetches the currently authenticated user from Firestore and stores them in currentUser.
+   * Does nothing if no user is authenticated.
+   * @function fetchCurrentUser
+   * @memberof module:stores/user
+   * @returns {Promise&lt;void>}
+   */
+  async function fetchCurrentUser() {
+    const uid = auth.currentUser?.uid;
+    if (!uid) return;
+
+    const snapshot = await getDoc(doc(db, 'users', uid));
+    if (snapshot.exists()) {
+      currentUser.value = { id: snapshot.id, ...snapshot.data() };
+    };
+  };
+
+  /**
+   * Fetches a specific user by ID from Firestore and stores them in selectedUser.
+   * Also saves the userId to sessionStorage so it stays through reloads.
+   * @function fetchSelectedUser
+   * @memberof module:stores/user
+   * @param {string} userId - The Firestore document ID of the user to fetch.
+   * @returns {Promise&lt;void>}
+   */
+  async function fetchSelectedUser(userId) {
+    const snapshot = await getDoc(doc(db, 'users', userId));
+    if (snapshot.exists()) {
+      selectedUser.value = { id: snapshot.id, ...snapshot.data() };
+      sessionStorage.setItem('selectedUserId', userId);
+    };
+  };
+
+  /**
+   * Fetches all clients assigned to the currently logged-in consultant (for consultant view).
+   * Filters users where isConsultant is false and consultantId matches the current user.
+   * @function fetchAllClients
+   * @memberof module:stores/user
+   * @returns {Promise&lt;void>}
+   */
+  async function fetchAllClients() {
+    const uid = currentUser.value?.id;
+    const q = query(
+      collection(db, 'users'),
+      where('isConsultant', '==', false),
+      where('consultantId', '==', uid)
+    );
+    const snapshot = await getDocs(q);
+    users.value = snapshot.docs.map(userDocument => {
+      return { id: userDocument.id, ...userDocument.data() };
+    });
+  };
+
+  /**
+   * Fetches the consultant assigned to the current user and stores them in consultant (for client view).
+   * Does nothing if the current user has no consultantId.
+   * @function fetchConsultant
+   * @memberof module:stores/user
+   * @returns {Promise&lt;void>}
+   */
+  async function fetchConsultant() {
+    const consultantId = currentUser.value?.consultantId;
+    if (!consultantId) return;
+
+    const snapshot = await getDoc(doc(db, 'users', consultantId));
+    if (snapshot.exists()) {
+      consultant.value = { id: snapshot.id, ...snapshot.data() };
+    };
+  };
+
+  return {
+    currentUser,
+    selectedUser,
+    users,
+    consultant,
+    fetchCurrentUser,
+    fetchSelectedUser,
+    fetchAllClients,
+    fetchConsultant
+  };
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Fri May 01 2026 09:02:09 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

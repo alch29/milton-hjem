@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>stores/document.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-composables_useClientId.html">composables/useClientId</a><ul class='methods'><li data-type='method'><a href="module-composables_useClientId.html#.exports.useClientId">exports.useClientId</a></li></ul></li><li><a href="module-composables_useFormatDate.html">composables/useFormatDate</a><ul class='methods'><li data-type='method'><a href="module-composables_useFormatDate.html#.exports.useFormatDate">exports.useFormatDate</a></li><li data-type='method'><a href="module-composables_useFormatDate.html#.formatDate">formatDate</a></li></ul></li><li><a href="module-composables_useSortAndFilter.html">composables/useSortAndFilter</a><ul class='methods'><li data-type='method'><a href="module-composables_useSortAndFilter.html#.exports.useSortAndFilter">exports.useSortAndFilter</a></li></ul></li><li><a href="module-stores_document.html">stores/document</a><ul class='methods'><li data-type='method'><a href="module-stores_document.html#.documentsByCategory">documentsByCategory</a></li><li data-type='method'><a href="module-stores_document.html#.fetchDocuments">fetchDocuments</a></li><li data-type='method'><a href="module-stores_document.html#.uploadDocument">uploadDocument</a></li></ul></li><li><a href="module-stores_image.html">stores/image</a><ul class='methods'><li data-type='method'><a href="module-stores_image.html#.fetchImages">fetchImages</a></li><li data-type='method'><a href="module-stores_image.html#.uploadImage">uploadImage</a></li></ul></li><li><a href="module-stores_timeline.html">stores/timeline</a><ul class='methods'><li data-type='method'><a href="module-stores_timeline.html#.fetchTimeline">fetchTimeline</a></li><li data-type='method'><a href="module-stores_timeline.html#.getVariant">getVariant</a></li></ul></li><li><a href="module-stores_user.html">stores/user</a><ul class='methods'><li data-type='method'><a href="module-stores_user.html#.fetchAllClients">fetchAllClients</a></li><li data-type='method'><a href="module-stores_user.html#.fetchConsultant">fetchConsultant</a></li><li data-type='method'><a href="module-stores_user.html#.fetchCurrentUser">fetchCurrentUser</a></li><li data-type='method'><a href="module-stores_user.html#.fetchSelectedUser">fetchSelectedUser</a></li></ul></li></ul><h3>Guides</h3><ul><li><a href="tutorial-architecture.html">Architecture</a></li><li><a href="tutorial-database.html">Database</a></li><li><a href="tutorial-difficulties_and_solutions.html">difficulties_and_solutions</a></li><li><a href="tutorial-install_guide.html">install_guide</a></li><li><a href="tutorial-permissions.html">permissions</a></li><li><a href="tutorial-refactoring.html">refactoring</a></li><li><a href="tutorial-technologies.html">technologies</a></li><li><a href="tutorial-test_strategy.html">test_strategy</a></li><li><a href="tutorial-userguide.html">userguide</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">stores/document.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module stores/document */
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import { collection, getDocs, addDoc, query, where } from 'firebase/firestore';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '@/config/firebase';
+
+export const useDocumentStore = defineStore('documents', () => {
+
+  // State
+  const documents = ref([]);
+  const error = ref(null);
+
+  // Actions
+
+  /**
+   * Uploads a document to Firebase Storage, then saves the metadata (title, date, url, etc.) to Firestore.
+   * @function uploadDocument
+   * @memberof module:stores/document
+   * @param {File} params.file - The actual file being uploaded.
+   * @param {string} params.category - Which category it goes under.
+   * @param {string} params.title - A name for the document. Falls back to the file name if empty.
+   * @param {string} params.clientId - The ID of the client this document should be uploaded to.
+   * @returns {Promise&lt;void>}
+   */
+  async function uploadDocument({file, category, title, clientId}) {
+    error.value = null;
+    try {
+      const fileRef = storageRef(storage, `documents/${category}/${file.name}`);
+      await uploadBytes(fileRef, file);
+      const url = await getDownloadURL(fileRef);
+      await addDoc(collection(db, 'documents'), {
+        title: title || file.name,
+        uploadDate: new Date(),
+        url: url,
+        category: category.toLowerCase(),
+        clientId: clientId
+      });
+    } catch (err) {
+      err.value = 'Kunne ikke uploade dokument';
+    }
+  }
+
+  /**
+   * Gets all documents from Firestore that match a specific category and client.
+   * @function fetchDocuments
+   * @memberof module:stores/document
+   * @param {string} category - The category to look for.
+   * @param {string} clientId - The client's ID, so we only get their documents.
+   * @returns {Promise&lt;void>}
+   */
+  async function fetchDocuments(category, clientId) {
+    error.value = null;
+    try {
+      const q = query(
+        collection(db, 'documents'),
+        where('category', '==', category),
+        where('clientId', '==', clientId)
+      );
+      const snapshot = await getDocs(q);
+      documents.value = snapshot.docs.map(d => {
+        return { id: d.id, ...d.data() };
+      });
+    } catch (err) {
+      err.value = 'Kunne ikke hente dokumenter';
+    }
+  }
+
+  // Getters
+
+  /**
+   * A computed getter that lets you filter documents by category.
+   * Returns a function you call with a category string to get the matching documents.
+   * @function documentsByCategory
+   * @memberof module:stores/document
+   * @returns {function(string): Object[]}
+   */
+  const documentsByCategory = computed(() => {
+    return (category) => {
+      return documents.value.filter(d => {
+        return d.category === category;
+      });
+    };
+  });
+
+  return { documents, error, fetchDocuments, uploadDocument, documentsByCategory };
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Fri May 01 2026 09:02:09 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
