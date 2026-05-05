@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { setActivePinia, createPinia } from 'pinia';
+import { createTestingPinia } from '@pinia/testing';
 import UploadMedia from '@/components/UploadMedia.vue';
 
 // Mock Firebase so the stores can be created without a real connection
@@ -39,10 +39,6 @@ vi.mock('@/composables/useClientId', () => {
   };
 });
 
-// Before each test, create a fresh Pinia instance
-beforeEach(() => {
-  setActivePinia(createPinia());
-});
 
 describe('UploadMedia', () => {
 
@@ -50,7 +46,8 @@ describe('UploadMedia', () => {
   // the document categories and not the image categories.
   it('shows document categories when type is documents', () => {
     const wrapper = mount(UploadMedia, {
-      props: { type: 'documents' }
+      props: { type: 'documents' },
+      global: { plugins: [createTestingPinia()] }
     });
 
     // These are document-specific categories
@@ -66,7 +63,8 @@ describe('UploadMedia', () => {
   // the image categories and not the document categories.
   it('shows image categories when type is images', () => {
     const wrapper = mount(UploadMedia, {
-      props: { type: 'images' }
+      props: { type: 'images' },
+      global: { plugins: [createTestingPinia()] }
     });
 
     // These are image-specific categories
@@ -82,7 +80,8 @@ describe('UploadMedia', () => {
   // has been selected. This prevents the user from submitting an incomplete form.
   it('disables the upload button when no file or category is selected', () => {
     const wrapper = mount(UploadMedia, {
-      props: { type: 'documents' }
+      props: { type: 'documents' },
+      global: { plugins: [createTestingPinia()] }
     });
 
     // Find all Button components — the upload button is the last one

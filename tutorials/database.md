@@ -71,7 +71,7 @@ Each document in this subcollection represents a single event on the timeline.
 |---|---|---|
 | `title` | string | The event title |
 | `date` | timestamp | The date of the event |
-| `type` | string | The type of event (e.g. `meeting`, `completed`) |
+| `type` | string | The type of event (fx `meeting`, `completed`) |
 
 ---
 
