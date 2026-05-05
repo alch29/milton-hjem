@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue';
 import Card from '@/components/cardComponents/Card.vue';
-import Calendar from '@/components/Calender.vue';
+import Calendar from '@/components/Calendar.vue';
 import TimelineCard from '@/components/timelineComponents/TimelineCard.vue';
 import { useTimelineStore } from '@/stores/timeline';
 import { useUserStore } from '@/stores/user';
@@ -51,8 +51,6 @@ watchEffect(() => {
     </div>
 
     <Calendar v-if="activeView === 'calendar'" />
-
-    <EditTimeline v-else-if="activeView === 'edit'" />
 
     <div
       v-else

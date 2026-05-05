@@ -28,7 +28,7 @@ describe('Timeline', () => {
     const calendarBtn = wrapper.findAll('.timeline__icon')[0];
     await calendarBtn.trigger('click');
 
-    // Verrify: Find calendar component
+    // Assert: Find calendar component
     expect(wrapper.findComponent({ name: 'Calendar' }).exists()).toBe(true);
     expect(wrapper.find('.timeline__content').exists()).toBe(false);
   });
@@ -53,7 +53,7 @@ describe('Timeline', () => {
     await wrapper.find('.card--standard').trigger('click');
     expect(wrapper.findComponent({ name: 'TimelineCard' }).exists()).toBe(true);
 
-    // Verrify: Emit close-event to close card
+    // Assert: Emit close-event to close card
     await wrapper.findComponent({ name: 'TimelineCard' }).vm.$emit('close');
     expect(wrapper.findComponent({ name: 'TimelineCard' }).exists()).toBe(false);
   });
