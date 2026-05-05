@@ -21,9 +21,7 @@ export function useClientId() {
    * @type {string|undefined}
    */
   const clientId = computed(() => {
-    return userStore.currentUser?.isConsultant
-      ? userStore.selectedUser?.id
-      : userStore.currentUser?.id;
+    return userStore.currentUser?.isConsultant? userStore.selectedUser?.id: userStore.currentUser?.id;
   }
   );
 
