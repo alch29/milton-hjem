@@ -52,8 +52,6 @@ watchEffect(() => {
 
     <Calendar v-if="activeView === 'calendar'" />
 
-    <EditTimeline v-else-if="activeView === 'edit'" />
-
     <div
       v-else
       class="timeline__content"
