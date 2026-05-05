@@ -1,0 +1,2 @@
+# Refactoring
+The code has been refactored continuously during the coding proces of the project. The team works in weekly sprints, where refactoring has been done about once every sprint, while coding. 
