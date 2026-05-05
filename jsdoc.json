@@ -1,7 +1,8 @@
 {
     "source": {
         "include": ["src/stores", "src/composables", "src/config", "src/router"],
-        "includePattern": ".js$"
+        "includePattern": ".js$",
+        "excludePattern": "(__tests__|.test).js$"
     },
     "opts": {
         "destination": "./docs",
