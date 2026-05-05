@@ -4,5 +4,11 @@
     },
     "database": {
         "title": "Database"
+    },
+    "install_guide": {
+        "title": "Install Guide"
+    },
+    "permissions": {
+        "title": "Permissions"
     }
 }

@@ -29,7 +29,7 @@
 <nav >
     
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-composables_useClientId.html">composables/useClientId</a><ul class='methods'><li data-type='method'><a href="module-composables_useClientId.html#.exports.useClientId">exports.useClientId</a></li></ul></li><li><a href="module-composables_useFormatDate.html">composables/useFormatDate</a><ul class='methods'><li data-type='method'><a href="module-composables_useFormatDate.html#.exports.useFormatDate">exports.useFormatDate</a></li><li data-type='method'><a href="module-composables_useFormatDate.html#.formatDate">formatDate</a></li></ul></li><li><a href="module-composables_useSortAndFilter.html">composables/useSortAndFilter</a><ul class='methods'><li data-type='method'><a href="module-composables_useSortAndFilter.html#.exports.useSortAndFilter">exports.useSortAndFilter</a></li></ul></li><li><a href="module-stores_document.html">stores/document</a><ul class='methods'><li data-type='method'><a href="module-stores_document.html#.documentsByCategory">documentsByCategory</a></li><li data-type='method'><a href="module-stores_document.html#.fetchDocuments">fetchDocuments</a></li><li data-type='method'><a href="module-stores_document.html#.uploadDocument">uploadDocument</a></li></ul></li><li><a href="module-stores_image.html">stores/image</a><ul class='methods'><li data-type='method'><a href="module-stores_image.html#.fetchImages">fetchImages</a></li><li data-type='method'><a href="module-stores_image.html#.uploadImage">uploadImage</a></li></ul></li><li><a href="module-stores_timeline.html">stores/timeline</a><ul class='methods'><li data-type='method'><a href="module-stores_timeline.html#.fetchTimeline">fetchTimeline</a></li><li data-type='method'><a href="module-stores_timeline.html#.getVariant">getVariant</a></li></ul></li><li><a href="module-stores_user.html">stores/user</a><ul class='methods'><li data-type='method'><a href="module-stores_user.html#.fetchAllClients">fetchAllClients</a></li><li data-type='method'><a href="module-stores_user.html#.fetchConsultant">fetchConsultant</a></li><li data-type='method'><a href="module-stores_user.html#.fetchCurrentUser">fetchCurrentUser</a></li><li data-type='method'><a href="module-stores_user.html#.fetchSelectedUser">fetchSelectedUser</a></li></ul></li></ul><h3>Guides</h3><ul><li><a href="tutorial-architecture.html">Architecture</a></li><li><a href="tutorial-database.html">Database</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-composables_useClientId.html">composables/useClientId</a><ul class='methods'><li data-type='method'><a href="module-composables_useClientId.html#.exports.useClientId">exports.useClientId</a></li></ul></li><li><a href="module-composables_useFormatDate.html">composables/useFormatDate</a><ul class='methods'><li data-type='method'><a href="module-composables_useFormatDate.html#.exports.useFormatDate">exports.useFormatDate</a></li><li data-type='method'><a href="module-composables_useFormatDate.html#.formatDate">formatDate</a></li></ul></li><li><a href="module-composables_useSortAndFilter.html">composables/useSortAndFilter</a><ul class='methods'><li data-type='method'><a href="module-composables_useSortAndFilter.html#.exports.useSortAndFilter">exports.useSortAndFilter</a></li></ul></li><li><a href="module-stores_document.html">stores/document</a><ul class='methods'><li data-type='method'><a href="module-stores_document.html#.documentsByCategory">documentsByCategory</a></li><li data-type='method'><a href="module-stores_document.html#.fetchDocuments">fetchDocuments</a></li><li data-type='method'><a href="module-stores_document.html#.uploadDocument">uploadDocument</a></li></ul></li><li><a href="module-stores_image.html">stores/image</a><ul class='methods'><li data-type='method'><a href="module-stores_image.html#.fetchImages">fetchImages</a></li><li data-type='method'><a href="module-stores_image.html#.uploadImage">uploadImage</a></li></ul></li><li><a href="module-stores_timeline.html">stores/timeline</a><ul class='methods'><li data-type='method'><a href="module-stores_timeline.html#.fetchTimeline">fetchTimeline</a></li><li data-type='method'><a href="module-stores_timeline.html#.getVariant">getVariant</a></li></ul></li><li><a href="module-stores_user.html">stores/user</a><ul class='methods'><li data-type='method'><a href="module-stores_user.html#.fetchAllClients">fetchAllClients</a></li><li data-type='method'><a href="module-stores_user.html#.fetchConsultant">fetchConsultant</a></li><li data-type='method'><a href="module-stores_user.html#.fetchCurrentUser">fetchCurrentUser</a></li><li data-type='method'><a href="module-stores_user.html#.fetchSelectedUser">fetchSelectedUser</a></li></ul></li></ul><h3>Guides</h3><ul><li><a href="tutorial-architecture.html">Architecture</a></li><li><a href="tutorial-database.html">Database</a></li><li><a href="tutorial-difficulties_and_solutions.html">difficulties_and_solutions</a></li><li><a href="tutorial-install_guide.html">Install Guide</a></li><li><a href="tutorial-permissions.html">Permissions</a></li><li><a href="tutorial-refactoring.html">refactoring</a></li><li><a href="tutorial-technologies.html">technologies</a></li><li><a href="tutorial-test_strategy.html">test_strategy</a></li><li><a href="tutorial-userguide.html">userguide</a></li></ul>
     
 </nav>
 
@@ -47,7 +47,216 @@
 </header>
 
 <article>
-    
+    <h1>Database</h1>
+<p>This project uses <strong>Firebase Firestore</strong> as its database. Firestore is a NoSQL cloud database that stores data as documents inside collections.</p>
+<hr>
+<h2>Collections</h2>
+<h3><code>users</code></h3>
+<p>Stores all user accounts.
+Each document ID matches the user's Firebase Auth UID.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>firstName</code></td>
+<td>string</td>
+<td>The user's first name</td>
+</tr>
+<tr>
+<td><code>lastName</code></td>
+<td>string</td>
+<td>The user's last name</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>string</td>
+<td>The user's email</td>
+</tr>
+<tr>
+<td><code>address</code></td>
+<td>string</td>
+<td>The user's address</td>
+</tr>
+<tr>
+<td><code>postalCode</code></td>
+<td>string</td>
+<td>The user's postal code</td>
+</tr>
+<tr>
+<td><code>phoneNumber</code></td>
+<td>string</td>
+<td>The user's phone number</td>
+</tr>
+<tr>
+<td><code>isConsultant</code></td>
+<td>boolean</td>
+<td>Whether the user is a consultant or a client</td>
+</tr>
+<tr>
+<td><code>consultantId</code></td>
+<td>string</td>
+<td>The ID of the consultant assigned to this client (clients only)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3><code>documents</code></h3>
+<p>Stores uploaded documents (PDFs, etc.) for clients.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>Display name for the document</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>string</td>
+<td>Category the document belongs to (fx <code>kontrakter</code>)</td>
+</tr>
+<tr>
+<td><code>uploadDate</code></td>
+<td>timestamp</td>
+<td>When the document was uploaded</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td>Download URL from Firebase Storage</td>
+</tr>
+<tr>
+<td><code>clientId</code></td>
+<td>string</td>
+<td>The ID of the client this document belongs to</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3><code>batches</code></h3>
+<p>Groups images uploaded together into a single batch.
+Each batch has an <code>images</code> subcollection.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>Display name for the batch</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>string</td>
+<td>Category the images belong to (fx <code>gulv</code>)</td>
+</tr>
+<tr>
+<td><code>uploadDate</code></td>
+<td>timestamp</td>
+<td>When the batch was uploaded</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td>URL of the first image, used as a preview</td>
+</tr>
+<tr>
+<td><code>clientId</code></td>
+<td>string</td>
+<td>The ID of the client this batch belongs to</td>
+</tr>
+</tbody>
+</table>
+<h4><code>batches/{batchId}/images</code></h4>
+<p>Each document in this subcollection represents a single image inside the batch.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td>string</td>
+<td>Download URL of the image from Firebase Storage</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3><code>timelines</code></h3>
+<p>Each document represents a timeline belonging to a client. Events are stored in a subcollection.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clientId</code></td>
+<td>string</td>
+<td>The ID of the client this timeline belongs to</td>
+</tr>
+</tbody>
+</table>
+<h4><code>timelines/{timelineId}/events</code></h4>
+<p>Each document in this subcollection represents a single event on the timeline.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>The event title</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>timestamp</td>
+<td>The date of the event</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>The type of event (e.g. <code>meeting</code>, <code>completed</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Relationships</h2>
+<ul>
+<li>A <strong>consultant</strong> has many <strong>clients</strong> — linked via <code>consultantId</code> on each client's user document</li>
+<li>A <strong>client</strong> has many <strong>documents</strong> — linked via <code>clientId</code> on each document</li>
+<li>A <strong>client</strong> has many <strong>image batches</strong> — linked via <code>clientId</code> on each batch</li>
+<li>A <strong>client</strong> has one <strong>timeline</strong> — linked via <code>clientId</code> on the timeline document</li>
+</ul>
 </article>
 
 </section>
@@ -59,7 +268,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Thu Apr 30 2026 12:41:33 GMT+0200 (Centraleuropæisk sommertid) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Tue May 05 2026 10:10:43 GMT+0200 (Centraleuropæisk sommertid) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

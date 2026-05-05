@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>composables/useSortAndFilter.js - Documentation</title>
+    <title>Guides:  - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,72 +35,140 @@
 
 <div id="main">
     
-    <h1 class="page-title">composables/useSortAndFilter.js</h1>
+    <h1 class="page-title">Guides: </h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { computed } from 'vue';
 
-/** @module composables/useSortAndFilter */
+<header>
+    
 
-/**
- * Takes a list of items and returns it sorted depending on what has been chosen.
- * Filtering checks if the item's title includes the search query (case-insensitive).
- * Sorting can be: 'newest', 'oldest', 'alphabetical', or 'alphabetical-reverse'.
- * Note: newest/oldest sorting uses uploadDate.seconds because Firestore timestamps aren't plain JS.
- * @memberof module:composables/useSortAndFilter
- * @param {Object[]} items - The list to work with.
- * @param {string} searchQuery - What the user typed in the search bar.
- * @param {string|null} sortOrder - The chosen sort option, or null for no sorting.
- * @returns {{ result: Object[] }}
- */
-export function useSortAndFilter(items, searchQuery, sortOrder) {
-  /**
-   * The final list after filtering and sorting. Updates automatically when any input changes.
-   * @member result
-   * @memberof module:composables/useSortAndFilter
-   * @type {Object[]}
-   */
-  const result = computed(() => {
-    let list = [...items.value];
+    <h2>Permissions</h2>
+</header>
 
-    if (searchQuery.value) {
-      list = list.filter(item => {
-        return item.title?.toLowerCase().includes(searchQuery.value.toLowerCase());
-      }
-      );
-    }
-
-    if (sortOrder.value === 'newest') return list.sort((a, b) => {
-      return b.uploadDate?.seconds - a.uploadDate?.seconds;
-    });
-    if (sortOrder.value === 'oldest') return list.sort((a, b) => {
-      return a.uploadDate?.seconds - b.uploadDate?.seconds;
-    });
-    if (sortOrder.value === 'alphabetical') return list.sort((a, b) => {
-      return a.title.localeCompare(b.title);
-    });
-    if (sortOrder.value === 'alphabetical-reverse') return list.sort((a, b) => {
-      return b.title.localeCompare(a.title);
-    });
-
-    return list;
-  });
-
-  return { result };
+<article>
+    <h1>Permissions</h1>
+<p>This project has two user roles: <strong>consultant</strong> and <strong>client</strong>.
+Which role a user has is determined by the <code>isConsultant</code> field on their user document in Firestore.</p>
+<hr>
+<h2>Roles</h2>
+<h3>Consultant</h3>
+<p>A consultant manages one or more clients. They have full access to their clients' data and are the only ones who can upload or edit content.</p>
+<h3>Client</h3>
+<p>A client is assigned to a consultant via the <code>consultantId</code> field on their user document. They can only view their own data and cannot upload or modify anything.</p>
+<hr>
+<h2>What each role can do</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Consultant</th>
+<th>Client</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View own profile</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>View assigned clients</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>View consultant profile</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Upload documents</td>
+<td>Yes (for their clients)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>View documents</td>
+<td>Yes (their clients' only)</td>
+<td>Yes (own only)</td>
+</tr>
+<tr>
+<td>Upload images</td>
+<td>Yes (for their clients)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>View images</td>
+<td>Yes (their clients' only)</td>
+<td>Yes (own only)</td>
+</tr>
+<tr>
+<td>Create timeline events</td>
+<td>Yes (for their clients)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>View timeline</td>
+<td>Yes (their clients' only)</td>
+<td>Yes (own only)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Firestore security rules</h2>
+<p>The permissions above are enforced in Firestore using security rules. No one can bypass them — even if someone tried to access the database directly, the rules would block them.</p>
+<h3>Helper functions</h3>
+<pre class="prettyprint source lang-javascript"><code>function isSignedIn() {
+  return request.auth != null;
 }
 </code></pre>
-        </article>
-    </section>
+<p>Checks that the user is logged in.</p>
+<pre class="prettyprint source lang-javascript"><code>function isConsultant() {
+  return isSignedIn() &&
+    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isConsultant == true;
+}
+</code></pre>
+<p>Checks if the logged-in user is a consultant by looking at their own user document.</p>
+<pre class="prettyprint source lang-javascript"><code>function ownsClient(clientId) {
+  return get(/databases/$(database)/documents/users/$(clientId)).data.consultantId == request.auth.uid;
+}
+</code></pre>
+<p>Checks that a given client actually belongs to the logged-in consultant.</p>
+<hr>
+<h3>Rules summary</h3>
+<p><strong>Users</strong></p>
+<ul>
+<li>Everyone can read their own profile</li>
+<li>Consultants can read the profiles of their own clients</li>
+<li>Clients can read their assigned consultant's profile</li>
+<li>No one can write — accounts are created manually in Firebase console</li>
+</ul>
+<p><strong>Documents</strong></p>
+<ul>
+<li>Clients can read their own documents</li>
+<li>Consultants can read, update and delete documents for their own clients</li>
+<li>Consultants can create documents for their own clients</li>
+</ul>
+<p><strong>Batches (images)</strong></p>
+<ul>
+<li>Same rules as documents</li>
+<li>For the <code>images</code> subcollection, the parent batch is looked up to verify the <code>clientId</code></li>
+</ul>
+<p><strong>Timelines</strong></p>
+<ul>
+<li>Clients can read their own timeline and events</li>
+<li>Only consultants can create or edit timeline events, and only for their own clients</li>
+</ul>
+<hr>
+<h2>Default deny</h2>
+<p>Everything not explicitly allowed by the rules above is denied. This is enforced by a fallback rule at the top of the Firestore rules file:</p>
+<pre class="prettyprint source lang-javascript"><code>match /{document=**} {
+  allow read, write: if false;
+}
+</code></pre>
+</article>
 
-
-
+</section>
 
     
     
