@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "firebase": "^12.11.0",
-    "firebase-admin": "^13.8.0",
+    "firebase-admin": "^10.1.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.29",
     "vue-router": "^5.0.3"
@@ -27,7 +27,7 @@
     "@pinia/testing": "^1.0.3",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/test-utils": "^2.4.6",
-    "cypress": "^15.11.0",
+    "cypress": "^4.2.0",
     "docdash": "^2.0.2",
     "eslint": "^10.0.3",
     "eslint-plugin-vue": "^10.8.0",
