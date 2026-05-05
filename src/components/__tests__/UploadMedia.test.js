@@ -4,30 +4,40 @@ import { setActivePinia, createPinia } from 'pinia';
 import UploadMedia from '@/components/UploadMedia.vue';
 
 // Mock Firebase so the stores can be created without a real connection
-vi.mock('@/config/firebase', () => ({
-  db: {},
-  auth: {},
-  storage: {}
-}));
+vi.mock('@/config/firebase', () => {
+  return {
+    db: {},
+    auth: {},
+    storage: {}
+  };
+});
 
-vi.mock('firebase/firestore', () => ({
-  collection: vi.fn(),
-  getDocs: vi.fn(),
-  addDoc: vi.fn(),
-  query: vi.fn(),
-  where: vi.fn()
-}));
+vi.mock('firebase/firestore', () => {
+  return {
+    collection: vi.fn(),
+    getDocs: vi.fn(),
+    addDoc: vi.fn(),
+    query: vi.fn(),
+    where: vi.fn()
+  };
+});
 
-vi.mock('firebase/storage', () => ({
-  ref: vi.fn(),
-  uploadBytes: vi.fn(),
-  getDownloadURL: vi.fn()
-}));
+vi.mock('firebase/storage', () => {
+  return {
+    ref: vi.fn(),
+    uploadBytes: vi.fn(),
+    getDownloadURL: vi.fn()
+  };
+});
 
 // Mock useClientId so we don't need a real user in the store
-vi.mock('@/composables/useClientId', () => ({
-  useClientId: () => ({ clientId: { value: 'client-123' } })
-}));
+vi.mock('@/composables/useClientId', () => {
+  return {
+    useClientId: () => {
+      return { clientId: { value: 'client-123' } };
+    }
+  };
+});
 
 // Before each test, create a fresh Pinia instance
 beforeEach(() => {

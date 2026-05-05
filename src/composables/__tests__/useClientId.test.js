@@ -4,20 +4,24 @@ import { useUserStore } from '@/stores/user';
 import { useClientId } from '@/composables/useClientId';
 
 // Mock Firebase so the user store can be created without a real Firebase connection
-vi.mock('@/config/firebase', () => ({
-  db: {},
-  auth: {},
-  storage: {}
-}));
+vi.mock('@/config/firebase', () => {
+  return {
+    db: {},
+    auth: {},
+    storage: {}
+  };
+});
 
-vi.mock('firebase/firestore', () => ({
-  doc: vi.fn(),
-  getDoc: vi.fn(),
-  collection: vi.fn(),
-  getDocs: vi.fn(),
-  query: vi.fn(),
-  where: vi.fn()
-}));
+vi.mock('firebase/firestore', () => {
+  return {
+    doc: vi.fn(),
+    getDoc: vi.fn(),
+    collection: vi.fn(),
+    getDocs: vi.fn(),
+    query: vi.fn(),
+    where: vi.fn()
+  };
+});
 
 // Before each test, create a fresh Pinia instance so store state doesn't carry over
 beforeEach(() => {

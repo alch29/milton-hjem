@@ -4,24 +4,32 @@ import { useDocumentStore } from '@/stores/document';
 
 // We mock Firebase entirely so that tests never touch the real database or storage.
 // Each mock replaces the real Firebase function with a fake version we can control.
-vi.mock('@/config/firebase', () => ({
-  db: {},
-  storage: {}
-}));
+vi.mock('@/config/firebase', () => {
+  return {
+    db: {},
+    storage: {}
+  };
+});
 
-vi.mock('firebase/firestore', () => ({
-  collection: vi.fn(),
-  getDocs: vi.fn(),
-  addDoc: vi.fn(),
-  query: vi.fn(),
-  where: vi.fn()
-}));
+vi.mock('firebase/firestore', () => {
+  return {
+    collection: vi.fn(),
+    getDocs: vi.fn(),
+    addDoc: vi.fn(),
+    query: vi.fn(),
+    where: vi.fn()
+  };
+});
 
-vi.mock('firebase/storage', () => ({
-  ref: vi.fn(),
-  uploadBytes: vi.fn(),
-  getDownloadURL: vi.fn(() => Promise.resolve('https://fake-url.com/file.pdf'))
-}));
+vi.mock('firebase/storage', () => {
+  return {
+    ref: vi.fn(),
+    uploadBytes: vi.fn(),
+    getDownloadURL: vi.fn(() => {
+      return Promise.resolve('https://fake-url.com/file.pdf');
+    })
+  };
+});
 
 import { getDocs, addDoc } from 'firebase/firestore';
 import { uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -112,8 +120,12 @@ describe('fetchDocuments', () => {
     // Fake Firestore
     getDocs.mockResolvedValue({
       docs: [
-        { id: 'doc1', data: () => ({ title: 'Contract', category: 'kontrakter', clientId: 'client123' }) },
-        { id: 'doc2', data: () => ({ title: 'Plan', category: 'kontrakter', clientId: 'client123' }) }
+        { id: 'doc1', data: () => {
+          return { title: 'Contract', category: 'kontrakter', clientId: 'client123' };
+        } },
+        { id: 'doc2', data: () => {
+          return { title: 'Plan', category: 'kontrakter', clientId: 'client123' };
+        } }
       ]
     });
 
