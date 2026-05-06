@@ -1,5 +1,5 @@
 <script setup>
-import { watch } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTimelineStore } from '@/stores/timeline';
@@ -9,6 +9,7 @@ import SearchBar from '@/components/SearchBar.vue';
 const store = useUserStore();
 const timelineStore = useTimelineStore();
 const router = useRouter();
+const searchQuery = ref('');
 
 watch(() => {
   return store.currentUser;
@@ -22,6 +23,14 @@ async function selectClient(userId) {
   router.push({ name: 'home' });
 };
 
+const filteredUsers = computed(() => {
+  if (!searchQuery.value) return store.users;
+  const q = searchQuery.value.toLowerCase();
+  return store.users.filter(user =>
+    user.address?.toLowerCase().includes(q) ||
+    user.postalCode?.toLowerCase().includes(q)
+  );
+});
 </script>
 
 <template>
@@ -33,27 +42,18 @@ async function selectClient(userId) {
       >
     </div>
     <h1>Projekter</h1>
-    <SearchBar />
+    <SearchBar @search="query => searchQuery = query" />
     <div class="consultant-projects-view__projects-container">
-      <div
-        v-for="user in store.users"
+      <Card 
+        class="card--highlighted"
+        v-for="user in filteredUsers"
         :key="user.id"
-        class="consultant-projects-view__project"
+        @click="selectClient(user.id)"
       >
-        <div
-          class="consultant-projects-view__project-card"
-          @click="selectClient(user.id)"
-        >
-          <Card class="card--highlighted">
-            <template #content>
-              {{ user.address }}, {{ user.postalCode }}
-            </template>
-            <template #icon-right>
-              <img src="@/assets/icons/Notification.svg">
-            </template>
-          </Card>
-        </div>
-      </div>
+        <template #content>
+          {{ user.address }}, {{ user.postalCode }}
+        </template>
+      </Card>
     </div>
   </div>
 </template>
@@ -74,6 +74,7 @@ async function selectClient(userId) {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
   }
 
   &__logo {
@@ -82,11 +83,6 @@ async function selectClient(userId) {
     & img {
       width: 130px;
     }
-  }
-  
-  &__project-card {
-    text-decoration: none;
-    color: $color-text;
   }
 }
 </style>
