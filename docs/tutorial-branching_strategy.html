@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>composables/useClientId.js - Documentation</title>
+    <title>Guides:  - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,51 +35,107 @@
 
 <div id="main">
     
-    <h1 class="page-title">composables/useClientId.js</h1>
+    <h1 class="page-title">Guides: </h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { computed } from 'vue';
-import { useUserStore } from '@/stores/user';
 
-/** @module composables/useClientId */
+<header>
+    
 
-/**
- * Figures out which client we're currently looking at.
- * If the logged-in user is a consultant, we use the selected client's ID.
- * If they're a client, we just use their own ID.
- * @memberof module:composables/useClientId
- * @returns {{ clientId: string|undefined }}
- */
-export function useClientId() {
-  const userStore = useUserStore();
+    <h2>Branching Strategy</h2>
+</header>
 
-  /**
-   * The ID of the client.
-   * Switches between selectedUser and currentUser depending on the role.
-   * @member clientId
-   * @memberof module:composables/useClientId
-   * @type {string|undefined}
-   */
-  const clientId = computed(() => {
-    return userStore.currentUser?.isConsultant? userStore.selectedUser?.id: userStore.currentUser?.id;
-  }
-  );
-
-  return { clientId };
-}
+<article>
+    <h1>Branching Strategy</h1>
+<p>This project uses a <strong>feature branch workflow</strong>. All new work happens on its own branch and gets merged into <code>main</code> when it's done.</p>
+<hr>
+<h2>Branch Types</h2>
+<h3><code>main</code></h3>
+<p>The stable branch. Every push to <code>main</code> triggers the CI/CD pipeline (lint, build, and docs deployment). Only finished, working code belongs here.</p>
+<h3><code>feature/&lt;name&gt;</code></h3>
+<p>Used for new features or components. Named after what's being built:</p>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>What it was for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feature/store-document</code></td>
+<td>Document store</td>
+</tr>
+<tr>
+<td><code>feature/store-image</code></td>
+<td>Image store</td>
+</tr>
+<tr>
+<td><code>feature/component-upload-media</code></td>
+<td>UploadMedia component</td>
+</tr>
+<tr>
+<td><code>feature/composable-useClientId</code></td>
+<td>useClientId composable</td>
+</tr>
+<tr>
+<td><code>feature/github-actions</code></td>
+<td>CI/CD pipeline setup</td>
+</tr>
+<tr>
+<td><code>feature/jsdocs</code></td>
+<td>JSDoc documentation</td>
+</tr>
+<tr>
+<td><code>feature/unit-testing</code></td>
+<td>Unit tests</td>
+</tr>
+</tbody>
+</table>
+<h3><code>test/&lt;name&gt;</code></h3>
+<p>Used for branches focused on writing or fixing tests, separate from the feature itself.</p>
+<h3><code>linting/&lt;name&gt;</code></h3>
+<p>Used for branches that only deal with linting fixes or code style changes.</p>
+<hr>
+<h2>Workflow</h2>
+<ol>
+<li>
+<p><strong>Create a branch</strong> from <code>main</code> with a descriptive name:</p>
+<pre class="prettyprint source"><code>git checkout -b feature/my-feature
 </code></pre>
-        </article>
-    </section>
+</li>
+<li>
+<p><strong>Work on the branch</strong> - commit often with clear messages describing what changed.</p>
+</li>
+<li>
+<p><strong>Push the branch</strong> to GitHub:</p>
+<pre class="prettyprint source"><code>git add .
+git commit -m &quot;my-message&quot;
+git push -u origin feature/my-feature
+</code></pre>
+</li>
+<li>
+<p><strong>Merge into <code>main</code></strong> when the feature is complete and tested:</p>
+<pre class="prettyprint source"><code>git checkout main
+git merge feature/my-feature
+git push
+</code></pre>
+</li>
+<li>
+<p><strong>The CI/CD pipeline runs automatically</strong> on every push to <code>main</code>, checking that the code lints, builds, and that docs are generated correctly.</p>
+</li>
+</ol>
+<hr>
+<h2>Naming Convention</h2>
+<p>Branch names follow this pattern: <code>type/short-description</code></p>
+<ul>
+<li>Use lowercase and hyphens - no spaces or underscores</li>
+<li>Be specific enough that the branch name explains what it does</li>
+</ul>
+</article>
 
-
-
+</section>
 
     
     
