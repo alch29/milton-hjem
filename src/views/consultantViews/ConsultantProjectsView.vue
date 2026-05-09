@@ -26,9 +26,10 @@ async function selectClient(userId) {
 const filteredUsers = computed(() => {
   if (!searchQuery.value) return store.users;
   const q = searchQuery.value.toLowerCase();
-  return store.users.filter(user =>
-    user.address?.toLowerCase().includes(q) ||
-    user.postalCode?.toLowerCase().includes(q)
+  return store.users.filter(user => {
+    return user.address?.toLowerCase().includes(q) ||
+    user.postalCode?.toLowerCase().includes(q);
+  }
   );
 });
 </script>
@@ -45,9 +46,9 @@ const filteredUsers = computed(() => {
     <SearchBar @search="query => searchQuery = query" />
     <div class="consultant-projects-view__projects-container">
       <Card 
-        class="card--highlighted"
         v-for="user in filteredUsers"
         :key="user.id"
+        class="card--highlighted"
         @click="selectClient(user.id)"
       >
         <template #content>
