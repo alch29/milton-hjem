@@ -27,7 +27,7 @@
     "@pinia/testing": "^1.0.3",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/test-utils": "^2.4.6",
-    "cypress": "^4.2.0",
+    "cypress": "^15.14.2",
     "docdash": "^2.0.2",
     "eslint": "^10.0.3",
     "eslint-plugin-vue": "^10.8.0",
