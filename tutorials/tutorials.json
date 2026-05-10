@@ -10,5 +10,8 @@
     },
     "permissions": {
         "title": "Permissions"
+    },
+    "branching_strategy": {
+        "title": "Branching Strategy"
     }
 }
