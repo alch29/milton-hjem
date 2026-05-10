@@ -5,13 +5,29 @@ describe('Milton Hjem app, user flows test', () => {
       });
       
     it('Login as client and view timeline events', () => {
-        cy.get('.input-field__input').type('livjensen@mail.dk');
-        cy.get('.input-field__input').type('123456');
-        cy.get('button', 'Add').click();
+        // Type email into the first input field
+        cy.get('.input-field__input').eq(0).type('livjensen@mail.dk');
+
+        // Type password into the second input field
+        cy.get('.input-field__input').eq(1).type('123456');
+
+        // Click the login button
+        cy.get('.button').click();
+
+        // Expand the timeline by clicking the icon
+        cy.get('.timeline-preview__icon').click();
+
+        // Check that the timeline events are visible
+        cy.get('.timeline-view').should('be.visible');
+
+        // Click on the calendar icon to view the calendar
+        cy.get('.timeline__icon').eq(0).click();
+
+        // Check that the calendar view is visible
+        cy.get('.calendar').should('be.visible');
     });
 
-    it('Login as consultant and upload image', function() {
-    
+    it('Login as consultant and upload image', () => {
         cy.get('#app input[type="text"]').click();
         cy.get('#app input[type="text"]').type('christensen.alek@gmail.com');
         cy.get('#app input[type="password"]').click();
@@ -27,9 +43,7 @@ describe('Milton Hjem app, user flows test', () => {
         cy.get('#app div.button--cta-primary').click();
     });
 
-    it('Login as consultant and upload document', function() {
-        cy.visit('http://localhost:5173/milton-hjem/')
-        
+    it('Login as consultant and upload document', () => {
         cy.get('#app input[type="text"]').click();
         cy.get('#app input[type="text"]').type('christensen.alek@gmail.com');
         cy.get('#app input[type="password"]').click();
@@ -45,3 +59,4 @@ describe('Milton Hjem app, user flows test', () => {
         cy.get('#app div.button--cta-primary').click();
     });
   });
+
