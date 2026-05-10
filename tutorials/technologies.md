@@ -25,8 +25,8 @@ JSDoc is a documentation tool for JavaScript that generates documentation direct
 ## Git & GitHub
 Git has been used for version control throughout the project, and GitHub has been used to host the repository. The team has followed a branching strategy where each feature or fix is developed on a separate branch and merged into the main branch via pull requests.
 
-### GitHub Actions *SKAL TJEKKES!!!*
-GitHub Actions has been used to set up a CI/CD pipeline for the project. The pipeline is triggered on pull requests and pushes to the main branch, and is configured to automatically run the ESLint linter, Vitest unit tests and build the JSDoc documentation and deploy it to GitHub Pages.
+### GitHub Actions
+GitHub Actions has been used to set up a CI/CD pipeline for the project. The pipeline is triggered on pushes to the main branch, and is configured to automatically run the ESLint linter, build the application, and generate and deploy JSDoc documentation to GitHub Pages.
 
 ### GitHub Pages
 GitHub Pages is used for static hosting of the JSDoc documentation.
