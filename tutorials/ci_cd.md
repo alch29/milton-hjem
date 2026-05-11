@@ -26,9 +26,17 @@ Push to main
   (ESLint)                        (npm run docs)
        │                               │
        ▼                               ▼
-    Build                         Deploy to
-  (Vite + Firebase               GitHub Pages
-   env secrets)                  (/docs folder)
+  Unit tests                      Deploy to
+  (Vitest)                        GitHub Pages
+       │                          (/docs folder)
+       ▼
+    Build
+  (Vite + Firebase
+   env secrets)
+       │
+       ▼
+  E2E tests
+  (Cypress)
        │
        ▼
   Deploy to
@@ -45,7 +53,9 @@ Push to main
 | Checkout code | `actions/checkout` | Downloads the repo onto the CI server |
 | Install deps | `npm ci` | Installs exact versions from `package-lock.json` |
 | Lint | ESLint | Fails the pipeline if there are code style errors |
+| Unit tests | Vitest | Runs all unit and component tests — fails the pipeline if any test fails |
 | Build | Vite | Compiles the app using Firebase secrets stored in GitHub |
+| E2E tests | Cypress | Runs end-to-end tests against the built preview server |
 | Deploy | Firebase CLI | Uploads the `dist/` folder to Firebase Hosting |
 
 ## docs.yml
