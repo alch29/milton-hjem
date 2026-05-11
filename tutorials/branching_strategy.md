@@ -2,6 +2,12 @@
 
 This project uses a **feature branch workflow**. All new work happens on its own branch and gets merged into `main` when it's done.
 
+Initially, the plan was to follow a feature branch strategy — every piece of work isolated on its own branch, reviewed, and merged only when complete. In practice however, the team was pushing more frequently and directly to `main` without always going through a separate branch first.
+
+This is closer to a **trunk-based development** approach, where the main branch is kept in a continuously deployable state and integration happens often. The shift was not a conscious decision but a natural consequence of the pace of development.
+
+This also affected the branch naming conventions. Since the plan was to use feature branches, most branches were named with a `feature/` prefix. In a more structured workflow, branch names should clearly communicate both the type of change and the specific scope of work. Something closer to `fix/`, `refactor/` or `test/`
+
 ---
 
 ## Branch Types
