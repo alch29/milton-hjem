@@ -13,5 +13,11 @@
     },
     "branching_strategy": {
         "title": "Branching Strategy"
+    },
+    "test_strategy": {
+        "title": "Test Strategy"
+    },
+    "ci_cd": {
+        "title": "CI/CD Pipeline"
     }
 }
