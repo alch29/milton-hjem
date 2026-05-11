@@ -43,11 +43,113 @@
 <header>
     
 
-    <h2>difficulties_and_solutions</h2>
+    <h2>CI/CD Pipeline</h2>
 </header>
 
 <article>
-    
+    <h1>CI/CD Pipeline</h1>
+<p>Every push to <code>main</code> triggers two workflows in parallel.</p>
+<hr>
+<pre class="prettyprint source"><code>Push to main
+      │
+      ├─────────────────────────────────┬
+      │                                 │                               
+      ▼                                 ▼                              
+┌─────────────┐               ┌─────────────────┐             
+│  deploy.yml │               │   docs.yml      │           
+└──────┬──────┘               └────────┬────────┘               
+       │                               │
+       ▼                               ▼
+  Checkout code                   Checkout code
+       │                               │
+       ▼                               ▼
+  Install deps                    Install deps
+  (npm ci)                        (npm ci)
+       │                               │
+       ▼                               ▼
+    Lint                          Generate docs
+  (ESLint)                        (npm run docs)
+       │                               │
+       ▼                               ▼
+    Build                         Deploy to
+  (Vite + Firebase               GitHub Pages
+   env secrets)                  (/docs folder)
+       │
+       ▼
+  Deploy to
+  Firebase Hosting
+  (milton-hjem.web.app)
+</code></pre>
+<hr>
+<h2>deploy.yml</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkout code</td>
+<td><code>actions/checkout</code></td>
+<td>Downloads the repo onto the CI server</td>
+</tr>
+<tr>
+<td>Install deps</td>
+<td><code>npm ci</code></td>
+<td>Installs exact versions from <code>package-lock.json</code></td>
+</tr>
+<tr>
+<td>Lint</td>
+<td>ESLint</td>
+<td>Fails the pipeline if there are code style errors</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>Vite</td>
+<td>Compiles the app using Firebase secrets stored in GitHub</td>
+</tr>
+<tr>
+<td>Deploy</td>
+<td>Firebase CLI</td>
+<td>Uploads the <code>dist/</code> folder to Firebase Hosting</td>
+</tr>
+</tbody>
+</table>
+<h2>docs.yml</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkout code</td>
+<td><code>actions/checkout</code></td>
+<td>Downloads the repo onto the CI server</td>
+</tr>
+<tr>
+<td>Install deps</td>
+<td><code>npm ci</code></td>
+<td>Installs exact versions from <code>package-lock.json</code></td>
+</tr>
+<tr>
+<td>Generate docs</td>
+<td>JSDoc + docdash</td>
+<td>Generates HTML documentation from source code comments</td>
+</tr>
+<tr>
+<td>Deploy</td>
+<td>peaceiris/actions-gh-pages</td>
+<td>Publishes the <code>docs/</code> folder to the <code>gh-pages</code> branch</td>
+</tr>
+</tbody>
+</table>
 </article>
 
 </section>
