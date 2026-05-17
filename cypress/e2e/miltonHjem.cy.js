@@ -1,7 +1,7 @@
 describe('Milton Hjem app, user flows test', () => {
     beforeEach(() => {
-        //Visit the url and login before each test
-        cy.visit('http://localhost:5173/milton-hjem/');
+        //Visit the url before each test
+        cy.visit('https://milton-hjem.web.app/');
       });
       
     it('Login as client and view timeline events', () => {
