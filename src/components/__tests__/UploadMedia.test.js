@@ -39,7 +39,6 @@ vi.mock('@/composables/useClientId', () => {
   };
 });
 
-
 describe('UploadMedia', () => {
 
   // Test 1: Checks that when the type prop is 'documents', the component shows
@@ -47,7 +46,7 @@ describe('UploadMedia', () => {
   it('shows document categories when type is documents', () => {
     const wrapper = mount(UploadMedia, {
       props: { type: 'documents' },
-      global: { plugins: [createTestingPinia()] }
+      global: { plugins: [createTestingPinia({ createSpy: vi.fn })] }
     });
 
     // These are document-specific categories
@@ -64,7 +63,7 @@ describe('UploadMedia', () => {
   it('shows image categories when type is images', () => {
     const wrapper = mount(UploadMedia, {
       props: { type: 'images' },
-      global: { plugins: [createTestingPinia()] }
+      global: { plugins: [createTestingPinia({ createSpy: vi.fn })] }
     });
 
     // These are image-specific categories
@@ -81,7 +80,7 @@ describe('UploadMedia', () => {
   it('disables the upload button when no file or category is selected', () => {
     const wrapper = mount(UploadMedia, {
       props: { type: 'documents' },
-      global: { plugins: [createTestingPinia()] }
+      global: { plugins: [createTestingPinia({ createSpy: vi.fn })] }
     });
 
     // Find all Button components — the upload button is the last one
