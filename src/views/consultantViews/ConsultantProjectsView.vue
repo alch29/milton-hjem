@@ -26,10 +26,14 @@ async function selectClient(userId) {
 };
 
 const { result: filteredUsers } = useSortAndFilter(
-  computed(() => store.users.map(user => ({
-    ...user,
-    title: `${user.address}, ${user.postalCode}`
-  }))),
+  computed(() => {
+    return store.users.map(user => {
+      return {
+        ...user,
+        title: `${user.address}, ${user.postalCode}`
+      };
+    });
+  }),
   searchQuery,
   sortOrder
 );
