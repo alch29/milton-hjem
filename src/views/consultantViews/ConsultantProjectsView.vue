@@ -5,11 +5,13 @@ import { useUserStore } from '@/stores/user';
 import { useTimelineStore } from '@/stores/timeline';
 import Card from '@/components/cardComponents/Card.vue';
 import SearchBar from '@/components/SearchBar.vue';
+import { useSortAndFilter } from '@/composables/useSortAndFilter';
 
 const store = useUserStore();
 const timelineStore = useTimelineStore();
 const router = useRouter();
 const searchQuery = ref('');
+const sortOrder = ref(null);
 
 watch(() => {
   return store.currentUser;
@@ -23,15 +25,14 @@ async function selectClient(userId) {
   router.push({ name: 'home' });
 };
 
-const filteredUsers = computed(() => {
-  if (!searchQuery.value) return store.users;
-  const q = searchQuery.value.toLowerCase();
-  return store.users.filter(user => {
-    return user.address?.toLowerCase().includes(q) ||
-    user.postalCode?.toLowerCase().includes(q);
-  }
-  );
-});
+const { result: filteredUsers } = useSortAndFilter(
+  computed(() => store.users.map(user => ({
+    ...user,
+    title: `${user.address}, ${user.postalCode}`
+  }))),
+  searchQuery,
+  sortOrder
+);
 </script>
 
 <template>
